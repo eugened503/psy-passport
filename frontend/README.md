@@ -1,4 +1,4 @@
-# cat-energy
+# frontend-find-friends
 
 ## Project setup
 ```

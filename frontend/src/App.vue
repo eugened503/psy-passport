@@ -16,23 +16,23 @@
 </template>
 <script>
 import Spinner from "@/components/Spinner.vue";
-//import axios from "axios";
+import axios from "axios";
 export default {
   components: { Spinner },
   name: "App",
   created() {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   axios.defaults.headers.common["Authorization"] = token;
-    // }
-    // axios.interceptors.response.use(undefined, function (err) {
-    //   return new Promise(function () {
-    //     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-    //       this.$store.dispatch("logout");
-    //     }
-    //     throw err;
-    //   });
-    // });
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    axios.interceptors.response.use(undefined, function (err) {
+      return new Promise(function () {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch("logout");
+        }
+        throw err;
+      });
+    });
   },
 
   computed: {

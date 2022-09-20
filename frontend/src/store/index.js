@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import axios from "axios";
-//import vuexPersist from "vuex-persist";
 
 export default createStore({
   state: {
@@ -128,17 +127,8 @@ export default createStore({
   },
 
   getters: {
-    getUser(state) {
-      return state.user;
-    },
-
+    getUser: (state) => state.user,
     isLoggedIn: (state) => !!state.token,
     authStatus: (state) => state.status,
   },
-
-  // plugins: [
-  //   new vuexPersist({
-  //     storage: window.localStorage,
-  //   }).plugin,
-  // ],
 });

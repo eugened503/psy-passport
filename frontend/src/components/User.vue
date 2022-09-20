@@ -1,31 +1,37 @@
 <template>
-  <div class="card w-50 mt-5 mx-auto">
-    {{ getUser }}
-    <img
-      class="card-img-top rounded d-block"
-      src="../assets/images/martin.jpg"
-      alt=""
-    />
-    <div class="card-body">
-      <h5 class="card-title">{{ getUser.name }}</h5>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
-      </p>
+  <div class="p-5">
+    <div class="card w-50 mt-5 mx-auto">
+      {{ getUser }}
+      <img
+        class="card-img-top rounded d-block"
+        src="../assets/images/martin.jpg"
+        alt=""
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ getUser.name }}</h5>
+        <p class="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ getUser._id }}</li>
+        <li class="list-group-item">{{ getUser.email }}</li>
+        <li class="list-group-item">A third item</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">{{ getUser._id }}</li>
-      <li class="list-group-item">{{ getUser.email }}</li>
-      <li class="list-group-item">A third item</li>
-    </ul>
-    <div class="card-body">
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
+    <hr class="border border-primary border-3 opacity-75" />
+    <Quiz />
   </div>
 </template>
 <script>
+import Quiz from "@/components/Quiz.vue";
 export default {
+  components: { Quiz },
   name: "UserBlock",
   computed: {
     getUser() {

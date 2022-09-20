@@ -59,12 +59,6 @@ export default {
   },
   methods: {
     register() {
-      console.log({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-      });
-
       let data = {
         name: this.name,
         email: this.email,
@@ -73,9 +67,7 @@ export default {
       //this.name = this.desc = this.link = this.price = "";
       this.$store
         .dispatch("register", data)
-        .then((obj) => console.log(obj))
         .then(() => this.$router.push("/login"))
-        .then(() => (this.showModal = false))
         .catch((err) => console.log(err));
     },
   },

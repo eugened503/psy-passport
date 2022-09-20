@@ -12,78 +12,118 @@ export default createStore({
   actions: {
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
-        commit("auth_request");
+        commit("request");
         axios({
           url: "http://localhost:3000/signup",
           data: user,
           method: "POST",
         })
           .then((resp) => {
-            const token = resp.data.token;
-            const user = resp.data.user;
-            localStorage.setItem("token", token);
-            axios.defaults.headers.common["Authorization"] = token;
-            commit("auth_success", token, user);
+            //console.log("resp", resp);
+            //const token = resp.data.token;
+            //const user = resp.data.user;
+            //localStorage.setItem("token", token);
+            //axios.defaults.headers.common["Authorization"] = token;
+            commit("register_success");
             resolve(resp);
           })
           .catch((err) => {
-            commit("auth_error", err);
+            commit("error", err);
             localStorage.removeItem("token");
             reject(err);
           });
       });
     },
+
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
-        commit("auth_request");
+        commit("request");
         axios({
           url: "http://localhost:3000/signin",
           data: user,
           method: "POST",
         })
           .then((resp) => {
+            //console.log("login", resp.data);
             const token = resp.data.token;
-            const user = resp.data.user;
+            //const user = resp.data.user;
             localStorage.setItem("token", token);
-            axios.defaults.headers.common["Authorization"] = token;
-            commit("auth_success", token, user);
+            //axios.defaults.headers.common["Authorization"] = token;
+            commit("login_success", token);
             resolve(resp);
           })
           .catch((err) => {
-            commit("auth_error");
+            commit("error");
             localStorage.removeItem("token");
             reject(err);
           });
       });
     },
+
     logout({ commit }) {
       return new Promise((resolve) => {
         commit("logout");
         localStorage.removeItem("token");
-        delete axios.defaults.headers.common["Authorization"];
+        //delete axios.defaults.headers.common["Authorization"];
         resolve();
+      });
+    },
+
+    profile({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit("request");
+        axios({
+          url: "http://localhost:3000/users/me",
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.state.token}`,
+          },
+        })
+          .then((resp) => {
+            //console.log("profile", resp.data);
+            //const token = resp.data.token;
+            const user = resp.data;
+            //localStorage.setItem("token", token);
+            //axios.defaults.headers.common["Authorization"] = token;
+            commit("user_success", user);
+            resolve(resp);
+          })
+          .catch((err) => {
+            commit("error");
+            localStorage.removeItem("token");
+            reject(err);
+          });
       });
     },
   },
 
   mutations: {
-    // REGISTER(state, user) {
-    //   state.user = user;
-    // },
-    auth_request(state) {
+    request(state) {
       state.status = "loading";
     },
-    auth_success(state, token, user) {
+
+    register_success(state) {
+      state.status = "success";
+    },
+
+    login_success(state, token) {
       state.status = "success";
       state.token = token;
-      state.user = user;
     },
-    auth_error(state) {
-      state.status = "error";
-    },
+
     logout(state) {
       state.status = "";
       state.token = "";
+    },
+
+    user_success(state, user) {
+      state.status = "success";
+      state.user = user;
+    },
+
+    error(state) {
+      state.status = "error";
     },
   },
 

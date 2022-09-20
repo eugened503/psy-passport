@@ -1,32 +1,50 @@
 <template>
-  <main class="main">
+  <main class="main position-relative">
+    <Spinner
+      v-if="isStatus === 'loading'"
+      class="position-absolute top-50 start-50 translate-middle"
+    />
     <div id="nav" class="w-50 mt-5 mx-auto p-4 text-center fs-2">
       <router-link class="d-inline p-2 mt-2" to="/">Home</router-link> |
-      <router-link class="d-inline p-2 mt-2" to="/secure">Secure</router-link>
-      <span v-if="isLoggedIn"> | <a @click="logout">Logout</a></span>
+      <router-link class="d-inline p-2 mt-2" to="/user">User</router-link>
+      <span class="d-inline p-2 mt-2" v-if="isLoggedIn">
+        | <a @click="logout">Logout</a></span
+      >
     </div>
     <router-view />
   </main>
 </template>
 <script>
+import Spinner from "@/components/Spinner.vue";
+//import axios from "axios";
 export default {
+  components: { Spinner },
   name: "App",
-  // created() {
-  //   this.$http.interceptors.response.use(undefined, function (err) {
-  //     return new Promise(function () {
-  //       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-  //         this.$store.dispatch("logout");
-  //       }
-  //       throw err;
-  //     });
-  //   });
-  // },
+  created() {
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   axios.defaults.headers.common["Authorization"] = token;
+    // }
+    // axios.interceptors.response.use(undefined, function (err) {
+    //   return new Promise(function () {
+    //     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+    //       this.$store.dispatch("logout");
+    //     }
+    //     throw err;
+    //   });
+    // });
+  },
+
   computed: {
     isLoggedIn() {
-      console.log(this.$store.state);
       return this.$store.getters.isLoggedIn;
     },
+
+    isStatus() {
+      return this.$store.getters.authStatus;
+    },
   },
+
   methods: {
     logout() {
       this.$store.dispatch("logout").then(() => {

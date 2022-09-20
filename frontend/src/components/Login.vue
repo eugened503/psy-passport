@@ -44,18 +44,26 @@ export default {
     return {
       email: null,
       password: null,
+      //isLoader: false,
     };
   },
+  // computed: {
+  //   isStatus() {
+  //     //console.log(this.$store.state);
+  //     return this.$store.getters.authStatus;
+  //   },
+  // },
   methods: {
     login() {
       let data = {
         email: this.email,
         password: this.password,
       };
+      //this.isLoader = true;
       this.$store
         .dispatch("login", data)
         .then((obj) => console.log(obj))
-        .then(() => this.$router.push("/secure"))
+        .then(() => this.$router.push("/user"))
         .catch((err) => console.log(err));
     },
   },

@@ -27,7 +27,7 @@
         </button>
         <button
           class="btn btn-warning m-1"
-          :disabled="isDisabled"
+          :disabled="questionIndex >= isDisabled"
           @click="next"
         >
           Следующий
@@ -47,7 +47,6 @@ export default {
     return {
       questionIndex: 0,
       answers: [],
-      isDisabled: true,
       questions: [
         {
           text: "Вопрос 1",
@@ -77,6 +76,9 @@ export default {
     score() {
       return this.answers.filter((i) => i).length;
     },
+    isDisabled() {
+      return this.answers.length;
+    },
   },
   methods: {
     randomKey() {
@@ -87,17 +89,14 @@ export default {
 
     next() {
       this.questionIndex++;
-      this.isDisabled = true;
     },
 
     prev() {
       this.questionIndex--;
-      this.isDisabled = false;
     },
 
     addRes(index, res) {
       this.answers[index] = res;
-      this.isDisabled = false;
     },
   },
   created() {

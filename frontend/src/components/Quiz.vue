@@ -6,17 +6,17 @@
           <div v-if="index === questionIndex">
             <h4>{{ index + 1 }}. {{ question.text }}</h4>
             <ul class="p-0">
-              <li
-                v-for="(response, indexRes) in question.responses"
-                :key="response.id"
-              >
+              <li v-for="(item, indexRes) in question.responses" :key="item.id">
                 <button
                   style="width: 23%"
                   class="btn btn-primary mt-2 w-40"
-                  @click="addRes(index, response.response)"
+                  :class="{
+                    'btn-success': answers[questionIndex] === item.response,
+                  }"
+                  @click="addRes(index, item.response)"
                 >
                   {{ indexRes + 1 }}
-                  {{ response.text }}
+                  {{ item.text }}
                 </button>
               </li>
             </ul>

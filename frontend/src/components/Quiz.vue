@@ -1,67 +1,71 @@
 <template>
-  <div class="d-flex quiz mt-5 mx-auto p-4 border border-primary">
-    <div position-absolute class="pe-4">
-      <div v-for="(question, index) in questions" :key="question.id">
-        <div v-if="index === questionIndex">
-          <h4>{{ index + 1 }}. {{ question.text }}</h4>
-          <ul class="p-0">
-            <li
-              v-for="(response, indexRes) in question.responses"
-              :key="response.id"
-            >
-              <button
-                style="width: 23%"
-                class="btn btn-primary mt-2 w-40"
-                @click="addRes(index, response.response)"
+  <div class="mt-5 mx-auto p-4 border border-primary">
+    <div class="d-flex">
+      <div position-absolute class="pe-4">
+        <div v-for="(question, index) in questions" :key="question.id">
+          <div v-if="index === questionIndex">
+            <h4>{{ index + 1 }}. {{ question.text }}</h4>
+            <ul class="p-0">
+              <li
+                v-for="(response, indexRes) in question.responses"
+                :key="response.id"
               >
-                {{ indexRes + 1 }}
-                {{ response.text }}
-              </button>
-            </li>
-          </ul>
-          <hr class="border border-primary border-2 opacity-75" />
-          <div>
-            <span>Экстраверсия - интроверсия: </span>{{ pointsExtroIntro }}
+                <button
+                  style="width: 23%"
+                  class="btn btn-primary mt-2 w-40"
+                  @click="addRes(index, response.response)"
+                >
+                  {{ indexRes + 1 }}
+                  {{ response.text }}
+                </button>
+              </li>
+            </ul>
+            <hr class="border border-primary border-2 opacity-75" />
+            <div>
+              <span>Экстраверсия - интроверсия: </span>{{ pointsExtroIntro }}
+            </div>
+            <div><span>Нейротизм </span>{{ pointsNeuro }}</div>
+            <div><span>Шкала лжи </span>{{ pointsLie }}</div>
+            <hr class="border border-primary border-2 opacity-75" />
+            <button
+              class="btn btn-warning mt-1 me-2"
+              v-if="questionIndex > 0"
+              @click="prev"
+            >
+              Предыдущий
+            </button>
+            <button
+              class="btn btn-warning mt-1"
+              :disabled="questionIndex >= isDisabled"
+              @click="next"
+            >
+              Следующий
+            </button>
           </div>
-          <div><span>Нейротизм </span>{{ pointsNeuro }}</div>
-          <div><span>Шкала лжи </span>{{ pointsLie }}</div>
-          <hr class="border border-primary border-2 opacity-75" />
-          <button
-            class="btn btn-warning mt-1 me-2"
-            v-if="questionIndex > 0"
-            @click="prev"
-          >
-            Предыдущий
-          </button>
-          <button
-            class="btn btn-warning mt-1"
-            :disabled="questionIndex >= isDisabled"
-            @click="next"
-          >
-            Следующий
-          </button>
         </div>
       </div>
+      <div>
+        <span>Экстраверсия: </span>{{ scaleExtra }} <span>Интроверсия: </span
+        >{{ scaleIntro }} <span>Нестабильность: </span>{{ scaleInstab }}
+        <span>Стабильность: </span>{{ scaleStab }}
+        <hr class="border border-primary border-2 opacity-75" />
+        <Highcharts :options="options" />
+      </div>
+      <div v-show="questionIndex === questions.length">
+        <h2>Викторина завершена</h2>
+        <!-- <p>Счет: {{ score }} / {{ questions.length }}</p> -->
+      </div>
     </div>
-    <div>
-      <span>Экстраверсия: </span>{{ scaleExtra }} <span>Интроверсия: </span
-      >{{ scaleIntro }} <span>Нестабильность: </span>{{ scaleInstab }}
-      <span>Стабильность: </span>{{ scaleStab }}
-      <hr class="border border-primary border-2 opacity-75" />
-      <Highcharts :options="options" />
-    </div>
-    <div v-show="questionIndex === questions.length">
-      <h2>Викторина завершена</h2>
-      <!-- <p>Счет: {{ score }} / {{ questions.length }}</p> -->
-    </div>
+    <table-quiz :answers="answers" />
   </div>
 </template>
 <script>
 import questions from "../data/questions.json";
 import Highcharts from "@/components/Highcharts.vue";
+import TableQuiz from "./TableQuiz.vue";
 export default {
   name: "QuizBlock",
-  components: { Highcharts },
+  components: { Highcharts, TableQuiz },
   data() {
     return {
       extroIntroIndexTrue: [

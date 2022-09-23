@@ -203,10 +203,12 @@ export default {
 </script>
 
 <style lang="scss">
-.quiz {
-  li {
-    list-style-type: none;
-  }
+li {
+  list-style-type: none;
+}
+h4 {
+  min-height: 87px;
+  width: 80%;
 }
 .quiz-enter-active {
   animation: iconIn 0.3s;

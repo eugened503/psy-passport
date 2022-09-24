@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import Login from "../components/Login.vue";
-import Register from "../components/Register.vue";
-import User from "../components/User.vue";
-import store from "../store/index";
+import HomeView from "@/views/HomeView.vue";
+import Login from "@/components/Login.vue";
+import Register from "@/components/Register.vue";
+import User from "@/components/User.vue";
+import PageError from "@/components/PageError.vue";
+import store from "@/store/index";
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: "/:any(.*)",
+    component: PageError,
   },
 ];
 

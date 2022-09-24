@@ -1,6 +1,4 @@
-/* eslint-disable */ 
 import { createStore } from "vuex";
-
 import user from "./user";
 
 const store = {
@@ -11,13 +9,3 @@ const store = {
 };
 
 export default createStore(store);
-
-/* $store.state.products.all
-$store.state.cart.all
-
-$store.getters.all 
-
-$store.getters['products/all']
-$store.getters['cart/all']
-
-*/

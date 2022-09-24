@@ -5,16 +5,22 @@
       class="position-absolute top-50 start-50 translate-middle"
     />
     <div id="nav" class="w-50 mt-5 mx-auto p-4 text-center fs-2">
-      <router-link class="d-inline p-2 mt-2" to="/">Home</router-link> |
-      <router-link class="d-inline p-2 mt-2" to="/user">User</router-link>
+      <router-link class="d-inline p-2 mt-2" :to="{ name: 'home' }">
+        Home
+      </router-link>
+      |
+      <router-link class="d-inline p-2 mt-2" :to="{ name: 'user' }">
+        User
+      </router-link>
       <span class="d-inline p-2 mt-2" v-if="isLoggedIn">
-        | <a @click="logout">Logout</a></span
-      >
+        | <a @click="logout">Logout</a>
+      </span>
     </div>
     <router-view />
   </main>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import Spinner from "@/components/Spinner.vue";
 import axios from "axios";
 export default {
@@ -28,7 +34,7 @@ export default {
     axios.interceptors.response.use(undefined, function (err) {
       return new Promise(function () {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch("logout");
+          this.logout();
         }
         throw err;
       });
@@ -36,19 +42,22 @@ export default {
   },
 
   computed: {
-    isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
-    },
+    // isLoggedIn() {
+    //   return this.$store.getters.isLoggedIn;
+    // },
 
-    isStatus() {
-      return this.$store.getters.authStatus;
-    },
+    // isStatus() {
+    //   return this.$store.getters.authStatus;
+    // },
+    ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
+    ...mapGetters("user", { isStatus: "authStatus" }),
   },
 
   methods: {
     logout() {
-      this.$store.dispatch("logout").then(() => {
-        this.$router.push("/login");
+      this.$store.dispatch("user/logout").then(() => {
+        //this.$router.push("/login");
+        this.$router.push({ name: "login" });
       });
     },
   },

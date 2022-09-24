@@ -29,35 +29,36 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Quiz from "@/components/Quiz.vue";
 export default {
   components: { Quiz },
   name: "UserBlock",
   computed: {
-    getUser() {
-      //console.log(this.$store.getters.getUser);
-      return this.$store.getters.getUser;
-    },
+    // getUser() {
+    //   return this.$store.getters.getUser;
+    // },
+    ...mapGetters("user", { getUser: "getUser" }),
   },
 
   created() {
-    // загружаем данные, когда представление создано
-    // и данные реактивно отслеживаются
     this.fetchUser();
   },
 
   watch: {
-    // при изменениях маршрута запрашиваем данные снова
     $route: "fetchUser",
   },
 
   methods: {
-    fetchUser() {
-      this.$store
-        .dispatch("profile")
-        .then((user) => console.log(user.data))
-        .catch((err) => console.log(err));
-    },
+    // fetchUser() {
+    //   this.$store
+    //     .dispatch("user/profile")
+    //     .then((user) => console.log(user.data))
+    //     .catch((err) => console.log(err));
+    // },
+    ...mapActions({
+      fetchUser: "user/profile",
+    }),
   },
 };
 </script>

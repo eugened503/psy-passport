@@ -1,134 +1,23 @@
+/* eslint-disable */ 
 import { createStore } from "vuex";
-import axios from "axios";
 
-export default createStore({
-  state: {
-    status: "",
-    token: localStorage.getItem("token") || "",
-    user: {},
+import user from "./user";
+
+const store = {
+  modules: {
+    user,
   },
+  strict: process.env.NODE_ENV !== "production",
+};
 
-  actions: {
-    register({ commit }, user) {
-      return new Promise((resolve, reject) => {
-        commit("request");
-        axios({
-          url: "http://localhost:3000/signup",
-          data: user,
-          method: "POST",
-        })
-          .then((resp) => {
-            //console.log("resp", resp);
-            //const token = resp.data.token;
-            //const user = resp.data.user;
-            //localStorage.setItem("token", token);
-            //axios.defaults.headers.common["Authorization"] = token;
-            commit("register_success");
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit("error", err);
-            localStorage.removeItem("token");
-            reject(err);
-          });
-      });
-    },
+export default createStore(store);
 
-    login({ commit }, user) {
-      return new Promise((resolve, reject) => {
-        commit("request");
-        axios({
-          url: "http://localhost:3000/signin",
-          data: user,
-          method: "POST",
-        })
-          .then((resp) => {
-            //console.log("login", resp.data);
-            const token = resp.data.token;
-            //const user = resp.data.user;
-            localStorage.setItem("token", token);
-            //axios.defaults.headers.common["Authorization"] = token;
-            commit("login_success", token);
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit("error");
-            localStorage.removeItem("token");
-            reject(err);
-          });
-      });
-    },
+/* $store.state.products.all
+$store.state.cart.all
 
-    logout({ commit }) {
-      return new Promise((resolve) => {
-        commit("logout");
-        localStorage.removeItem("token");
-        //delete axios.defaults.headers.common["Authorization"];
-        resolve();
-      });
-    },
+$store.getters.all 
 
-    profile({ commit }) {
-      return new Promise((resolve, reject) => {
-        commit("request");
-        axios({
-          url: "http://localhost:3000/users/me",
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${this.state.token}`,
-          },
-        })
-          .then((resp) => {
-            //console.log("profile", resp.data);
-            //const token = resp.data.token;
-            const user = resp.data;
-            //localStorage.setItem("token", token);
-            //axios.defaults.headers.common["Authorization"] = token;
-            commit("user_success", user);
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit("error");
-            localStorage.removeItem("token");
-            reject(err);
-          });
-      });
-    },
-  },
+$store.getters['products/all']
+$store.getters['cart/all']
 
-  mutations: {
-    request(state) {
-      state.status = "loading";
-    },
-
-    register_success(state) {
-      state.status = "success";
-    },
-
-    login_success(state, token) {
-      state.status = "success";
-      state.token = token;
-    },
-
-    logout(state) {
-      state.status = "";
-      state.token = "";
-    },
-
-    user_success(state, user) {
-      state.status = "success";
-      state.user = user;
-    },
-
-    error(state) {
-      state.status = "error";
-    },
-  },
-
-  getters: {
-    getUser: (state) => state.user,
-    isLoggedIn: (state) => !!state.token,
-    authStatus: (state) => state.status,
-  },
-});
+*/

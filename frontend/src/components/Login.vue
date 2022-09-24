@@ -30,7 +30,7 @@
         />
       </div>
       <button type="submit" class="btn btn-primary mt-3">Submit</button>
-      <router-link class="d-block p-2 mt-2" to="/register"
+      <router-link class="d-block p-2 mt-2" :to="{ name: 'register' }"
         >register</router-link
       >
     </form>
@@ -61,9 +61,8 @@ export default {
       };
       //this.isLoader = true;
       this.$store
-        .dispatch("login", data)
-        .then((obj) => console.log(obj))
-        .then(() => this.$router.push("/user"))
+        .dispatch("user/login", data)
+        .then(() => this.$router.push({ name: "user" }))
         .catch((err) => console.log(err));
     },
   },

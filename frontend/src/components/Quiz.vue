@@ -167,9 +167,9 @@ export default {
         return "склонность к интроверсии";
       if (this.pointsExtroIntro >= 5 && this.pointsExtroIntro < 9)
         return "интроверт";
-      if (this.pointsExtroIntro < 5 && this.pointsExtroIntro > 0)
-        return "глубокий интроверт";
-      return "nothing";
+      // if (this.pointsExtroIntro < 5 && this.pointsExtroIntro > 0)
+      //   return "глубокий интроверт";
+      return "глубокий интроверт";
     },
 
     textNeuro() {
@@ -178,24 +178,24 @@ export default {
         return "высокий уровень нейротизма";
       if (this.pointsNeuro >= 9 && this.pointsNeuro <= 13)
         return "среднее значение";
-      if (this.pointsNeuro < 9 && this.pointsNeuro > 0)
-        return "низкий уровень нейротизма";
-      return "nothing";
+      // if (this.pointsNeuro < 9 && this.pointsNeuro > 0)
+      //   return "низкий уровень нейротизма";
+      return "низкий уровень нейротизма";
     },
 
     textLie() {
       if (this.pointsLie > 4) return "неискренность в ответах";
       if (this.pointsLie === 4) return "критический показатель лжи";
-      if (this.pointsLie < 4 && this.pointsLie > 0) return "норма";
-      return "nothing";
+      // if (this.pointsLie < 4 && this.pointsLie > 0) return "норма";
+      return "норма";
     },
 
     temperament() {
-      if (
-        this.scalePhlegmatic(this.pointsExtroIntro) &&
-        this.scalePhlegmatic(this.pointsNeuro)
-      )
-        return "флегматик";
+      // if (
+      //   this.scalePhlegmatic(this.pointsExtroIntro) &&
+      //   this.scalePhlegmatic(this.pointsNeuro)
+      // )
+      //   return "флегматик";
 
       if (
         this.scalePhlegmatic(this.pointsExtroIntro) &&
@@ -243,12 +243,11 @@ export default {
       )
         return "пограничный тип: флегматик-меланхолик";
 
-      return "nothing";
+      return "флегматик";
     },
   },
   methods: {
     scalePhlegmatic(points) {
-      //console.log(points);
       if (points >= 0 && points < this.averageValue) return true;
       return false;
     },

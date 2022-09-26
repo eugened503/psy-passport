@@ -22,11 +22,21 @@
             </ul>
             <hr class="border border-primary border-2 opacity-75" />
             <div>
-              <span>Экстраверсия - интроверсия: </span>{{ pointsExtroIntro }}
+              <span>Экстраверсия - интроверсия. </span>
+              <span>Результат: </span>{{ pointsExtroIntro }} |
+              {{ textExtroIntro }}
             </div>
-            <div><span>Нейротизм </span>{{ pointsNeuro }}</div>
-            <div><span>Шкала лжи </span>{{ pointsLie }}</div>
+            <div>
+              <span>Нейротизм. </span>
+              <span> Результат: </span>{{ pointsNeuro }} | {{ textNeuro }}
+            </div>
+            <div>
+              <span>Шкала лжи. </span>
+              <span> Результат:</span>
+              {{ pointsLie }} | {{ textLie }}
+            </div>
             <hr class="border border-primary border-2 opacity-75" />
+            <div><span>Tип темперамента: </span>{{ temperament }}</div>
             <button
               class="btn btn-warning mt-1 me-2"
               v-if="questionIndex > 0"
@@ -52,7 +62,7 @@
         <Highcharts :options="options" />
       </div>
       <div v-show="questionIndex === questions.length">
-        <h2>Викторина завершена</h2>
+        <h2>Тест завершен</h2>
         <!-- <p>Счет: {{ score }} / {{ questions.length }}</p> -->
       </div>
     </div>
@@ -84,6 +94,7 @@ export default {
       questionIndex: 0,
       answers: [],
       questions,
+      averageValue: 12,
     };
   },
   computed: {
@@ -104,24 +115,31 @@ export default {
     },
 
     scaleInstab() {
-      return this.pointsNeuro > 12 ? Math.abs(12 - this.pointsNeuro) : 0;
+      return this.pointsNeuro > this.averageValue
+        ? Math.abs(this.averageValue - this.pointsNeuro)
+        : 0;
     },
 
     scaleStab() {
-      return this.pointsNeuro > 0 && this.pointsNeuro < 12
-        ? Math.abs(this.pointsNeuro - 12)
-        : 0;
+      if (this.pointsNeuro > 0 && this.pointsNeuro < this.averageValue)
+        return Math.abs(this.pointsNeuro - this.averageValue);
+      if (this.pointsNeuro >= this.averageValue) return 0;
+      return this.averageValue;
     },
 
     scaleIntro() {
-      return this.pointsExtroIntro > 0 && this.pointsExtroIntro < 12
-        ? Math.abs(this.pointsExtroIntro - 12)
-        : 0;
+      if (
+        this.pointsExtroIntro > 0 &&
+        this.pointsExtroIntro < this.averageValue
+      )
+        return Math.abs(this.pointsExtroIntro - this.averageValue);
+      if (this.pointsExtroIntro >= this.averageValue) return 0;
+      return this.averageValue;
     },
 
     scaleExtra() {
-      return this.pointsExtroIntro > 12
-        ? Math.abs(12 - this.pointsExtroIntro)
+      return this.pointsExtroIntro > this.averageValue
+        ? Math.abs(this.averageValue - this.pointsExtroIntro)
         : 0;
     },
 
@@ -137,8 +155,104 @@ export default {
         },
       ];
     },
+
+    textExtroIntro() {
+      if (this.pointsExtroIntro > 19) return "яркий экстраверт";
+      if (this.pointsExtroIntro > 14 && this.pointsExtroIntro <= 19)
+        return "экстраверт";
+      if (this.pointsExtroIntro > 12 && this.pointsExtroIntro <= 14)
+        return "склонность к экстраверсии";
+      if (this.pointsExtroIntro === 12) return "среднее значение";
+      if (this.pointsExtroIntro >= 9 && this.pointsExtroIntro < 12)
+        return "склонность к интроверсии";
+      if (this.pointsExtroIntro >= 5 && this.pointsExtroIntro < 9)
+        return "интроверт";
+      if (this.pointsExtroIntro < 5 && this.pointsExtroIntro > 0)
+        return "глубокий интроверт";
+      return "nothing";
+    },
+
+    textNeuro() {
+      if (this.pointsNeuro > 19) return "очень высокий уровень нейротизма";
+      if (this.pointsNeuro > 13 && this.pointsNeuro <= 19)
+        return "высокий уровень нейротизма";
+      if (this.pointsNeuro >= 9 && this.pointsNeuro <= 13)
+        return "среднее значение";
+      if (this.pointsNeuro < 9 && this.pointsNeuro > 0)
+        return "низкий уровень нейротизма";
+      return "nothing";
+    },
+
+    textLie() {
+      if (this.pointsLie > 4) return "неискренность в ответах";
+      if (this.pointsLie === 4) return "критический показатель лжи";
+      if (this.pointsLie < 4 && this.pointsLie > 0) return "норма";
+      return "nothing";
+    },
+
+    temperament() {
+      if (
+        this.scalePhlegmatic(this.pointsExtroIntro) &&
+        this.scalePhlegmatic(this.pointsNeuro)
+      )
+        return "флегматик";
+
+      if (
+        this.scalePhlegmatic(this.pointsExtroIntro) &&
+        this.pointsNeuro > this.averageValue
+      )
+        return "меланхолик";
+
+      if (
+        this.pointsExtroIntro > this.averageValue &&
+        this.pointsNeuro > this.averageValue
+      )
+        return "холерик";
+
+      if (
+        this.pointsExtroIntro > this.averageValue &&
+        this.scalePhlegmatic(this.pointsNeuro)
+      )
+        return "сангвиник";
+
+      if (
+        this.pointsExtroIntro === this.averageValue &&
+        this.pointsNeuro === this.averageValue
+      )
+        return "пограничный тип: все 4 типа темперамента";
+
+      if (
+        this.pointsExtroIntro === this.averageValue &&
+        this.pointsNeuro > this.averageValue
+      )
+        return "пограничный тип: меланхолик-холерик";
+      if (
+        this.pointsExtroIntro > this.averageValue &&
+        this.pointsNeuro === this.averageValue
+      )
+        return "пограничный тип: холерик-сангвиник";
+      if (
+        this.pointsExtroIntro === this.averageValue &&
+        this.scalePhlegmatic(this.pointsNeuro)
+      )
+        return "пограничный тип: сангвиник-флегматик";
+
+      if (
+        this.pointsNeuro === this.averageValue &&
+        this.scalePhlegmatic(this.pointsExtroIntro)
+      )
+        return "пограничный тип: флегматик-меланхолик";
+
+      return "nothing";
+    },
   },
   methods: {
+    scalePhlegmatic(points) {
+      //console.log(points);
+      if (points >= 0 && points < this.averageValue) return true;
+      return false;
+    },
+
     randomKey() {
       return (
         new Date().getTime() + Math.floor(Math.random() * 10000).toString()

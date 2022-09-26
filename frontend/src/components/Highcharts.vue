@@ -73,7 +73,7 @@ export default {
           //   },
           {
             name: "",
-            data: [0, 0, 0, 0],
+            data: [0, 0, 12, 12],
             pointPlacement: "on",
           },
         ],
@@ -103,7 +103,7 @@ export default {
   watch: {
     options: {
       handler(newOpt) {
-        console.log(newOpt);
+        //console.log(newOpt);
         this.chartOptions.series = newOpt;
       },
       deep: true,

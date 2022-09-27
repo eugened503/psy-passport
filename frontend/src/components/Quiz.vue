@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 mx-auto p-4 border border-primary">
+  <div class="mt-5 mx-auto p-4">
     <div class="d-flex">
       <div position-absolute class="pe-4">
         <div v-for="(question, index) in questions" :key="question.id">
@@ -66,16 +66,18 @@
         <!-- <p>Счет: {{ score }} / {{ questions.length }}</p> -->
       </div>
     </div>
-    <table-quiz :answers="answers" />
+    <Description :activeName="temperament" />
+    <TableQuiz :answers="answers" />
   </div>
 </template>
 <script>
 import questions from "../data/questions.json";
 import Highcharts from "@/components/Highcharts.vue";
 import TableQuiz from "./TableQuiz.vue";
+import Description from "./Description.vue";
 export default {
   name: "QuizBlock",
-  components: { Highcharts, TableQuiz },
+  components: { Highcharts, TableQuiz, Description },
   data() {
     return {
       extroIntroIndexTrue: [
@@ -201,49 +203,49 @@ export default {
         this.scalePhlegmatic(this.pointsExtroIntro) &&
         this.pointsNeuro > this.averageValue
       )
-        return "меланхолик";
+        return "Меланхолик"; // "меланхолик"
 
       if (
         this.pointsExtroIntro > this.averageValue &&
         this.pointsNeuro > this.averageValue
       )
-        return "холерик";
+        return "Холерик"; // "холерик"
 
       if (
         this.pointsExtroIntro > this.averageValue &&
         this.scalePhlegmatic(this.pointsNeuro)
       )
-        return "сангвиник";
+        return "Сангвиник"; // "сангвиник"
 
       if (
         this.pointsExtroIntro === this.averageValue &&
         this.pointsNeuro === this.averageValue
       )
-        return "пограничный тип: все 4 типа темперамента";
+        return "Пограничный тип: все 4 типа темперамента"; // "пограничный тип: все 4 типа темперамента"
 
       if (
         this.pointsExtroIntro === this.averageValue &&
         this.pointsNeuro > this.averageValue
       )
-        return "пограничный тип: меланхолик-холерик";
+        return "Пограничный тип: меланхолик-холерик"; // "пограничный тип: меланхолик-холерик"
       if (
         this.pointsExtroIntro > this.averageValue &&
         this.pointsNeuro === this.averageValue
       )
-        return "пограничный тип: холерик-сангвиник";
+        return "Пограничный тип: холерик-сангвиник"; // "пограничный тип: холерик-сангвиник"
       if (
         this.pointsExtroIntro === this.averageValue &&
         this.scalePhlegmatic(this.pointsNeuro)
       )
-        return "пограничный тип: сангвиник-флегматик";
+        return "Пограничный тип: сангвиник-флегматик"; // "пограничный тип: сангвиник-флегматик"
 
       if (
         this.pointsNeuro === this.averageValue &&
         this.scalePhlegmatic(this.pointsExtroIntro)
       )
-        return "пограничный тип: флегматик-меланхолик";
+        return "Пограничный тип: флегматик-меланхолик"; // "пограничный тип: флегматик-меланхолик"
 
-      return "флегматик";
+      return "Флегматик"; // "флегматик"
     },
   },
   methods: {

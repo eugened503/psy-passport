@@ -23,10 +23,11 @@ export default {
         chart: {
           polar: true,
           type: "line",
+          //backgroundColor: "#FCFFC5",
         },
-
         accessibility: { enabled: false },
 
+        //colors: ["#32700d"],
         title: {
           text: "Айзенка личностный опросник",
           //x: -80,
@@ -37,6 +38,10 @@ export default {
         },
 
         xAxis: {
+          //visible: false,
+          // labels: {
+          //   enabled: false,
+          // },
           categories: [
             "Нестабильность",
             "Экстраверсия",
@@ -59,11 +64,11 @@ export default {
         //     '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>',
         // },
 
-        // legend: {
-        //     align: "right",
-        //     verticalAlign: "middle",
-        //     layout: "vertical",
-        // },
+        legend: {
+          align: "right",
+          verticalAlign: "middle",
+          layout: "vertical",
+        },
 
         series: [
           //   {
@@ -120,5 +125,9 @@ export default {
 .highcharts-legend-item,
 .highcharts-credits {
   display: none;
+}
+
+.highcharts-axis-labels text {
+  opacity: 0;
 }
 </style>

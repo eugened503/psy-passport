@@ -49,13 +49,13 @@
       <div v-show="questionIndex === questions.length">
         <h2>Тест завершен</h2>
         <div>
-          <div>
+          <!-- <div>
             <span>Экстраверсия: </span>{{ scaleExtra }}
             <span>Интроверсия: </span>{{ scaleIntro }}
             <span>Нестабильность: </span>{{ scaleInstab }}
             <span>Стабильность: </span>{{ scaleStab }}
             <hr class="border border-primary border-2 opacity-75" />
-          </div>
+          </div> -->
           <div>
             <div>
               <span>Экстраверсия - интроверсия. </span>
@@ -70,16 +70,29 @@
               <span>Шкала лжи. </span>
               <span> Результат:</span>
               {{ pointsLie }} | {{ textLie }}
+              <div class="d-flex">
+                <span class="p-4">Правда</span>
+                <div class="progress" ref="progress">
+                  <div
+                    class="progress-bar bg-danger bg-gradient"
+                    role="progressbar"
+                    :style="progressStyle"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <span class="p-4">Ложь</span>
+              </div>
             </div>
             <hr class="border border-primary border-2 opacity-75" />
           </div>
-          <div>
+          <!-- <div>
             <span>Экстраверсия: </span>{{ scaleExtra }}
             <span>Интроверсия: </span>{{ scaleIntro }}
             <span>Нестабильность: </span>{{ scaleInstab }}
             <span>Стабильность: </span>{{ scaleStab }}
             <hr class="border border-primary border-2 opacity-75" />
-          </div>
+          </div> -->
           <DescTemp :activeName="temperament" />
           <DescEI />
           <DescNeuro />
@@ -269,6 +282,16 @@ export default {
 
       return "Флегматик"; // "флегматик"
     },
+
+    progressStyle() {
+      return {
+        width:
+          (this.pointsLie /
+            (this.lieIndexTrue.length + this.lieIndexFalse.length)) *
+            100 +
+          "%",
+      };
+    },
   },
   methods: {
     scalePhlegmatic(points) {
@@ -353,6 +376,12 @@ h4 {
 .quiz-leave-active {
   animation: iconOut 0.3s;
 }
+
+.progress {
+  flex: 1;
+  align-self: center;
+}
+
 @keyframes quizIn {
   from {
     opacity: 0;

@@ -20,7 +20,43 @@
                 </button>
               </li>
             </ul>
+            <button
+              class="btn btn-warning mt-1 me-2"
+              v-if="questionIndex > 0"
+              @click="prev"
+            >
+              Предыдущий
+            </button>
+            <button
+              v-show="questionIndex + 1 != questions.length"
+              class="btn btn-warning mt-1"
+              :disabled="questionIndex >= isDisabled"
+              @click="next"
+            >
+              Следующий
+            </button>
+            <button
+              v-show="questionIndex + 1 === questions.length"
+              class="btn btn-danger mt-1"
+              :disabled="questionIndex >= isDisabled"
+              @click="next"
+            >
+              Показать результаты
+            </button>
+          </div>
+        </div>
+      </div>
+      <div v-show="questionIndex === questions.length">
+        <h2>Тест завершен</h2>
+        <div>
+          <div>
+            <span>Экстраверсия: </span>{{ scaleExtra }}
+            <span>Интроверсия: </span>{{ scaleIntro }}
+            <span>Нестабильность: </span>{{ scaleInstab }}
+            <span>Стабильность: </span>{{ scaleStab }}
             <hr class="border border-primary border-2 opacity-75" />
+          </div>
+          <div>
             <div>
               <span>Экстраверсия - интроверсия. </span>
               <span>Результат: </span>{{ pointsExtroIntro }} |
@@ -36,48 +72,34 @@
               {{ pointsLie }} | {{ textLie }}
             </div>
             <hr class="border border-primary border-2 opacity-75" />
-            <div><span>Tип темперамента: </span>{{ temperament }}</div>
-            <button
-              class="btn btn-warning mt-1 me-2"
-              v-if="questionIndex > 0"
-              @click="prev"
-            >
-              Предыдущий
-            </button>
-            <button
-              class="btn btn-warning mt-1"
-              :disabled="questionIndex >= isDisabled"
-              @click="next"
-            >
-              Следующий
-            </button>
           </div>
+          <div>
+            <span>Экстраверсия: </span>{{ scaleExtra }}
+            <span>Интроверсия: </span>{{ scaleIntro }}
+            <span>Нестабильность: </span>{{ scaleInstab }}
+            <span>Стабильность: </span>{{ scaleStab }}
+            <hr class="border border-primary border-2 opacity-75" />
+          </div>
+          <DescTemp :activeName="temperament" />
+          <DescEI />
+          <DescNeuro />
+          <Highcharts :options="options" />
+          <TableQuiz :answers="answers" />
         </div>
       </div>
-      <div>
-        <span>Экстраверсия: </span>{{ scaleExtra }} <span>Интроверсия: </span
-        >{{ scaleIntro }} <span>Нестабильность: </span>{{ scaleInstab }}
-        <span>Стабильность: </span>{{ scaleStab }}
-        <hr class="border border-primary border-2 opacity-75" />
-        <Highcharts :options="options" />
-      </div>
-      <div v-show="questionIndex === questions.length">
-        <h2>Тест завершен</h2>
-        <!-- <p>Счет: {{ score }} / {{ questions.length }}</p> -->
-      </div>
     </div>
-    <Description :activeName="temperament" />
-    <TableQuiz :answers="answers" />
   </div>
 </template>
 <script>
 import questions from "../data/questions.json";
-import Highcharts from "@/components/Highcharts.vue";
+import Highcharts from "./Highcharts.vue";
 import TableQuiz from "./TableQuiz.vue";
-import Description from "./Description.vue";
+import DescTemp from "./DescTemp.vue";
+import DescEI from "./DescEI.vue";
+import DescNeuro from "./DescNeuro.vue";
 export default {
   name: "QuizBlock",
-  components: { Highcharts, TableQuiz, Description },
+  components: { Highcharts, TableQuiz, DescTemp, DescEI, DescNeuro },
   data() {
     return {
       extroIntroIndexTrue: [

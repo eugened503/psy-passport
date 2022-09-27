@@ -1,1 +1,34 @@
 @import "~normalize.css";
+.about {
+  //margin: 4em 0;
+  padding: 1em;
+  position: relative;
+}
+.about h1 {
+  color: #0d6efd;
+  //margin: 2em;
+}
+.about img {
+  //flex: 0 0 270px;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  //object-fit: contain;
+}
+.about span {
+  display: block;
+  color: #888;
+  position: absolute;
+  left: 12%;
+}
+.about .desc {
+  padding: 2em;
+  border-left: 4px solid #0d6efd;
+}
+.about .desc h3 {
+  color: #0d6efd;
+}
+.about .desc p {
+  line-height: 2;
+  color: #888;
+}

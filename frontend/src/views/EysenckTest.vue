@@ -17,7 +17,8 @@
           :questionIndex="questionIndex"
         />
       </div>
-      <div v-if="questionIndex === questions.length && pointsLie <= 4">
+      <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
+      <div>
         <div>
           <h2>Тест завершен</h2>
           <div>

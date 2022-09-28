@@ -285,6 +285,15 @@ export default {
         return accumulator;
       }, []);
     },
+
+    keys(arrInTrue, arrInFalse, arr) {
+      arrInTrue.forEach((i) => {
+        arr[i - 1] = true;
+      });
+      arrInFalse.forEach((i) => {
+        arr[i - 1] = false;
+      });
+    },
   },
 
   created() {
@@ -299,25 +308,13 @@ export default {
       });
     });
 
-    this.extroIntroIndexTrue.forEach((i) => {
-      this.extroIntro[i - 1] = true;
-    });
-
-    this.extroIntroIndexFalse.forEach((i) => {
-      this.extroIntro[i - 1] = false;
-    });
-
-    this.neuroIndexTrue.forEach((i) => {
-      this.neuro[i - 1] = true;
-    });
-
-    this.lieIndexTrue.forEach((i) => {
-      this.lie[i - 1] = true;
-    });
-
-    this.lieIndexFalse.forEach((i) => {
-      this.lie[i - 1] = false;
-    });
+    this.keys(
+      this.extroIntroIndexTrue,
+      this.extroIntroIndexFalse,
+      this.extroIntro
+    );
+    this.keys(this.lieIndexTrue, this.lieIndexFalse, this.lie);
+    this.keys(this.neuroIndexTrue, [], this.neuro);
   },
 };
 </script>

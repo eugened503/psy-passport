@@ -4,7 +4,7 @@
       v-if="isStatus === 'loading'"
       class="position-absolute top-50 start-50 translate-middle"
     />
-    <div id="nav" class="w-50 mt-5 mx-auto p-4 text-center fs-2">
+    <!-- <div id="nav" class="w-50 mt-5 mx-auto p-4 text-center fs-2">
       <router-link class="d-inline p-2 mt-2" :to="{ name: 'home' }">
         Home
       </router-link>
@@ -15,7 +15,8 @@
       <span class="d-inline p-2 mt-2" v-if="isLoggedIn">
         | <a @click="logout">Logout</a>
       </span>
-    </div>
+    </div> -->
+    <Header />
     <router-view />
   </main>
 </template>
@@ -23,8 +24,9 @@
 import { mapGetters } from "vuex";
 import Spinner from "@/components/Spinner.vue";
 import axios from "axios";
+import Header from "./components/Header.vue";
 export default {
-  components: { Spinner },
+  components: { Spinner, Header },
   name: "App",
   created() {
     const token = localStorage.getItem("token");
@@ -42,33 +44,25 @@ export default {
   },
 
   computed: {
-    // isLoggedIn() {
-    //   return this.$store.getters.isLoggedIn;
-    // },
-
-    // isStatus() {
-    //   return this.$store.getters.authStatus;
-    // },
-    ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
+    //...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
     ...mapGetters("user", { isStatus: "authStatus" }),
   },
 
-  methods: {
-    logout() {
-      this.$store.dispatch("user/logout").then(() => {
-        //this.$router.push("/login");
-        this.$router.push({ name: "login" });
-      });
-    },
-  },
+  // methods: {
+  //   logout() {
+  //     this.$store.dispatch("user/logout").then(() => {
+  //       this.$router.push({ name: "login" });
+  //     });
+  //   },
+  // },
 };
 </script>
 
 <style lang="scss">
 #app {
-  // max-width: 1440px;
-  // min-width: 320px;
-  // min-height: 100vh;
-  // margin: 0 auto;
+  //max-width: 1440px;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0 auto;
 }
 </style>

@@ -17,8 +17,7 @@
           :questionIndex="questionIndex"
         />
       </div>
-      <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
-      <div>
+      <div v-if="questionIndex === questions.length && pointsLie <= 4">
         <div>
           <h2>Тест завершен</h2>
           <div>
@@ -47,31 +46,31 @@
             <TableQuiz :answers="answers" />
           </div>
         </div>
-        <div v-if="questionIndex === questions.length && pointsLie > 4">
-          <h3>
-            Высокий показатель по шкале лжи. Результаты теста рассматриваются
-            как недостоверные.
-          </h3>
-          <ProgressBar
-            :pointsLie="pointsLie"
-            :textLie="textLie"
-            :lieIndexTrue="lieIndexTrue.length"
-            :lieIndexFalse="lieIndexFalse.length"
-          />
-        </div>
+      </div>
+      <div v-if="questionIndex === questions.length && pointsLie > 4">
+        <h3>
+          Высокий показатель по шкале лжи. Результаты теста рассматриваются как
+          недостоверные.
+        </h3>
+        <ProgressBar
+          :pointsLie="pointsLie"
+          :textLie="textLie"
+          :lieIndexTrue="lieIndexTrue.length"
+          :lieIndexFalse="lieIndexFalse.length"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-import questions from "../data/questions.json";
-import Highcharts from "./Highcharts.vue";
-import TableQuiz from "./TableQuiz.vue";
-import DescTemp from "./DescTemp.vue";
-import DescEI from "./DescEI.vue";
-import DescNeuro from "./DescNeuro.vue";
-import ProgressBar from "./ProgressBar.vue";
-import Question from "./Question.vue";
+import questions from "@/data/questions.json";
+import Highcharts from "@/components/Highcharts.vue";
+import TableQuiz from "@/components/TableQuiz.vue";
+import DescTemp from "@/components/DescTemp.vue";
+import DescEI from "@/components/DescEI.vue";
+import DescNeuro from "@/components/DescNeuro.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
+import Question from "@/components/Question.vue";
 export default {
   name: "QuizBlock",
   components: {

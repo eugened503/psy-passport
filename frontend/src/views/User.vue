@@ -2,21 +2,17 @@
   <div class="p-5">
     <div class="mt-5 mx-auto">
       {{ getUser }}
-      <hr class="border border-primary border-3 opacity-75" />
-      <Quiz />
+      <router-link class="d-inline p-2 mt-2" :to="{ name: 'eysenck' }">
+        пройти тест Айзенка
+      </router-link>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Quiz from "@/components/Quiz.vue";
 export default {
-  components: { Quiz },
   name: "UserBlock",
   computed: {
-    // getUser() {
-    //   return this.$store.getters.getUser;
-    // },
     ...mapGetters("user", { getUser: "getUser" }),
   },
 

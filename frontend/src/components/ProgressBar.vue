@@ -4,7 +4,7 @@
     <span> Результат:</span>
     {{ pointsLie }} | {{ textLie }}
     <div class="d-flex">
-      <span class="p-4">Правда</span>
+      <span class="p-4">Min</span>
       <div class="progress" ref="progress">
         <div
           class="progress-bar bg-danger bg-gradient"
@@ -14,7 +14,7 @@
           aria-valuemax="100"
         ></div>
       </div>
-      <span class="p-4">Ложь</span>
+      <span class="p-4">Max</span>
     </div>
   </div>
 </template>

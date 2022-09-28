@@ -2,102 +2,62 @@
   <div class="mt-5 mx-auto p-4">
     <div class="d-flex">
       <div position-absolute class="pe-4">
-        <div v-for="(question, index) in questions" :key="question.id">
-          <div v-if="index === questionIndex">
-            <h4>{{ index + 1 }}. {{ question.text }}</h4>
-            <ul class="p-0">
-              <li v-for="(item, indexRes) in question.responses" :key="item.id">
-                <button
-                  style="width: 23%"
-                  class="btn btn-primary mt-2 w-40"
-                  :class="{
-                    'btn-success': answers[questionIndex] === item.response,
-                  }"
-                  @click="addRes(index, item.response)"
-                >
-                  {{ indexRes + 1 }}
-                  {{ item.text }}
-                </button>
-              </li>
-            </ul>
-            <button
-              class="btn btn-warning mt-1 me-2"
-              v-if="questionIndex > 0"
-              @click="prev"
-            >
-              Предыдущий
-            </button>
-            <button
-              v-show="questionIndex + 1 != questions.length"
-              class="btn btn-warning mt-1"
-              :disabled="questionIndex >= isDisabled"
-              @click="next"
-            >
-              Следующий
-            </button>
-            <button
-              v-show="questionIndex + 1 === questions.length"
-              class="btn btn-danger mt-1"
-              :disabled="questionIndex >= isDisabled"
-              @click="next"
-            >
-              Показать результаты
-            </button>
-          </div>
-        </div>
+        <Question
+          v-for="(question, index) in questions"
+          :key="question.id"
+          :index="index"
+          :text="question.text"
+          :responses="question.responses"
+          :answers="answers"
+          @addRes="addRes"
+          @next="next"
+          @prev="prev"
+          :isDisabled="isDisabled"
+          :questions="questions"
+          :questionIndex="questionIndex"
+        />
       </div>
-      <div v-show="questionIndex === questions.length">
-        <h2>Тест завершен</h2>
+      <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
+      <div>
         <div>
-          <!-- <div>
-            <span>Экстраверсия: </span>{{ scaleExtra }}
-            <span>Интроверсия: </span>{{ scaleIntro }}
-            <span>Нестабильность: </span>{{ scaleInstab }}
-            <span>Стабильность: </span>{{ scaleStab }}
-            <hr class="border border-primary border-2 opacity-75" />
-          </div> -->
+          <h2>Тест завершен</h2>
           <div>
             <div>
-              <span>Экстраверсия - интроверсия. </span>
-              <span>Результат: </span>{{ pointsExtroIntro }} |
-              {{ textExtroIntro }}
-            </div>
-            <div>
-              <span>Нейротизм. </span>
-              <span> Результат: </span>{{ pointsNeuro }} | {{ textNeuro }}
-            </div>
-            <div>
-              <span>Шкала лжи. </span>
-              <span> Результат:</span>
-              {{ pointsLie }} | {{ textLie }}
-              <div class="d-flex">
-                <span class="p-4">Правда</span>
-                <div class="progress" ref="progress">
-                  <div
-                    class="progress-bar bg-danger bg-gradient"
-                    role="progressbar"
-                    :style="progressStyle"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <span class="p-4">Ложь</span>
+              <div>
+                <span>Экстраверсия - интроверсия. </span>
+                <span>Результат: </span>{{ pointsExtroIntro }} |
+                {{ textExtroIntro }}
               </div>
+              <div>
+                <span>Нейротизм. </span>
+                <span> Результат: </span>{{ pointsNeuro }} | {{ textNeuro }}
+              </div>
+              <ProgressBar
+                :pointsLie="pointsLie"
+                :textLie="textLie"
+                :lieIndexTrue="lieIndexTrue.length"
+                :lieIndexFalse="lieIndexFalse.length"
+              />
+              <hr class="border border-primary border-2 opacity-75" />
             </div>
-            <hr class="border border-primary border-2 opacity-75" />
+            <DescTemp :activeName="temperament" />
+            <DescEI />
+            <DescNeuro />
+            <Highcharts :options="options" />
+            <TableQuiz :answers="answers" />
           </div>
-          <!-- <div>
-            <span>Экстраверсия: </span>{{ scaleExtra }}
-            <span>Интроверсия: </span>{{ scaleIntro }}
-            <span>Нестабильность: </span>{{ scaleInstab }}
-            <span>Стабильность: </span>{{ scaleStab }}
-            <hr class="border border-primary border-2 opacity-75" />
-          </div> -->
-          <DescTemp :activeName="temperament" />
-          <DescEI />
-          <DescNeuro />
-          <Highcharts :options="options" />
-          <TableQuiz :answers="answers" />
+        </div>
+        <div v-if="questionIndex === questions.length && pointsLie > 4">
+          <h3>
+            Высокий показатель по шкале лжи. Результаты теста рассматриваются
+            как недостоверные.
+          </h3>
+          <ProgressBar
+            :pointsLie="pointsLie"
+            :textLie="textLie"
+            :lieIndexTrue="lieIndexTrue.length"
+            :lieIndexFalse="lieIndexFalse.length"
+          />
         </div>
       </div>
     </div>
@@ -110,9 +70,19 @@ import TableQuiz from "./TableQuiz.vue";
 import DescTemp from "./DescTemp.vue";
 import DescEI from "./DescEI.vue";
 import DescNeuro from "./DescNeuro.vue";
+import ProgressBar from "./ProgressBar.vue";
+import Question from "./Question.vue";
 export default {
   name: "QuizBlock",
-  components: { Highcharts, TableQuiz, DescTemp, DescEI, DescNeuro },
+  components: {
+    Highcharts,
+    TableQuiz,
+    DescTemp,
+    DescEI,
+    DescNeuro,
+    ProgressBar,
+    Question,
+  },
   data() {
     return {
       extroIntroIndexTrue: [
@@ -282,16 +252,6 @@ export default {
 
       return "Флегматик"; // "флегматик"
     },
-
-    progressStyle() {
-      return {
-        width:
-          (this.pointsLie /
-            (this.lieIndexTrue.length + this.lieIndexFalse.length)) *
-            100 +
-          "%",
-      };
-    },
   },
   methods: {
     scalePhlegmatic(points) {
@@ -313,7 +273,7 @@ export default {
       this.questionIndex--;
     },
 
-    addRes(index, res) {
+    addRes({ index, res }) {
       this.answers[index] = res;
     },
 

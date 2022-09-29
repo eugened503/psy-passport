@@ -27,11 +27,12 @@ a:hover {
   opacity: 1;
 }
 
-a.btn {
-  color: #fff;
+
+.btn {
+  color: #fff !important;
   border-radius: 4px;
   text-transform: uppercase;
-  background-color: #2196f3;
+  background-color: #2196f3 !important;
   font-weight: 800;
   text-align: center;
 }

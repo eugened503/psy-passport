@@ -1,7 +1,7 @@
 <template>
   <div class="spinner">
     <div class="d-flex justify-content-center">
-      <div class="spinner-border text-danger" role="status">
+      <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
@@ -16,6 +16,6 @@ export default {
 
 <style lang="scss">
 .spinner {
-  z-index: 1;
+  z-index: 3;
 }
 </style>

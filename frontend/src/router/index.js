@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
-import Login from "@/components/Login.vue";
-import Register from "@/components/Register.vue";
+import Login from "@/components/FormLogin.vue";
+import Register from "@/components/FormRegister.vue";
 import User from "@/views/User.vue";
 import PageError from "@/components/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";

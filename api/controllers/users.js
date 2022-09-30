@@ -7,7 +7,7 @@ const User = require('../models/users');
 const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
 const ConflictingRequest = require('../errors/conflicting-err');
-const Unauthorized = require('../errors/unauthorized-err');
+const UnauthorizedError = require('../errors/unauthorized-err');
 
 module.exports.createUser = (req, res, next) => { //создать пользователя
   const { name, email, password } = req.body;
@@ -68,7 +68,7 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch((err) => {
-      next(new Unauthorized(err.message));
+      next(new UnauthorizedError(err.message));
       return;
     });
 };

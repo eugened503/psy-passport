@@ -1,9 +1,6 @@
 <template>
-  <section class="vh-100 bg-image" v-if="isOpen">
-    <div
-      v-if="isOpen"
-      class="mask d-flex align-items-center h-100 gradient-custom-3"
-    >
+  <section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
       <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-12 col-md-9 col-lg-7 col-xl-6">
@@ -13,7 +10,7 @@
                 <!-- <button class="close-button" @click="isOpen = !isOpen">
                 <img src="../assets/images/btn-close.svg" alt="button-image" />
               </button> -->
-                <form @submit.prevent="register">
+                <form @submit.prevent="onSubmit">
                   <div class="form-outline">
                     <input
                       type="text"
@@ -74,8 +71,15 @@
                       </div>
                     </div>
                   </div>
+                  <div class="form-errors">
+                    <p class="form-error">{{ getError }}</p>
+                  </div>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-block btn-lg">
+                    <button
+                      :disabled="v$.$errors.length > 0"
+                      type="submit"
+                      class="btn btn-block btn-lg"
+                    >
                       Отправить
                     </button>
                   </div>
@@ -99,6 +103,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, maxLength } from "@vuelidate/validators";
 export default {
@@ -134,6 +139,11 @@ export default {
       },
     };
   },
+
+  computed: {
+    ...mapGetters("user", { getError: "getError" }),
+  },
+
   methods: {
     register() {
       let data = {
@@ -146,7 +156,14 @@ export default {
         .dispatch("user/register", data)
         .then(() => this.$router.push({ name: "login" }))
         //.catch((err) => console.log(err));
-        .catch((err) => console.log(err.response.data.message));
+        .catch((err) => console.log(err));
+    },
+    onSubmit() {
+      if (!this.v$.$dirty) {
+        this.v$.$validate();
+      } else {
+        this.register();
+      }
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <section class="vh-100 bg-image" v-if="isOpen">
+  <section class="vh-100 bg-image">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
       <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -10,7 +10,7 @@
                 <!-- <button class="close-button" @click="isOpen = !isOpen">
                 <img src="../assets/images/btn-close.svg" alt="button-image" />
               </button> -->
-                <form @submit.prevent="login">
+                <form @submit.prevent="onSubmit">
                   <div class="form-outline">
                     <input
                       type="email"
@@ -18,6 +18,7 @@
                       class="form-control form-control-lg"
                       v-model="email"
                       :class="{ error: v$.email.$errors.length }"
+                      autocomplete="chrome-off"
                     />
                     <label class="form-label" for="form3Example3cg"
                       >Email</label
@@ -39,6 +40,7 @@
                       class="form-control form-control-lg"
                       v-model="password"
                       :class="{ error: v$.password.$errors.length }"
+                      autocomplete="chrome-off"
                     />
                     <label class="form-label" for="form3Example4cg"
                       >Пароль</label
@@ -51,13 +53,20 @@
                         <p class="form-error">{{ error.$message }}</p>
                       </div>
                     </div>
+                    <div class="form-errors">
+                      <p class="form-error">{{ getError }}</p>
+                    </div>
                   </div>
+
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-block btn-lg">
+                    <button
+                      :disabled="v$.$errors.length > 0"
+                      type="submit"
+                      class="btn btn-block btn-lg"
+                    >
                       Отправить
                     </button>
                   </div>
-
                   <p class="text-center text-muted mt-4 mb-0">
                     Нет учетной записи?
                     <router-link
@@ -77,8 +86,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, maxLength } from "@vuelidate/validators";
+import { required, email, minLength } from "@vuelidate/validators";
 export default {
   name: "FormRegisterBlock",
   data() {
@@ -93,12 +103,6 @@ export default {
   },
   validations() {
     return {
-      name: {
-        required,
-        min: minLength(2),
-        max: maxLength(30),
-        $autoDirty: true,
-      },
       password: {
         required,
         min: minLength(8),
@@ -111,6 +115,9 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters("user", { getError: "getError" }),
+  },
 
   methods: {
     login() {
@@ -122,12 +129,20 @@ export default {
       this.$store
         .dispatch("user/login", data)
         .then(() => this.$router.push({ name: "user" }))
-        .catch((err) => console.log(err))
-        .catch((err) => console.log(err.response.data.validation.body.message));
+        .catch((err) => console.log(err));
+      //.catch((err) => console.log(err.response.data.validation.body.message));
       //.catch((err) => console.log(err));
       // .catch((error) => {
       //   throw error;
       // });
+    },
+
+    onSubmit() {
+      if (!this.v$.$dirty) {
+        this.v$.$validate();
+      } else {
+        this.login();
+      }
     },
   },
 };

@@ -6,6 +6,7 @@ export default {
     status: "",
     token: localStorage.getItem("token") || "",
     user: {},
+    error: "",
   },
 
   actions: {
@@ -27,9 +28,9 @@ export default {
             resolve(resp);
           })
           .catch((err) => {
-            commit("error", err);
+            commit("error", err.response.data.message);
             localStorage.removeItem("token");
-            reject(err);
+            reject(err.response.data.message);
           });
       });
     },
@@ -43,18 +44,24 @@ export default {
           method: "POST",
         })
           .then((resp) => {
-            //console.log("login", resp.data);
             const token = resp.data.token;
-            //const user = resp.data.user;
             localStorage.setItem("token", token);
             //axios.defaults.headers.common["Authorization"] = token;
             commit("login_success", token);
             resolve(resp);
           })
           .catch((err) => {
-            commit("error");
-            localStorage.removeItem("token");
-            reject(err);
+            //console.log(err.response.data.validation.body.message);
+            //console.log(err.response.status);
+            if (err.response.status === 400) {
+              commit("error", "Пользователь с таким email не найден");
+              localStorage.removeItem("token");
+              reject("Пользователь с таким email не найден");
+            } else {
+              commit("error", err.response.data.message);
+              localStorage.removeItem("token");
+              reject(err.response.data.message);
+            }
           });
       });
     },
@@ -156,8 +163,9 @@ export default {
       state.user = user;
     },
 
-    error(state) {
+    error(state, error) {
       state.status = "error";
+      state.error = error;
     },
   },
 
@@ -166,5 +174,6 @@ export default {
     isLoggedIn: (state) => !!state.token,
     authStatus: (state) => state.status,
     getToken: (state) => state.token,
+    getError: (state) => state.error,
   },
 };

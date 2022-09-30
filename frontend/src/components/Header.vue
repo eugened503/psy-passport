@@ -47,7 +47,6 @@ export default {
   computed: {
     ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
     styleLink() {
-      console.log(this.$route.name);
       return this.$route.name != "home";
     },
   },

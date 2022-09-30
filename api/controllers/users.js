@@ -7,6 +7,7 @@ const User = require('../models/users');
 const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
 const ConflictingRequest = require('../errors/conflicting-err');
+const Unauthorized = require('../errors/unauthorized-err');
 
 module.exports.createUser = (req, res, next) => { //создать пользователя
   const { name, email, password } = req.body;

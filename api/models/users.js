@@ -1,7 +1,7 @@
 /* eslint-disable */
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); // импортируем bcrypt
-const validator = require('validator');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs"); // импортируем bcrypt
+const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (v) => validator.isEmail(v),
-      message: 'Неверный адрес почты',
+      message: "Неверный адрес почты",
     },
   },
 
@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
   },
 });
+
 
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
@@ -44,4 +45,4 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     });
 };
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

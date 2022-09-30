@@ -122,7 +122,12 @@ export default {
       this.$store
         .dispatch("user/login", data)
         .then(() => this.$router.push({ name: "user" }))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .catch((err) => console.log(err.response.data.validation.body.message));
+      //.catch((err) => console.log(err));
+      // .catch((error) => {
+      //   throw error;
+      // });
     },
   },
 };

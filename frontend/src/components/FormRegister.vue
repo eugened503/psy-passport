@@ -145,7 +145,8 @@ export default {
       this.$store
         .dispatch("user/register", data)
         .then(() => this.$router.push({ name: "login" }))
-        .catch((err) => console.log(err));
+        //.catch((err) => console.log(err));
+        .catch((err) => console.log(err.response.data.message));
     },
   },
 };

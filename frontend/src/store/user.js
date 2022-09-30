@@ -59,6 +59,42 @@ export default {
       });
     },
 
+    // async login({ commit }, user) {
+    // commit("request");
+    // let resp = await axios({
+    //   url: "http://localhost:3000/signin",
+    //   data: user,
+    //   method: "POST",
+    // }).catch((err) => {
+    //   console.log(err);
+    //   commit("error");
+    // });
+    // if (resp) {
+    //   console.log(resp);
+    //   const token = resp.data.token;
+    //   localStorage.setItem("token", token);
+    //   commit("login_success", token);
+    // }
+
+    //   try {
+    //     commit("request");
+    //     const resp = await axios({
+    //       url: "http://localhost:3000/signin",
+    //       data: user,
+    //       method: "POST",
+    //     });
+    //     if (!resp) {
+    //       throw new Error("Неправильные почта или пароль");
+    //     }
+    //     const token = resp.data.token;
+    //     localStorage.setItem("token", token);
+    //     commit("login_success", token);
+    //   } catch (e) {
+    //     console.log(e);
+    //     commit("error");
+    //   }
+    // },
+
     logout({ commit }) {
       return new Promise((resolve) => {
         commit("logout");

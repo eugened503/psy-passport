@@ -1,5 +1,5 @@
 <template>
-  <main class="main position-relative">
+  <main class="main">
     <!-- <Spinner
       v-if="isStatus === 'loading'"
       class="position-absolute top-50 start-50 translate-middle"
@@ -57,5 +57,6 @@ export default {
 
 .main {
   min-height: 100vh;
+  position: relative;
 }
 </style>

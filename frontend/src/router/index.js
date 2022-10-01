@@ -34,6 +34,16 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+    // children: [
+    //   {
+    //     path: "/user/eysenck",
+    //     name: "eysenck",
+    //     component: EysenckTest,
+    //     meta: {
+    //       requiresAuth: true,
+    //     },
+    //   },
+    // ],
   },
   {
     path: "/eysenck",

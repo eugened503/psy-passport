@@ -1,41 +1,51 @@
 <template>
   <header class="header">
-    <h2>
-      <router-link
-        class="header__link"
-        :class="{ userLink: styleLink }"
-        :to="{ name: 'home' }"
-      >
-        <img class="header__logo" src="../assets/images/logo.png" alt="" />
-      </router-link>
-    </h2>
-    <nav>
-      <li>
+    <div class="container d-flex justify-content-between">
+      <h2>
         <router-link
           class="header__link"
           :class="{ userLink: styleLink }"
           :to="{ name: 'home' }"
-          >Главная</router-link
         >
-      </li>
-      <li>
-        <router-link
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          :to="{ name: 'user' }"
-          >Мой&nbsp;паспорт</router-link
-        >
-      </li>
-      <li v-if="isLoggedIn">
-        <a
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          href="#"
-          @click="logout"
-          >Выход</a
-        >
-      </li>
-    </nav>
+          <img class="header__logo" src="../assets/images/logo.png" alt="" />
+        </router-link>
+      </h2>
+      <nav>
+        <li>
+          <router-link
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            :to="{ name: 'home' }"
+            >Главная</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            :to="{ name: 'user' }"
+            >Мой&nbsp;паспорт</router-link
+          >
+        </li>
+        <li>
+          <router-link
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            :to="{ name: 'eysenck' }"
+            >Тест&nbsp;Айзенка</router-link
+          >
+        </li>
+        <li v-if="isLoggedIn">
+          <a
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            href="#"
+            @click="logout"
+            >Выход</a
+          >
+        </li>
+      </nav>
+    </div>
   </header>
 </template>
 
@@ -68,7 +78,6 @@ export default {
 .header {
   position: absolute;
   top: 0;
-  left: 0;
   z-index: 1;
   width: 100%;
   display: flex;
@@ -76,6 +85,16 @@ export default {
   align-items: center;
   color: #fff;
   padding: 35px 100px 0;
+
+  .container {
+    @media (max-width: 992px) {
+      //flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      //padding: 20px 50px;
+    }
+  }
 
   &__logo {
     width: 234px;
@@ -115,9 +134,23 @@ export default {
   }
   nav {
     display: flex;
+    @media (max-width: 500px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      column-gap: 20px;
+      //padding: 10px;
+      //flex-direction: column;
+      //justify-content: center;
+      //align-items: center;
+      //text-align: center;
+    }
   }
   nav li {
     margin: 0 15px;
+    @media (max-width: 500px) {
+      margin: 0 0 5px;
+    }
   }
   nav li:first-child {
     margin-left: 0;

@@ -26,6 +26,10 @@ export default {
   @media (max-width: 800px) {
     min-height: 600px;
   }
+  @media (max-width: 600px) {
+    padding-top: 100px;
+  }
+
   .background-image {
     position: absolute;
     top: 0;

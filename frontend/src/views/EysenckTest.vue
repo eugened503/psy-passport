@@ -1,22 +1,20 @@
 <template>
-  <div class="mt-5 mx-auto p-4">
+  <section class="eysenck">
     <div class="d-flex">
-      <div position-absolute class="pe-4">
-        <Question
-          v-for="(question, index) in questions"
-          :key="question.id"
-          :index="index"
-          :text="question.text"
-          :responses="question.responses"
-          :answers="answers"
-          @addRes="addRes"
-          @next="next"
-          @prev="prev"
-          :isDisabled="isDisabled"
-          :questions="questions"
-          :questionIndex="questionIndex"
-        />
-      </div>
+      <Question
+        v-for="(question, index) in questions"
+        :key="question.id"
+        :index="index"
+        :text="question.text"
+        :responses="question.responses"
+        :answers="answers"
+        @addRes="addRes"
+        @next="next"
+        @prev="prev"
+        :isDisabled="isDisabled"
+        :questions="questions"
+        :questionIndex="questionIndex"
+      />
       <div v-if="questionIndex === questions.length && pointsLie <= 4">
         <div>
           <h2>Тест завершен</h2>
@@ -60,7 +58,7 @@
         />
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <script>
 import questions from "@/data/questions.json";
@@ -319,6 +317,10 @@ export default {
 </script>
 
 <style lang="scss">
+.eysenck {
+  display: block;
+}
+
 li {
   list-style-type: none;
 }

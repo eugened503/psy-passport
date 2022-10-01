@@ -66,6 +66,12 @@ export default {
 //   height: 280px;
 //   object-fit: cover;
 // }
+.profile {
+  @media (max-width: 600px) {
+    padding-top: 100px;
+  }
+}
+
 .col-lg-8 hr {
   width: 100%;
   border: none;

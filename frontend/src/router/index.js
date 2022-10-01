@@ -6,6 +6,7 @@ import User from "@/views/User.vue";
 import PageError from "@/components/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";
 import store from "@/store/index";
+//console.log(store.getters["user/isLoggedIn"]);
 
 const routes = [
   {

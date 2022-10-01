@@ -1,21 +1,21 @@
 <template>
   <main class="main position-relative">
-    <Spinner
+    <!-- <Spinner
       v-if="isStatus === 'loading'"
       class="position-absolute top-50 start-50 translate-middle"
-    />
+    /> -->
     <Header />
     <router-view />
   </main>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import Spinner from "@/components/Spinner.vue";
+//import { mapGetters } from "vuex";
+//import Spinner from "@/components/Spinner.vue";
 import axios from "axios";
 import Header from "./components/Header.vue";
 
 export default {
-  components: { Spinner, Header },
+  components: { Header },
   name: "App",
   created() {
     const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ export default {
 
   computed: {
     //...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
-    ...mapGetters("user", { isStatus: "authStatus" }),
+    //...mapGetters("user", { isStatus: "authStatus" }),
   },
 
   // methods: {

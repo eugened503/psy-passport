@@ -108,3 +108,33 @@ module.exports.login = (req, res, next) => {
       return;
     });
 };
+
+module.exports.unlogin = (req, res, next) => {
+  const owner = req.user._id;
+  User
+    .findById(owner)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Нет пользователя с таким id');
+      } else {
+        const token = jwt.sign({ _id: user._id },
+          NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+          { expiresIn: '7d' });
+        res
+          .cookie('jwt', token, {
+            maxAge: 0,
+            httpOnly: true,
+            sameSite: true,
+          });
+        console.log('выход прошел успешно');
+        return res.send({ token });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new ValidationError('Нет пользователя с таким id');
+      } else {
+        return next(err);
+      }
+    });
+};

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "HeaderBlock",
 
@@ -52,14 +52,14 @@ export default {
   },
 
   methods: {
-    // logout() {
-    //   this.$store.dispatch("user/logout").then(() => {
-    //     this.$router.push({ name: "login" });
-    //   });
-    // },
-    ...mapActions({
-      logout: "user/logout",
-    }),
+    logout() {
+      this.$store.dispatch("user/logout").then(() => {
+        this.$router.push({ name: "login" });
+      });
+    },
+    // ...mapActions({
+    //   logout: "user/logout",
+    // }),
   },
 };
 </script>

@@ -12,7 +12,7 @@
 //import { mapGetters } from "vuex";
 //import Spinner from "@/components/Spinner.vue";
 import axios from "axios";
-import Header from "./components/Header.vue";
+import Header from "@/components/Header.vue";
 
 export default {
   components: { Header },

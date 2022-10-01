@@ -32,7 +32,7 @@
           :class="{ userLink: styleLink }"
           href="#"
           @click="logout"
-          >Logout</a
+          >Выход</a
         >
       </li>
     </nav>
@@ -94,6 +94,14 @@ export default {
     font-size: 19px;
     text-decoration: none;
 
+    &.userLink {
+      color: $color-black;
+
+      &:hover {
+        color: #0a58ca;
+      }
+    }
+
     @media (max-width: 700px) {
       font-size: 16px;
     }
@@ -118,12 +126,12 @@ export default {
     margin-right: 0;
   }
 
-  .userLink {
-    color: $color-black;
+  // .userLink {
+  //   color: $color-black;
 
-    &:hover {
-      color: #0a58ca;
-    }
-  }
+  //   &:hover {
+  //     color: #0a58ca;
+  //   }
+  // }
 }
 </style>

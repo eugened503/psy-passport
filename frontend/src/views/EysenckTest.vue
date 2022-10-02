@@ -23,6 +23,8 @@
         <h2>Тест завершен</h2>
         <TableResults class="mt-4" :results="results" />
         <DescTemp :activeName="temperament" />
+        <DescNeuro />
+        <DescEI />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
         <h3 class="text-danger">
@@ -45,8 +47,8 @@ import questions from "@/data/questions.json";
 //import Highcharts from "@/components/Highcharts.vue";
 //import TableQuiz from "@/components/TableQuiz.vue";
 import DescTemp from "@/components/DescTemp.vue";
-//import DescEI from "@/components/DescEI.vue";
-//import DescNeuro from "@/components/DescNeuro.vue";
+import DescEI from "@/components/DescEI.vue";
+import DescNeuro from "@/components/DescNeuro.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
 import TableResults from "@/components/TableResults.vue";
@@ -57,8 +59,8 @@ export default {
     //Highcharts,
     //TableQuiz,
     DescTemp,
-    //DescEI,
-    //DescNeuro,
+    DescEI,
+    DescNeuro,
     ProgressBar,
     Question,
     TableResults,

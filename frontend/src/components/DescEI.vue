@@ -2,8 +2,8 @@
   <div class="about" id="about">
     <div class="container">
       <h2 class="text-center">Экстраверсия — интроверсия</h2>
-      <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-12 desc">
+      <div>
+        <div class="desc">
           <h3>Описание</h3>
           <p>
             Характеризуя типичного экстраверта, автор отмечает его общительность
@@ -31,4 +31,44 @@ export default {
   name: "DescEIBlock",
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.about {
+  //margin: 4em 0;
+  //padding: 1em;
+  position: relative;
+
+  img {
+    height: auto;
+    width: 100%;
+    border-radius: 50%;
+
+    @media (max-width: 765px) {
+      margin: 10px 0;
+    }
+  }
+
+  span {
+    display: block;
+    color: #888;
+    position: absolute;
+    left: 12%;
+  }
+
+  .desc {
+    p {
+      max-width: 100%;
+      line-height: 2;
+      color: #888;
+      text-align: left;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    h3 {
+      @media (max-width: 765px) {
+        text-align: center;
+      }
+    }
+  }
+}
+</style>

@@ -92,7 +92,7 @@ export default {
 <style lang="scss" scoped>
 .about {
   //margin: 4em 0;
-  padding: 1em;
+  //padding: 1em;
   position: relative;
 
   h1 {
@@ -114,6 +114,12 @@ export default {
     color: #888;
     position: absolute;
     left: 12%;
+  }
+
+  .row {
+    @media (max-width: 767px) {
+      margin: 0;
+    }
   }
 
   .wrapper {

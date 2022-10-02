@@ -8,10 +8,10 @@
       <div v-if="description.name === activeName">
         <h2 class="text-center color-primary">{{ description.name }}</h2>
         <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-12">
-            <img :src="getImgUrl(description.image)" class="img-fluid" />
+          <div class="col-lg-4 col-md-4 col-sm-12 wrapper">
+            <img :src="getImgUrl(description.image)" />
           </div>
-          <div class="col-lg-8 col-md-8 col-sm-12 desc">
+          <div class="col-lg-8 col-md-8 col-sm-12 desc wrapper">
             <h3>Описание</h3>
             <p>
               {{ description.text }}
@@ -94,33 +94,57 @@ export default {
   //margin: 4em 0;
   padding: 1em;
   position: relative;
-}
-.about h1 {
-  color: #0d6efd;
-  //margin: 2em;
-}
-.about img {
-  //flex: 0 0 270px;
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  //object-fit: contain;
-}
-.about span {
-  display: block;
-  color: #888;
-  position: absolute;
-  left: 12%;
-}
-.about .desc {
-  padding: 2em;
-  border-left: 4px solid #0d6efd;
-}
-.about .desc h3 {
-  color: #0d6efd;
-}
-.about .desc p {
-  line-height: 2;
-  color: #888;
+
+  h1 {
+    color: #0d6efd;
+    //margin: 2em;
+  }
+  img {
+    height: auto;
+    width: 100%;
+    border-radius: 50%;
+
+    @media (max-width: 765px) {
+      margin: 10px 0;
+    }
+  }
+
+  span {
+    display: block;
+    color: #888;
+    position: absolute;
+    left: 12%;
+  }
+
+  .wrapper {
+    padding: 2em;
+
+    @media (max-width: 765px) {
+      border-left: none;
+      padding: 0;
+    }
+
+    h3 {
+      @media (max-width: 765px) {
+        text-align: center;
+      }
+    }
+  }
+
+  .desc {
+    border-left: 4px solid #0d6efd;
+
+    @media (max-width: 765px) {
+      border-left: none;
+    }
+
+    p {
+      line-height: 2;
+      color: #888;
+      text-align: left;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 }
 </style>

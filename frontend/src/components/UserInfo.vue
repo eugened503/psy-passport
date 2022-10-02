@@ -74,9 +74,11 @@ export default {
 <style lang="scss" scoped>
 .card {
   hr {
+    height: 2px;
     border: 0;
     opacity: 1;
     width: 100%;
+    background-color: #2196f3;
   }
 }
 </style>

@@ -21,7 +21,8 @@
       <div class="mt-4">
         <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
         <h2>Тест завершен</h2>
-        <TableResults :results="results" />
+        <TableResults class="mt-4" :results="results" />
+        <DescTemp :activeName="temperament" />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
         <h3 class="text-danger">
@@ -43,7 +44,7 @@
 import questions from "@/data/questions.json";
 //import Highcharts from "@/components/Highcharts.vue";
 //import TableQuiz from "@/components/TableQuiz.vue";
-//import DescTemp from "@/components/DescTemp.vue";
+import DescTemp from "@/components/DescTemp.vue";
 //import DescEI from "@/components/DescEI.vue";
 //import DescNeuro from "@/components/DescNeuro.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
@@ -55,7 +56,7 @@ export default {
   components: {
     //Highcharts,
     //TableQuiz,
-    //DescTemp,
+    DescTemp,
     //DescEI,
     //DescNeuro,
     ProgressBar,
@@ -338,6 +339,13 @@ export default {
   h4 {
     min-height: 87px;
     width: 80%;
+  }
+
+  h2 {
+    text-align: center;
+    // @media (max-width: 765px) {
+    //   text-align: center;
+    // }
   }
   .quiz-enter-active {
     animation: iconIn 0.3s;

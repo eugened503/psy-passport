@@ -1,52 +1,30 @@
 <template>
   <section class="eysenck">
-    <div class="d-flex">
-      <Question
-        v-for="(question, index) in questions"
-        :key="question.id"
-        :index="index"
-        :text="question.text"
-        :responses="question.responses"
-        :answers="answers"
-        @addRes="addRes"
-        @next="next"
-        @prev="prev"
-        :isDisabled="isDisabled"
-        :questions="questions"
-        :questionIndex="questionIndex"
-      />
-      <div v-if="questionIndex === questions.length && pointsLie <= 4">
-        <div>
-          <h2>Тест завершен</h2>
-          <div>
-            <div>
-              <div>
-                <span>Экстраверсия - интроверсия. </span>
-                <span>Результат: </span>{{ pointsExtroIntro }} |
-                {{ textExtroIntro }}
-              </div>
-              <div>
-                <span>Нейротизм. </span>
-                <span> Результат: </span>{{ pointsNeuro }} | {{ textNeuro }}
-              </div>
-              <ProgressBar
-                :pointsLie="pointsLie"
-                :textLie="textLie"
-                :lieIndexTrue="lieIndexTrue.length"
-                :lieIndexFalse="lieIndexFalse.length"
-              />
-              <hr class="border border-primary border-2 opacity-75" />
-            </div>
-            <DescTemp :activeName="temperament" />
-            <DescEI />
-            <DescNeuro />
-            <Highcharts :options="options" />
-            <TableQuiz :answers="answers" />
-          </div>
-        </div>
+    <div class="container py-5">
+      <div>
+        <!-- <div v-if="questionIndex === questions.length"> -->
+        <Question
+          v-for="(question, index) in questions"
+          :key="question.id"
+          :index="index"
+          :text="question.text"
+          :responses="question.responses"
+          :answers="answers"
+          @addRes="addRes"
+          @next="next"
+          @prev="prev"
+          :isDisabled="isDisabled"
+          :questions="questions"
+          :questionIndex="questionIndex"
+        />
+      </div>
+      <div class="mt-4">
+        <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
+        <h2>Тест завершен</h2>
+        <TableResults :results="results" />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
-        <h3>
+        <h3 class="text-danger">
           Высокий показатель по шкале лжи. Результаты теста рассматриваются как
           недостоверные.
         </h3>
@@ -56,29 +34,34 @@
           :lieIndexTrue="lieIndexTrue.length"
           :lieIndexFalse="lieIndexFalse.length"
         />
+        <BtnGroup class="mt-4" />
       </div>
     </div>
   </section>
 </template>
 <script>
 import questions from "@/data/questions.json";
-import Highcharts from "@/components/Highcharts.vue";
-import TableQuiz from "@/components/TableQuiz.vue";
-import DescTemp from "@/components/DescTemp.vue";
-import DescEI from "@/components/DescEI.vue";
-import DescNeuro from "@/components/DescNeuro.vue";
+//import Highcharts from "@/components/Highcharts.vue";
+//import TableQuiz from "@/components/TableQuiz.vue";
+//import DescTemp from "@/components/DescTemp.vue";
+//import DescEI from "@/components/DescEI.vue";
+//import DescNeuro from "@/components/DescNeuro.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
+import TableResults from "@/components/TableResults.vue";
+import BtnGroup from "@/components/BtnGroup.vue";
 export default {
   name: "QuizBlock",
   components: {
-    Highcharts,
-    TableQuiz,
-    DescTemp,
-    DescEI,
-    DescNeuro,
+    //Highcharts,
+    //TableQuiz,
+    //DescTemp,
+    //DescEI,
+    //DescNeuro,
     ProgressBar,
     Question,
+    TableResults,
+    BtnGroup,
   },
   data() {
     return {
@@ -161,37 +144,37 @@ export default {
     },
 
     textExtroIntro() {
-      if (this.pointsExtroIntro > 19) return "яркий экстраверт";
+      if (this.pointsExtroIntro > 19) return "Яркий экстраверт";
       if (this.pointsExtroIntro > 14 && this.pointsExtroIntro <= 19)
-        return "экстраверт";
+        return "Экстраверт";
       if (this.pointsExtroIntro > 12 && this.pointsExtroIntro <= 14)
-        return "склонность к экстраверсии";
+        return "Склонность к экстраверсии";
       if (this.pointsExtroIntro === 12) return "среднее значение";
       if (this.pointsExtroIntro >= 9 && this.pointsExtroIntro < 12)
-        return "склонность к интроверсии";
+        return "Склонность к интроверсии";
       if (this.pointsExtroIntro >= 5 && this.pointsExtroIntro < 9)
-        return "интроверт";
+        return "Интроверт";
       // if (this.pointsExtroIntro < 5 && this.pointsExtroIntro > 0)
       //   return "глубокий интроверт";
-      return "глубокий интроверт";
+      return "Глубокий интроверт";
     },
 
     textNeuro() {
-      if (this.pointsNeuro > 19) return "очень высокий уровень нейротизма";
+      if (this.pointsNeuro > 19) return "Очень высокий уровень";
       if (this.pointsNeuro > 13 && this.pointsNeuro <= 19)
-        return "высокий уровень нейротизма";
+        return "Высокий уровень";
       if (this.pointsNeuro >= 9 && this.pointsNeuro <= 13)
-        return "среднее значение";
+        return "Среднее значение";
       // if (this.pointsNeuro < 9 && this.pointsNeuro > 0)
       //   return "низкий уровень нейротизма";
-      return "низкий уровень нейротизма";
+      return "Низкий уровень";
     },
 
     textLie() {
-      if (this.pointsLie > 4) return "неискренность в ответах";
-      if (this.pointsLie === 4) return "критический показатель лжи";
+      if (this.pointsLie > 4) return "Неискренность в ответах";
+      if (this.pointsLie === 4) return "Критический показатель";
       // if (this.pointsLie < 4 && this.pointsLie > 0) return "норма";
-      return "норма";
+      return "Норма";
     },
 
     temperament() {
@@ -248,6 +231,26 @@ export default {
         return "Пограничный тип: флегматик-меланхолик"; // "пограничный тип: флегматик-меланхолик"
 
       return "Флегматик"; // "флегматик"
+    },
+
+    results() {
+      return [
+        {
+          scale: "Экстра - интро",
+          total: this.pointsExtroIntro,
+          desc: this.textExtroIntro,
+        },
+        {
+          scale: "Нейротизм",
+          total: this.pointsNeuro,
+          desc: this.textNeuro,
+        },
+        {
+          scale: "Ложь",
+          total: this.pointsLie,
+          desc: this.textLie,
+        },
+      ];
     },
   },
   methods: {
@@ -316,28 +319,37 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .eysenck {
   display: block;
-}
 
-li {
-  list-style-type: none;
-}
-h4 {
-  min-height: 87px;
-  width: 80%;
-}
-.quiz-enter-active {
-  animation: iconIn 0.3s;
-}
-.quiz-leave-active {
-  animation: iconOut 0.3s;
-}
+  @media (max-width: 600px) {
+    padding-top: 158px;
+  }
 
-.progress {
-  flex: 1;
-  align-self: center;
+  @media (max-width: 375px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  li {
+    list-style-type: none;
+  }
+  h4 {
+    min-height: 87px;
+    width: 80%;
+  }
+  .quiz-enter-active {
+    animation: iconIn 0.3s;
+  }
+  .quiz-leave-active {
+    animation: iconOut 0.3s;
+  }
+
+  .progress {
+    flex: 1;
+    align-self: center;
+  }
 }
 
 @keyframes quizIn {

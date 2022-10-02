@@ -6,7 +6,7 @@
           class="list-group-item d-flex justify-content-between align-items-center p-3"
         >
           <i class="fas fa-globe fa-lg text-warning"></i>
-          <p class="mb-0">https://mdbootstrap.com</p>
+          <p class="mb-0">mdbootstrap</p>
         </li>
         <li
           class="list-group-item d-flex justify-content-between align-items-center p-3"

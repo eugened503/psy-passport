@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <span>Шкала лжи. </span>
+  <div class="progress-wrapper">
     <span> Результат:</span>
     {{ pointsLie }} | {{ textLie }}
-    <div class="d-flex">
-      <span class="p-4">Min</span>
-      <div class="progress" ref="progress">
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <span>Min</span>
+      <div class="progress">
         <div
           class="progress-bar bg-danger bg-gradient"
           role="progressbar"
@@ -14,7 +13,7 @@
           aria-valuemax="100"
         ></div>
       </div>
-      <span class="p-4">Max</span>
+      <span>Max</span>
     </div>
   </div>
 </template>
@@ -51,3 +50,13 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.progress {
+  width: 90%;
+
+  @media (max-width: 800px) {
+    width: 77%;
+  }
+}
+</style>

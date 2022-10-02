@@ -27,7 +27,7 @@ export default {
     min-height: 600px;
   }
   @media (max-width: 600px) {
-    padding-top: 100px;
+    padding-top: 158px;
   }
 
   .background-image {

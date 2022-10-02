@@ -61,14 +61,14 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // .card img {
 //   height: 280px;
 //   object-fit: cover;
 // }
 .profile {
   @media (max-width: 600px) {
-    padding-top: 100px;
+    padding-top: 158px;
   }
 }
 

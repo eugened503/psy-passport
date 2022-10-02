@@ -36,12 +36,9 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {};
-  },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 table {
   td {
     max-width: 240px;

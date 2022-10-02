@@ -74,7 +74,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header {
   position: absolute;
   top: 0;
@@ -85,6 +85,19 @@ export default {
   align-items: center;
   color: #fff;
   padding: 35px 100px 0;
+
+  @media (max-width: 1000px) {
+    padding: 20px 50px;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 375px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   .container {
     @media (max-width: 992px) {
@@ -98,14 +111,6 @@ export default {
 
   &__logo {
     width: 234px;
-  }
-
-  @media (max-width: 1000px) {
-    padding: 20px 50px;
-  }
-
-  @media (max-width: 700px) {
-    flex-direction: column;
   }
 
   &__link {

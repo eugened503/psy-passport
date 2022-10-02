@@ -40,9 +40,11 @@ export default {
 
         xAxis: {
           //visible: false,
-          // labels: {
-          //   enabled: false,
-          // },
+          labels: {
+            enabled: false,
+            X: 0,
+            y: 0,
+          },
           categories: [
             "Нестабильность",
             "Экстраверсия",
@@ -78,7 +80,8 @@ export default {
           //     pointPlacement: "on",
           //   },
           {
-            name: "",
+            type: "area",
+            name: "Area",
             data: [0, 0, 12, 12],
             pointPlacement: "on",
             maxWidth: 100,
@@ -139,7 +142,7 @@ export default {
 }
 
 .highcharts-axis-labels text {
-  opacity: 0;
+  //opacity: 0;
 }
 
 .highcharts-plot-border {

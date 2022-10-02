@@ -1,8 +1,7 @@
 <template>
   <section class="eysenck">
     <div class="container py-5">
-      <div>
-        <!-- <div v-if="questionIndex === questions.length"> -->
+      <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
           :key="question.id"
@@ -18,13 +17,20 @@
           :questionIndex="questionIndex"
         />
       </div>
-      <div class="mt-4">
-        <!-- <div v-if="questionIndex === questions.length && pointsLie <= 4"> -->
+      <div
+        class="mt-4"
+        v-if="questionIndex === questions.length && pointsLie <= 4"
+      >
         <h2>Тест завершен</h2>
-        <TableResults class="mt-4" :results="results" />
+        <div class="results-head d-flex justify-content-between">
+          <TableResults class="mt-4" :results="results" />
+          <Highcharts class="mt-4" :options="options" />
+        </div>
         <DescTemp :activeName="temperament" />
         <DescNeuro />
         <DescEI />
+        <TableQuiz :answers="answers" />
+        <BtnGroup class="mt-4" />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
         <h3 class="text-danger">
@@ -44,8 +50,8 @@
 </template>
 <script>
 import questions from "@/data/questions.json";
-//import Highcharts from "@/components/Highcharts.vue";
-//import TableQuiz from "@/components/TableQuiz.vue";
+import Highcharts from "@/components/Highcharts.vue";
+import TableQuiz from "@/components/TableQuiz.vue";
 import DescTemp from "@/components/DescTemp.vue";
 import DescEI from "@/components/DescEI.vue";
 import DescNeuro from "@/components/DescNeuro.vue";
@@ -56,8 +62,8 @@ import BtnGroup from "@/components/BtnGroup.vue";
 export default {
   name: "QuizBlock",
   components: {
-    //Highcharts,
-    //TableQuiz,
+    Highcharts,
+    TableQuiz,
     DescTemp,
     DescEI,
     DescNeuro,
@@ -359,6 +365,12 @@ export default {
   .progress {
     flex: 1;
     align-self: center;
+  }
+
+  .results-head {
+    @media (max-width: 1040px) {
+      flex-direction: column;
+    }
   }
 }
 

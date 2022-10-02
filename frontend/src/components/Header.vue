@@ -84,20 +84,22 @@ export default {
   justify-content: space-between;
   align-items: center;
   color: #fff;
-  padding: 35px 100px 0;
+  //padding: 35px 100px 0;
+  padding: 35px 0 0;
 
   @media (max-width: 1000px) {
-    padding: 20px 50px;
+    //padding: 20px 50px;
+    padding: 20px 0 0;
   }
 
   @media (max-width: 700px) {
     flex-direction: column;
   }
 
-  @media (max-width: 375px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  // @media (max-width: 375px) {
+  //   padding-left: 0;
+  //   padding-right: 0;
+  // }
 
   .container {
     @media (max-width: 992px) {
@@ -140,6 +142,7 @@ export default {
   nav {
     display: flex;
     @media (max-width: 500px) {
+      //width: 100%;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;

@@ -29,12 +29,13 @@ export default {
 
         //colors: ["#32700d"],
         title: {
-          text: "Айзенка личностный опросник",
+          text: "Диаграмма результатов",
           //x: -80,
+          x: 0,
         },
 
         pane: {
-          size: "80%",
+          size: "100%",
         },
 
         xAxis: {
@@ -65,7 +66,7 @@ export default {
         // },
 
         legend: {
-          align: "right",
+          align: "center",
           verticalAlign: "middle",
           layout: "vertical",
         },
@@ -80,6 +81,7 @@ export default {
             name: "",
             data: [0, 0, 12, 12],
             pointPlacement: "on",
+            maxWidth: 100,
           },
         ],
 
@@ -121,7 +123,16 @@ export default {
   //   },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.high-charts {
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+  width: 40%;
+  @media (max-width: 1040px) {
+    width: 100%;
+  }
+}
 .highcharts-legend-item,
 .highcharts-credits {
   display: none;
@@ -129,5 +140,24 @@ export default {
 
 .highcharts-axis-labels text {
   opacity: 0;
+}
+
+.highcharts-plot-border {
+  //width: auto;
+}
+
+.highcharts-background,
+.highcharts-plot-background {
+  //width: 100%;
+}
+.highcharts-plot-background {
+  //margin: 0 auto;
+}
+
+.highcharts-background {
+  //width: auto;
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
 }
 </style>

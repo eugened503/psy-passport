@@ -1,5 +1,5 @@
 <template>
-  <div v-if="index === questionIndex" class="container questions">
+  <div v-if="index === questionIndex" class="questions">
     <div class="container-item col-md-10 col-lg-10">
       <div class="border">
         <div class="question bg-white p-3 border-bottom">
@@ -15,7 +15,7 @@
               {{ text }}
             </h5>
           </div>
-          <li class="ans ml-2" v-for="item in responses" :key="item.id">
+          <div class="ans ml-2" v-for="item in responses" :key="item.id">
             <button
               style="width: 100px"
               class="btn mt-2"
@@ -26,7 +26,7 @@
             >
               {{ item.text }}
             </button>
-          </li>
+          </div>
         </div>
         <div class="button-wrapper d-flex flex-wrap p-3 bg-white">
           <button
@@ -44,6 +44,15 @@
             type="button"
           >
             Следующий<i class="fa fa-angle-right mt-1 ms-1"></i>
+          </button>
+          <button
+            v-show="questionIndex + 1 === questions.length"
+            :disabled="questionIndex >= isDisabled"
+            @click="next"
+            class="btn btn-danger"
+            type="button"
+          >
+            Показать результаты<i class="fa fa-angle-right mt-1 ms-1"></i>
           </button>
         </div>
       </div>
@@ -108,7 +117,8 @@ export default {
     border: none;
     outline: none;
 
-    &:nth-child(2) {
+    &:nth-child(2),
+    &:nth-child(3) {
       margin-left: 10px;
 
       @media (max-width: 410px) {

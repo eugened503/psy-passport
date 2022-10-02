@@ -33,4 +33,12 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.table {
+  width: 50%;
+
+  @media (max-width: 1040px) {
+    width: 100%;
+  }
+}
+</style>

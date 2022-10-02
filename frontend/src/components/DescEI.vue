@@ -1,5 +1,5 @@
 <template>
-  <div class="about" id="about">
+  <div class="about">
     <div class="container">
       <h2 class="text-center">Экстраверсия — интроверсия</h2>
       <div>

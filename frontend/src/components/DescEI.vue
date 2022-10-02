@@ -31,3 +31,4 @@ export default {
   name: "DescEIBlock",
 };
 </script>
+<style lang="scss" scoped></style>

@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .card-link {
   display: block;
   text-decoration: none;

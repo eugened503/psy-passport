@@ -71,4 +71,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.card {
+  hr {
+    border: 0;
+    opacity: 1;
+    width: 100%;
+  }
+}
+</style>

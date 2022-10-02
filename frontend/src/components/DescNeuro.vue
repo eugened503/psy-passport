@@ -57,3 +57,4 @@ export default {
   name: "DescNeuroBlock",
 };
 </script>
+<style lang="scss" scoped></style>

@@ -89,7 +89,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .about {
   //margin: 4em 0;
   padding: 1em;

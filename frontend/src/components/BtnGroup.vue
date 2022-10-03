@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h5>Пройти тест еще раз?</h5>
     <div class="btn-group">
-      <button class="btn mt-2">Да</button>
-      <button class="btn mt-2">Нет</button>
+      <button @click="beginAgain" class="btn mt-2">Eще раз</button>
     </div>
   </div>
 </template>
@@ -11,6 +9,12 @@
 <script>
 export default {
   name: "BtnGroupBlock",
+
+  methods: {
+    beginAgain() {
+      this.$emit("reset");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

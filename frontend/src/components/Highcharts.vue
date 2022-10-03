@@ -1,5 +1,6 @@
 <template>
   <div class="high-charts">
+    <div class="eysenck-circle" />
     <highcharts class="hc" :options="chartOptions" />
   </div>
 </template>
@@ -29,9 +30,16 @@ export default {
 
         //colors: ["#32700d"],
         title: {
-          text: "Диаграмма результатов",
+          text: "",
+          //y: 0,
           //x: -80,
-          x: 0,
+          //x: 0,
+        },
+
+        subtitle: {
+          //text: "Н-нестабильность, Э-экстраверсия, С-стабильность, И-интроверсия",
+          //y: 0,
+          //y: -0.3,
         },
 
         pane: {
@@ -45,12 +53,7 @@ export default {
             X: 0,
             y: 0,
           },
-          categories: [
-            "Нестабильность",
-            "Экстраверсия",
-            "Стабильность",
-            "Интроверсия",
-          ],
+          categories: ["Н", "Э", "С", "И"],
           tickmarkPlacement: "on",
           lineWidth: 0,
         },
@@ -128,12 +131,23 @@ export default {
 </script>
 <style lang="scss">
 .high-charts {
+  position: relative;
   //display: flex;
   //align-items: center;
   //justify-content: center;
   width: 40%;
   @media (max-width: 1040px) {
     width: 100%;
+  }
+
+  .eysenck-circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: url(../assets/images/eysenck-circle3.svg) no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 }
 .highcharts-legend-item,
@@ -142,7 +156,7 @@ export default {
 }
 
 .highcharts-axis-labels text {
-  //opacity: 0;
+  opacity: 0;
 }
 
 .highcharts-plot-border {
@@ -162,5 +176,15 @@ export default {
   //display: flex;
   //align-items: center;
   //justify-content: center;
+}
+
+.highcharts-axis-labels text {
+  //transform: translate(5px, -40px);
+  //transform: translate(50px, -140px);
+  &:nth-child(1) {
+    //transform: rotate(45deg);
+    //position: relative;
+    //top: 10px;
+  }
 }
 </style>

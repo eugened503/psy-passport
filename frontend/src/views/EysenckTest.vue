@@ -31,7 +31,7 @@
         <DescNeuro />
         <DescEI />
         <TableQuiz :answers="answers" />
-        <BtnGroup class="mt-4" />
+        <BtnGroup @reset="reset" class="mt-4" />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
         <h3 class="text-danger">
@@ -44,7 +44,7 @@
           :lieIndexTrue="lieIndexTrue.length"
           :lieIndexFalse="lieIndexFalse.length"
         />
-        <BtnGroup class="mt-4" />
+        <BtnGroup @reset="reset" class="mt-4" />
       </div>
     </div>
   </section>
@@ -281,6 +281,10 @@ export default {
 
     prev() {
       this.questionIndex--;
+    },
+
+    reset() {
+      this.questionIndex = 0;
     },
 
     addRes({ index, res }) {

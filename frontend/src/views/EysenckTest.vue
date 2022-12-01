@@ -17,11 +17,11 @@
           :questionIndex="questionIndex"
         />
       </div>
-      <div>
-        <!-- <div
+      <!-- <div class="mt-4"> -->
+      <div
         class="mt-4"
-        v-if="questionIndex === questions.length && pointsLie <= 4"
-      > -->
+        v-show="questionIndex === questions.length && pointsLie <= 4"
+      >
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
           <TableResults class="mt-4" :results="results" />

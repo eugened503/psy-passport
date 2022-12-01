@@ -147,7 +147,7 @@ export default {
     z-index: 1;
     background: url(../assets/images/eysenck-circle3.svg) no-repeat;
     background-position: center;
-    background-size: contain;
+    //background-size: contain;
   }
 }
 .highcharts-legend-item,

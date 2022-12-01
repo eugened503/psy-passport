@@ -52,6 +52,9 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+    beforeEnter: () => {
+      return store.dispatch("results/getResults");
+    },
   },
   {
     path: "/:any(.*)",

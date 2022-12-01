@@ -1,6 +1,6 @@
 <template>
   <section class="eysenck">
-    <div class="container py-5">
+    <div v-if="getResults.data?.length === 0" class="container py-5">
       <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
@@ -17,7 +17,6 @@
           :questionIndex="questionIndex"
         />
       </div>
-      <!-- <div class="mt-4"> -->
       <div
         class="mt-4"
         v-show="questionIndex === questions.length && pointsLie <= 4"
@@ -27,11 +26,18 @@
           <TableResults class="mt-4" :results="results" />
           <Highcharts class="mt-4" :options="options" />
         </div>
+        <div>
+          <h3>Данные не сохранены</h3>
+        </div>
         <DescTemp :activeName="temperament" />
         <DescNeuro />
         <DescEI />
-        <TableQuiz :answers="answers" />
-        <BtnGroup @reset="reset" class="mt-4" />
+        <TableQuiz :answers="answers || getResults.data[0]?.answers" />
+        <BtnGroup
+          @reset="reset"
+          @sendResults="sendResults(allResults)"
+          class="mt-4"
+        />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
         <h3 class="text-danger">
@@ -44,7 +50,31 @@
           :lieIndexTrue="lieIndexTrue.length"
           :lieIndexFalse="lieIndexFalse.length"
         />
-        <BtnGroup @reset="reset" class="mt-4" />
+        <BtnGroup @reset="reset" :lie="true" class="mt-4" />
+      </div>
+    </div>
+    <div v-else class="container py-5">
+      <div class="mt-4">
+        <h2>Тест завершен</h2>
+        <div class="results-head d-flex justify-content-between">
+          <TableResults class="mt-4" :results="getResults.data[0]?.test" />
+          <Highcharts class="mt-4" :options="getResults.data[0]?.options" />
+        </div>
+        <div>
+          <div>
+            <h3>Данные сохранены</h3>
+            <!-- {{ getResults.data }} <br /> -->
+          </div>
+        </div>
+        <DescTemp :activeName="getResults.data[0]?.temperament" />
+        <DescNeuro />
+        <DescEI />
+        <TableQuiz :answers="getResults.data[0]?.answers" />
+        <!-- <BtnGroup
+          @reset="reset"
+          @sendResults="sendResults(allResults)"
+          class="mt-4"
+        /> -->
       </div>
     </div>
   </section>
@@ -60,6 +90,7 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
 import TableResults from "@/components/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "QuizBlock",
   components: {
@@ -262,7 +293,25 @@ export default {
         },
       ];
     },
+    allResults() {
+      return {
+        test: this.results,
+        options: this.options,
+        temperament: this.temperament,
+        answers: this.answers,
+      };
+    },
+    ...mapGetters("results", { getResults: "getResults" }),
+    ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
   },
+
+  watch: {
+    //$route: "loadResults",
+    getResultsStatus() {
+      this.loadResults();
+    },
+  },
+
   methods: {
     scalePhlegmatic(points) {
       if (points >= 0 && points < this.averageValue) return true;
@@ -308,6 +357,20 @@ export default {
         arr[i - 1] = false;
       });
     },
+    // sendResults() {
+    //   let results = {
+    //     test: this.results,
+    //     options: this.options,
+    //     temperament: this.temperament,
+    //     answers: this.answers,
+    //   };
+    //   this.$store
+    //     .dispatch("results/sendResults", results)
+    //     .then((res) => console.log(res))
+    //     .catch((err) => console.log(err));
+    // },
+    ...mapActions({ sendResults: "results/sendResults" }),
+    ...mapActions({ loadResults: "results/getResults" }),
   },
 
   created() {
@@ -329,6 +392,13 @@ export default {
     );
     this.keys(this.lieIndexTrue, this.lieIndexFalse, this.lie);
     this.keys(this.neuroIndexTrue, [], this.neuro);
+
+    //let statusResults = this.getResults.data?.length > 0 ? true : false;
+    //console.log(statusResults);
+    // if (statusResults) {
+    //   console.log(this.getResults.data[0]);
+    //   this.questionIndex = this.getResults.data[0]?.answers;
+    // }
   },
 };
 </script>

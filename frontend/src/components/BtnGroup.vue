@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="btn-group">
+      <button @click="save" v-show="!lie" class="btn mt-2">Сохранить</button>
       <button @click="beginAgain" class="btn mt-2">Eще раз</button>
     </div>
   </div>
@@ -9,10 +10,18 @@
 <script>
 export default {
   name: "BtnGroupBlock",
-
+  props: {
+    lie: {
+      type: Boolean,
+      default: false,
+    },
+  },
   methods: {
     beginAgain() {
       this.$emit("reset");
+    },
+    save() {
+      this.$emit("sendResults");
     },
   },
 };

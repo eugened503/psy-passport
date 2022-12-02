@@ -4,7 +4,7 @@ const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
 const Forbidden = require('../errors/forbidden-err');
 
-module.exports.createResults = (req, res, next) => { //создаёт статью с переданными в теле
+module.exports.createResults = (req, res, next) => {
   const { test, temperament, answers, options, owner = req.user._id } = req.body;
   result.create({ test, temperament, answers, options, owner })
     .then((result) => res.status(200).send({ data: result }))
@@ -19,34 +19,26 @@ module.exports.createResults = (req, res, next) => { //создаёт стать
     });
 };
 
-module.exports.getAllResults = (req, res, next) => { //возвращает все сохранённые пользователем статьи
+module.exports.getAllResults = (req, res, next) => {
   result.find({})
     .find({ owner: req.user._id })
     .then(result => res.status(200).send(result))
     .catch(next);
 };
 
-// module.exports.deleteArticles = (req, res, next) => { // удаляет сохранённую статью  по _id
-//   if (!mongoose.Types.ObjectId.isValid(req.params.articleId)) {
-//     throw new ValidationError('Некорректный id карточки');
-//   }
-//   Article.findById(req.params.articleId)
-//     .orFail(new Error('NotValidId'))
-//     .then((article) => {
-//       if (String(article.owner) !== String(req.user._id)) {
-//         next(new Forbidden('Вы не можете удалять чужие карточки'));
-//         return;
-//       }
-//       Article.findByIdAndRemove(req.params.articleId)
-//         .then(() => res.status(200).send(article))
-//         .catch(next);
-//     })
-//     .catch((err) => {
-//       if (err.message === 'NotValidId') {
-//         next(new NotFoundError('Пользователя нет в базе'));
-//         return;
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
+
+module.exports.deleteResults = (req, res, next) => {
+  result.findById(req.params.resultId)
+    .select('+owner')
+    .orFail(new NotFoundError(404, 'Некорректный id карточки'))
+    .then((result) => {
+      if (result.owner.toString() === req.user._id) {
+        result.deleteOne({ _id: req.params.resultId })
+          .then((resultDel) => res.send(resultDel))
+          .catch(next);
+      } else {
+       throw new Forbidden(403, 'Вы не можете удалять чужие карточки');
+      }
+    })
+    .catch(next);
+};

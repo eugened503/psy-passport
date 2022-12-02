@@ -1,6 +1,6 @@
 const resultRouter = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { createResults, getAllResults} = require('../controllers/results');
+const { createResults, getAllResults, deleteResults } = require('../controllers/results');
 //const validateUrl = require('../constants/urlRegex');
 
 resultRouter.get('/', getAllResults);
@@ -14,10 +14,10 @@ resultRouter.post('/', celebrate({
   })
 }), createResults);
 
-// articleRouter.delete('/:articleId', celebrate({
-//   params: Joi.object().keys({
-//     articleId: Joi.string().length(24).hex(),
-//   }),
-// }), deleteArticles);
+resultRouter.delete('/:resultId', celebrate({
+  params: Joi.object().keys({
+    resultId: Joi.string().length(24).hex(),
+  }),
+}), deleteResults);
 
 module.exports = resultRouter;

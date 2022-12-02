@@ -1,6 +1,6 @@
 <template>
   <section class="eysenck">
-    <div v-if="getResults.data?.length === 0" class="container py-5">
+    <div v-if="!getResults" class="container py-5">
       <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
@@ -57,19 +57,19 @@
       <div class="mt-4">
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
-          <TableResults class="mt-4" :results="getResults.data[0]?.test" />
-          <Highcharts class="mt-4" :options="getResults.data[0]?.options" />
+          <TableResults class="mt-4" :results="getResults?.test" />
+          <Highcharts class="mt-4" :options="getResults?.options" />
         </div>
         <div>
           <div>
             <h3>Данные сохранены</h3>
-            <!-- {{ getResults.data }} <br /> -->
           </div>
         </div>
-        <DescTemp :activeName="getResults.data[0]?.temperament" />
+        <DescTemp :activeName="getResults?.temperament" />
         <DescNeuro />
         <DescEI />
-        <TableQuiz :answers="getResults.data[0]?.answers" />
+        <TableQuiz :answers="getResults?.answers" />
+        <button @click="deleteData" class="btn mt-2">Удалить</button>
         <!-- <BtnGroup
           @reset="reset"
           @sendResults="sendResults(allResults)"
@@ -302,14 +302,14 @@ export default {
       };
     },
     ...mapGetters("results", { getResults: "getResults" }),
-    ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
+    // ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
   },
 
   watch: {
     //$route: "loadResults",
-    getResultsStatus() {
-      this.loadResults();
-    },
+    // getResultsStatus() {
+    //   this.loadResults();
+    // },
   },
 
   methods: {
@@ -371,6 +371,13 @@ export default {
     // },
     ...mapActions({ sendResults: "results/sendResults" }),
     ...mapActions({ loadResults: "results/getResults" }),
+    ...mapActions({ deleteResults: "results/deleteResults" }),
+    deleteData() {
+      let id = this.getResults._id;
+      this.deleteResults(id);
+      this.questionIndex = 0;
+      this.answers = [];
+    },
   },
 
   created() {
@@ -392,13 +399,6 @@ export default {
     );
     this.keys(this.lieIndexTrue, this.lieIndexFalse, this.lie);
     this.keys(this.neuroIndexTrue, [], this.neuro);
-
-    //let statusResults = this.getResults.data?.length > 0 ? true : false;
-    //console.log(statusResults);
-    // if (statusResults) {
-    //   console.log(this.getResults.data[0]);
-    //   this.questionIndex = this.getResults.data[0]?.answers;
-    // }
   },
 };
 </script>

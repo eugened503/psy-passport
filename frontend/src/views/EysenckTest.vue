@@ -80,7 +80,7 @@
   </section>
 </template>
 <script>
-import questions from "@/data/questions.json";
+import questions from "@/data/eysenck/questions.json";
 import Highcharts from "@/components/Highcharts.vue";
 import TableQuiz from "@/components/TableQuiz.vue";
 import DescTemp from "@/components/DescTemp.vue";

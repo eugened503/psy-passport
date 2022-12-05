@@ -5,6 +5,7 @@ import Register from "@/components/FormRegister.vue";
 import User from "@/views/User.vue";
 import PageError from "@/components/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";
+import LearyTest from "@/views/LearyTest.vue";
 import store from "@/store/index";
 //console.log(store.getters["user/isLoggedIn"]);
 
@@ -54,6 +55,14 @@ const routes = [
     },
     beforeEnter: () => {
       return store.dispatch("results/getResults");
+    },
+  },
+  {
+    path: "/leary",
+    name: "leary",
+    component: LearyTest,
+    meta: {
+      requiresAuth: true,
     },
   },
   {

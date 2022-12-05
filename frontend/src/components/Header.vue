@@ -35,6 +35,14 @@
             >Тест&nbsp;Айзенка</router-link
           >
         </li>
+        <li>
+          <router-link
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            :to="{ name: 'leary' }"
+            >Тест Лири</router-link
+          >
+        </li>
         <li v-if="isLoggedIn">
           <a
             class="header__link"

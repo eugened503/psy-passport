@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import descriptions from "@/data/descriptions.json";
+import descriptions from "@/data/eysenck/descriptions.json";
 export default {
   name: "DescTempBlock",
   props: {

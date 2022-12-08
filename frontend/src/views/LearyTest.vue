@@ -1,8 +1,8 @@
 <template>
   <section class="leary">
-    <h1>Тест межличностных отношений Лири</h1>
-    <ul>
+    <div class="desc">
       <div>
+        <h4>Тест межличностных отношений Лири</h4>
         <div>Доминирование {{ domination }}</div>
         <div>Дружелюбие {{ benevolence }}</div>
         <br />
@@ -26,7 +26,7 @@
           Подчиняемый (покорно-застенчивый) {{ octantPoints.octantFifthPoints }}
         </div>
         <div>
-          Зависимый (зависимый-послушный) {{ octantPoints.octantFifthPoints }}
+          Зависимый (зависимый-послушный) {{ octantPoints.octantSixthPoints }}
         </div>
         <div>
           Дружелюбный (сотрудничающий-конвенциальный)
@@ -37,27 +37,36 @@
           {{ octantPoints.octantEighthPoints }}
         </div>
       </div>
-      <br />
-      <h2>
+      <HCLeary :options="options" />
+    </div>
+    <div class="mark">
+      <h4>
         Отметьте (кликните) те суждения, которые соответствуют вашему
         представлению о себе
-      </h2>
-      <li
-        v-for="question in questions"
-        :key="question.id"
-        @click="selectItem(question)"
-        :class="{ active: question.status }"
-      >
-        <!-- {{ question.id }} -->
-        {{ question.text }}
-      </li>
-    </ul>
+      </h4>
+      <ul>
+        <li
+          v-for="(question, index) in questions"
+          :key="question.id"
+          @click="selectItem(question)"
+          :class="{ active: question.status }"
+        >
+          <!-- {{ question.id }} -->
+          {{ index + 1 }}.
+          {{ question.text }}
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 <script>
 import questions from "@/data/leary/questions.json";
+import HCLeary from "@/components/HCLeary.vue";
 export default {
   name: "QuizBlock",
+  components: {
+    HCLeary,
+  },
   data() {
     return {
       questions,
@@ -146,6 +155,22 @@ export default {
               this.octantPoints.octantFourthPoints -
               this.octantPoints.octantSixthPoints)
       );
+    },
+    options() {
+      return [
+        {
+          data: [
+            this.octantPoints.octantFirstPoints,
+            this.octantPoints.octantEighthPoints,
+            this.octantPoints.octantSeventhPoints,
+            this.octantPoints.octantSixthPoints,
+            this.octantPoints.octantFifthPoints,
+            this.octantPoints.octantFourthPoints,
+            this.octantPoints.octantThirdPoints,
+            this.octantPoints.octantSecondPoints,
+          ],
+        },
+      ];
     },
   },
   methods: {
@@ -259,8 +284,47 @@ export default {
 
 <style lang="scss" scoped>
 .leary {
+  flex-direction: row;
+  align-items: flex-start;
+  //justify-content: space-between;
+  //gap: 10px;
+  gap: 10px;
   .active {
     color: blue;
+  }
+  div {
+    //flex: 1;
+  }
+  .desc {
+    flex: 1;
+    //width: 40%;
+    //display: flex;
+    //flex-direction: column;
+    .high-charts {
+      width: 60%;
+    }
+  }
+  .mark {
+    padding: 0;
+    background-color: inherit;
+    width: 60%;
+  }
+  ul {
+    padding: 0;
+    display: flex;
+    //justify-content: space-between;
+    //flex-direction: column;
+    //align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  ul li {
+    cursor: pointer;
+    transition: 0.4s color;
+    &:hover {
+      color: blueviolet;
+    }
   }
 }
 </style>

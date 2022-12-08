@@ -1,6 +1,6 @@
 <template>
   <div class="high-charts">
-    <div class="eysenck-circle" />
+    <div class="leary-circle" />
     <highcharts class="hc" :options="chartOptions" />
   </div>
 </template>
@@ -28,7 +28,6 @@ export default {
         },
         accessibility: { enabled: false },
 
-        //colors: ["#32700d"],
         title: {
           text: "",
           //y: 0,
@@ -46,14 +45,28 @@ export default {
           size: "100%",
         },
 
+        // xAxis: {
+        //   //visible: false,
+        //   labels: {
+        //     enabled: false,
+        //     X: 0,
+        //     y: 0,
+        //   },
+        //   categories: ["Н", "Э", "С", "И"],
+        //   tickmarkPlacement: "on",
+        //   lineWidth: 0,
+        // },
         xAxis: {
-          //visible: false,
-          labels: {
-            enabled: false,
-            X: 0,
-            y: 0,
-          },
-          categories: ["Н", "Э", "С", "И"],
+          categories: [
+            "Властный",
+            "Великодушный",
+            "Сотрудничающий",
+            "Зависимый",
+            "Покорный",
+            "Недоверчивый",
+            "Агрессивный",
+            "Независимый",
+          ],
           tickmarkPlacement: "on",
           lineWidth: 0,
         },
@@ -71,24 +84,25 @@ export default {
         // },
 
         legend: {
-          align: "center",
+          enabled: false,
+          align: "right",
           verticalAlign: "middle",
           layout: "vertical",
         },
 
         series: [
-          //   {
-          //     name: "Allocated",
-          //     data: this.optionsData,
-          //     pointPlacement: "on",
-          //   },
           {
-            type: "area",
-            name: "Area",
-            data: [0, 0, 12, 12],
+            name: "Allocated Budget",
+            data: [0, 0, 0, 0, 0, 0, 0, 0],
             pointPlacement: "on",
-            maxWidth: 100,
+            color: "#ffff01",
+            lineColor: "#ffff01",
           },
+          // {
+          //   name: "Actual Spending",
+          //   data: [50, 39, 42, 31, 26, 14, 46, 13],
+          //   pointPlacement: "on",
+          // },
         ],
 
         // responsive: {
@@ -135,21 +149,58 @@ export default {
   //display: flex;
   //align-items: center;
   //justify-content: center;
-  width: 40%;
+  width: 100%;
+  height: 100%;
   @media (max-width: 1040px) {
-    width: 100%;
+    //width: 100%;
   }
 
-  .eysenck-circle {
+  .leary-circle {
     position: absolute;
+    top: -2px;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    background: url(../assets/images/eysenck-circle3.svg) no-repeat;
+    z-index: 0;
+    background: url(../assets/images/profile-leary.png) no-repeat;
     background-position: center;
-    //background-size: contain;
+    background-size: contain;
   }
 }
+:deep(.hc) {
+  width: 100%;
+  //position: absolute;
+  background: transparent;
+  svg rect {
+    fill: none;
+  }
+}
+
+:deep(.hc div) {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent;
+  svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+:deep(.highcharts-series path) {
+  fill: rgba(255, 255, 1, 0.3);
+}
+
+:deep(.highcharts-grid path) {
+  stroke: none;
+}
+
+:deep(.highcharts-yaxis-labels text) {
+  opacity: 0;
+}
+
+:deep(.highcharts-xaxis-labels text) {
+  opacity: 0;
+}
+
 .highcharts-legend-item,
 .highcharts-credits {
   display: none;

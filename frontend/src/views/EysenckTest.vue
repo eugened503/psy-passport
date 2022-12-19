@@ -24,7 +24,7 @@
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
           <TableResults class="mt-4" :results="results" />
-          <Highcharts class="mt-4" :options="options" />
+          <Highcharts class="mt-4" :options="options" :arr="[0, 0, 12, 12]" />
         </div>
         <div>
           <h3>Данные не сохранены</h3>
@@ -32,7 +32,7 @@
         <DescTemp :activeName="temperament" />
         <DescNeuro />
         <DescEI />
-        <TableQuiz :answers="answers || getResults.data[0]?.answers" />
+        <TableQuiz :answers="answers" />
         <BtnGroup
           @reset="reset"
           @sendResults="sendResults(allResults)"
@@ -58,7 +58,11 @@
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
           <TableResults class="mt-4" :results="getResults?.test" />
-          <Highcharts class="mt-4" :options="getResults?.options" />
+          <Highcharts
+            class="mt-4"
+            :options="[]"
+            :arr="getResults?.options[0].data"
+          />
         </div>
         <div>
           <div>
@@ -70,11 +74,6 @@
         <DescEI />
         <TableQuiz :answers="getResults?.answers" />
         <button @click="deleteData" class="btn mt-2">Удалить</button>
-        <!-- <BtnGroup
-          @reset="reset"
-          @sendResults="sendResults(allResults)"
-          class="mt-4"
-        /> -->
       </div>
     </div>
   </section>

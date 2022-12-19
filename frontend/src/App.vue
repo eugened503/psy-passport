@@ -11,26 +11,26 @@
 <script>
 //import { mapGetters } from "vuex";
 //import Spinner from "@/components/Spinner.vue";
-import axios from "axios";
+//import axios from "axios";
 import Header from "@/components/Header.vue";
 
 export default {
   components: { Header },
   name: "App",
-  created() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-    axios.interceptors.response.use(undefined, function (err) {
-      return new Promise(function () {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.logout();
-        }
-        throw err;
-      });
-    });
-  },
+  // created() {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  //   }
+  //   axios.interceptors.response.use(undefined, function (err) {
+  //     return new Promise(function () {
+  //       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+  //         this.logout();
+  //       }
+  //       throw err;
+  //     });
+  //   });
+  // },
 
   computed: {
     //...mapGetters("user", { isLoggedIn: "isLoggedIn" }),

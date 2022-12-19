@@ -120,6 +120,7 @@ export default {
           })
           .catch((err) => {
             commit("error", err.response.data.message);
+            console.log("error", err.response.data.message);
             //localStorage.removeItem("token");
             reject(err.response.data.message);
           });

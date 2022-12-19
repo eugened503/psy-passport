@@ -16,6 +16,10 @@ export default {
       type: Array,
       required: true,
     },
+    arr: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
@@ -85,7 +89,7 @@ export default {
           {
             type: "area",
             name: "Area",
-            data: [0, 0, 12, 12],
+            data: this.arr,
             pointPlacement: "on",
             maxWidth: 100,
           },
@@ -116,7 +120,7 @@ export default {
   watch: {
     options: {
       handler(newOpt) {
-        //console.log(newOpt);
+        console.log(newOpt);
         this.chartOptions.series = newOpt;
       },
       deep: true,

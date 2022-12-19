@@ -49,6 +49,7 @@ export default {
         })
         .catch((err) => {
           commit("error", err.response.data.message);
+          //localStorage.removeItem("token");
         });
     },
 

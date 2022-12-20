@@ -16,6 +16,10 @@ export default {
       type: Array,
       required: true,
     },
+    arr: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
@@ -93,7 +97,7 @@ export default {
         series: [
           {
             name: "Allocated Budget",
-            data: [0, 0, 0, 0, 0, 0, 0, 0],
+            data: this.arr,
             pointPlacement: "on",
             color: "#ffff01",
             lineColor: "#ffff01",

@@ -7,10 +7,8 @@ resultRouter.get('/', getAllResults);
 
 resultRouter.post('/', celebrate({
   body: Joi.object().keys({
-    test: Joi.array().required(),
-    temperament: Joi.string().required(),
-    answers: Joi.array().required(),
-    options: Joi.array().required(),
+    name: Joi.string().required(),
+    records: Joi.object().required(),
   })
 }), createResults);
 

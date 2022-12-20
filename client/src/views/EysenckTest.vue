@@ -1,6 +1,6 @@
 <template>
   <section class="eysenck">
-    <div v-if="!getResults" class="container py-5">
+    <div v-if="!getEysenckRes" class="container py-5">
       <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
@@ -57,11 +57,11 @@
       <div class="mt-4">
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
-          <TableResults class="mt-4" :results="getResults?.test" />
+          <TableResults class="mt-4" :results="getEysenckRes?.test" />
           <Highcharts
             class="mt-4"
             :options="[]"
-            :arr="getResults?.options[0].data"
+            :arr="getEysenckRes?.options[0].data"
           />
         </div>
         <div>
@@ -69,10 +69,10 @@
             <h3>Данные сохранены</h3>
           </div>
         </div>
-        <DescTemp :activeName="getResults?.temperament" />
+        <DescTemp :activeName="getEysenckRes?.temperament" />
         <DescNeuro />
         <DescEI />
-        <TableQuiz :answers="getResults?.answers" />
+        <TableQuiz :answers="getEysenckRes?.answers" />
         <button @click="deleteData" class="btn mt-2">Удалить</button>
       </div>
     </div>
@@ -294,14 +294,23 @@ export default {
     },
     allResults() {
       return {
-        test: this.results,
-        options: this.options,
-        temperament: this.temperament,
-        answers: this.answers,
+        name: "eysenck",
+        records: {
+          test: this.results,
+          options: this.options,
+          temperament: this.temperament,
+          answers: this.answers,
+        },
       };
     },
     ...mapGetters("results", { getResults: "getResults" }),
     // ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
+    getItem() {
+      return this.getResults?.filter((item) => item.name === "eysenck")[0];
+    },
+    getEysenckRes() {
+      return this.getItem?.records;
+    },
   },
 
   watch: {
@@ -369,10 +378,10 @@ export default {
     //     .catch((err) => console.log(err));
     // },
     ...mapActions({ sendResults: "results/sendResults" }),
-    ...mapActions({ loadResults: "results/getResults" }),
+    //...mapActions({ loadResults: "results/getResults" }),
     ...mapActions({ deleteResults: "results/deleteResults" }),
     deleteData() {
-      let id = this.getResults._id;
+      let id = this.getItem._id;
       this.deleteResults(id);
       this.questionIndex = 0;
       this.answers = [];

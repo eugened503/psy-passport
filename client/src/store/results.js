@@ -21,8 +21,9 @@ export default {
         },
       })
         .then((resp) => {
+          console.log(resp);
           let results = resp.data.data;
-          commit("send_results", results);
+          commit("send_results", [results]);
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -44,7 +45,7 @@ export default {
         },
       })
         .then((resp) => {
-          let results = resp.data[0];
+          let results = resp.data;
           commit("send_results", results);
         })
         .catch((err) => {

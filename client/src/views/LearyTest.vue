@@ -1,71 +1,129 @@
 <template>
   <section class="leary">
-    <div class="desc">
-      <div>
-        <h4>Тест межличностных отношений Лири</h4>
-        <div>Доминирование {{ domination }}</div>
-        <div>Дружелюбие {{ benevolence }}</div>
-        <br />
+    <div v-if="!getLearyRes" class="container py-5">
+      <div class="desc" v-show="isActive">
         <div>
-          Авторитарный (властный-лидирующий)
-          {{ octantPoints.octantFirstPoints }}
+          <h4>Тест межличностных отношений Лири</h4>
+          <div>Доминирование {{ domination }}</div>
+          <div>Дружелюбие {{ benevolence }}</div>
+          <br />
+          <div>
+            Авторитарный (властный-лидирующий)
+            {{ octantPoints.octantFirstPoints }}
+          </div>
+          <div>
+            Эгоистичный (независимый-доминирующий)
+            {{ octantPoints.octantSecondPoints }}
+          </div>
+          <div>
+            Агрессивный (прямолинейный-агрессивный)
+            {{ octantPoints.octantThirdPoints }}
+          </div>
+          <div>
+            Подозрительный (недоверчивый-скептический)
+            {{ octantPoints.octantFourthPoints }}
+          </div>
+          <div>
+            Подчиняемый (покорно-застенчивый)
+            {{ octantPoints.octantFifthPoints }}
+          </div>
+          <div>
+            Зависимый (зависимый-послушный) {{ octantPoints.octantSixthPoints }}
+          </div>
+          <div>
+            Дружелюбный (сотрудничающий-конвенциальный)
+            {{ octantPoints.octantSeventhPoints }}
+          </div>
+          <div>
+            Альтруистический (ответственно-великодушный)
+            {{ octantPoints.octantEighthPoints }}
+          </div>
         </div>
-        <div>
-          Эгоистичный (независимый-доминирующий)
-          {{ octantPoints.octantSecondPoints }}
-        </div>
-        <div>
-          Агрессивный (прямолинейный-агрессивный)
-          {{ octantPoints.octantThirdPoints }}
-        </div>
-        <div>
-          Подозрительный (недоверчивый-скептический)
-          {{ octantPoints.octantFourthPoints }}
-        </div>
-        <div>
-          Подчиняемый (покорно-застенчивый) {{ octantPoints.octantFifthPoints }}
-        </div>
-        <div>
-          Зависимый (зависимый-послушный) {{ octantPoints.octantSixthPoints }}
-        </div>
-        <div>
-          Дружелюбный (сотрудничающий-конвенциальный)
-          {{ octantPoints.octantSeventhPoints }}
-        </div>
-        <div>
-          Альтруистический (ответственно-великодушный)
-          {{ octantPoints.octantEighthPoints }}
-        </div>
+        <HCLeary :options="options" :arr="[0, 0, 0, 0, 0, 0, 0, 0]" />
+        <BtnGroup
+          @reset="reset"
+          @sendResults="sendResults(allResults)"
+          class="mt-4"
+        />
       </div>
-      <HCLeary :options="options" />
+      <div v-show="!isActive" class="mark">
+        <h4>
+          Отметьте (кликните) те суждения, которые соответствуют вашему
+          представлению о себе
+        </h4>
+        <ul>
+          <li
+            v-for="(question, index) in questions"
+            :key="question.id"
+            @click="selectItem(question)"
+            :class="{ active: question.status }"
+          >
+            <!-- {{ question.id }} -->
+            {{ index + 1 }}.
+            {{ question.text }}
+          </li>
+        </ul>
+        <button class="btn mt-2" @click="isActive = true">
+          Посмотреть результаты
+        </button>
+      </div>
     </div>
-    <div class="mark">
-      <h4>
-        Отметьте (кликните) те суждения, которые соответствуют вашему
-        представлению о себе
-      </h4>
-      <ul>
-        <li
-          v-for="(question, index) in questions"
-          :key="question.id"
-          @click="selectItem(question)"
-          :class="{ active: question.status }"
-        >
-          <!-- {{ question.id }} -->
-          {{ index + 1 }}.
-          {{ question.text }}
-        </li>
-      </ul>
+    <div v-else>
+      <div class="desc">
+        <div>
+          <h4>Тест межличностных отношений Лири</h4>
+          <div>Доминирование {{ getLearyRes.domination }}</div>
+          <div>Дружелюбие {{ getLearyRes.benevolence }}</div>
+          <br />
+          <div>
+            Авторитарный (властный-лидирующий)
+            {{ getLearyRes.octantPoints.octantFirstPoints }}
+          </div>
+          <div>
+            Эгоистичный (независимый-доминирующий)
+            {{ getLearyRes.octantPoints.octantSecondPoints }}
+          </div>
+          <div>
+            Агрессивный (прямолинейный-агрессивный)
+            {{ getLearyRes.octantPoints.octantThirdPoints }}
+          </div>
+          <div>
+            Подозрительный (недоверчивый-скептический)
+            {{ getLearyRes.octantPoints.octantFourthPoints }}
+          </div>
+          <div>
+            Подчиняемый (покорно-застенчивый)
+            {{ getLearyRes.octantPoints.octantFifthPoints }}
+          </div>
+          <div>
+            Зависимый (зависимый-послушный)
+            {{ getLearyRes.octantPoints.octantSixthPoints }}
+          </div>
+          <div>
+            Дружелюбный (сотрудничающий-конвенциальный)
+            {{ getLearyRes.octantPoints.octantSeventhPoints }}
+          </div>
+          <div>
+            Альтруистический (ответственно-великодушный)
+            {{ getLearyRes.octantPoints.octantEighthPoints }}
+          </div>
+        </div>
+        <HCLeary :options="[]" :arr="getLearyRes?.options[0].data" />
+        <button @click="deleteData" class="btn mt-2">Удалить</button>
+      </div>
     </div>
   </section>
 </template>
 <script>
 import questions from "@/data/leary/questions.json";
 import HCLeary from "@/components/HCLeary.vue";
+import BtnGroup from "@/components/BtnGroup.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "QuizBlock",
   components: {
     HCLeary,
+    BtnGroup,
   },
   data() {
     return {
@@ -75,6 +133,7 @@ export default {
       subarrayClone: [],
       octantAll: {},
       responses: [],
+      isActive: false,
     };
   },
   created() {
@@ -171,6 +230,24 @@ export default {
           ],
         },
       ];
+    },
+    allResults() {
+      return {
+        name: "leary",
+        records: {
+          octantPoints: this.octantPoints,
+          domination: this.domination,
+          benevolence: this.benevolence,
+          options: this.options,
+        },
+      };
+    },
+    ...mapGetters("results", { getResults: "getResults" }),
+    getItem() {
+      return this.getResults?.filter((item) => item.name === "leary")[0];
+    },
+    getLearyRes() {
+      return this.getItem?.records;
     },
   },
   methods: {
@@ -278,6 +355,15 @@ export default {
       }
       return array.length;
     },
+    reset() {
+      this.isActive = false;
+    },
+    ...mapActions({ sendResults: "results/sendResults" }),
+    ...mapActions({ deleteResults: "results/deleteResults" }),
+    deleteData() {
+      let id = this.getItem._id;
+      this.deleteResults(id);
+    },
   },
 };
 </script>
@@ -301,13 +387,13 @@ export default {
     //display: flex;
     //flex-direction: column;
     .high-charts {
-      width: 60%;
+      //width: 60%;
     }
   }
   .mark {
     padding: 0;
     background-color: inherit;
-    width: 60%;
+    //width: 60%;
   }
   ul {
     padding: 0;

@@ -27,21 +27,39 @@
             >Мой&nbsp;паспорт</router-link
           >
         </li>
-        <li>
-          <router-link
-            class="header__link"
+        <li class="nav-item dropdown test-text">
+          <a
+            class="header__link nav-link dropdown-toggle"
             :class="{ userLink: styleLink }"
-            :to="{ name: 'eysenck' }"
-            >Тест&nbsp;Айзенка</router-link
+            href="#"
+            id="navbarDarkDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
           >
-        </li>
-        <li>
-          <router-link
-            class="header__link"
-            :class="{ userLink: styleLink }"
-            :to="{ name: 'leary' }"
-            >Тест Лири</router-link
+            Тесты
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-dark"
+            aria-labelledby="navbarDarkDropdownMenuLink"
           >
+            <li>
+              <router-link
+                class="dropdown-item"
+                :class="{ userLink: styleLink }"
+                :to="{ name: 'eysenck' }"
+                >Тест&nbsp;Айзенка</router-link
+              >
+            </li>
+            <li>
+              <router-link
+                class="dropdown-item"
+                :class="{ userLink: styleLink }"
+                :to="{ name: 'leary' }"
+                >Тест Лири</router-link
+              >
+            </li>
+          </ul>
         </li>
         <li v-if="isLoggedIn">
           <a
@@ -173,6 +191,13 @@ export default {
   }
   nav li:last-child {
     margin-right: 0;
+  }
+  .dropdown-item.active {
+    background: transparent;
+  }
+
+  .test-text li {
+    margin: 0;
   }
 
   // .userLink {

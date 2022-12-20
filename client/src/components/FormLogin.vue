@@ -148,7 +148,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .bg-image {
   padding: 0;
   position: relative;

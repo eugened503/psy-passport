@@ -5,6 +5,7 @@
       :slides-per-view="3"
       :space-between="25"
       :loop="true"
+      :watch-slides-visibility="true"
       :autoplay="{
         delay: 1000,
         disableOnInteraction: false,
@@ -73,12 +74,12 @@ export default {
   overflow: visible;
 }
 
-:deep(.swiper-slide) {
-  // так как scoped глушит тили для лупа
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-}
+// :deep(.swiper-slide) {
+//   // так как scoped глушит тили для лупа
+//   text-align: center;
+//   font-size: 18px;
+//   background: #fff;
+// }
 
 .inside-wrapper {
   height: 200px;
@@ -87,6 +88,13 @@ export default {
     width: 100%;
     object-fit: cover;
   }
+}
+.swiper-slide-prev {
+  opacity: 0.25;
+}
+
+.swiper-slide-next + .swiper-slide + .swiper-slide {
+  opacity: 0.25;
 }
 
 // /* if 1 slide */
@@ -109,4 +117,12 @@ export default {
 //     opacity: 0.25;
 //   }
 // }
+</style>
+
+<style lang="scss">
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+}
 </style>

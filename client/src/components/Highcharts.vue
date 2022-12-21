@@ -75,6 +75,7 @@ export default {
         // },
 
         legend: {
+          enabled: false,
           align: "center",
           verticalAlign: "middle",
           layout: "vertical",

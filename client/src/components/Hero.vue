@@ -19,38 +19,38 @@ export default {
 .hero {
   position: relative;
   justify-content: center;
-  min-height: 100vh;
+  //min-height: 100vh;
   color: #fff;
   text-align: center;
 
   @media (max-width: 800px) {
-    min-height: 600px;
+    //min-height: 600px;
   }
   @media (max-width: 600px) {
-    padding-top: 158px;
+    //padding-top: 158px;
   }
 
-  .background-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(../assets/images/altai.jpg);
-    background-size: cover;
-    background-color: #2196f3;
-    z-index: -1;
-  }
-  .background-image:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #414a4f;
-    opacity: 0.75;
-  }
+  // .background-image {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background-image: url(../assets/images/altai.jpg);
+  //   background-size: cover;
+  //   background-color: #2196f3;
+  //   z-index: -1;
+  // }
+  // .background-image:after {
+  //   content: "";
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background-color: #414a4f;
+  //   opacity: 0.75;
+  // }
   h1 {
     font: bold 60px "Roboto", sans-serif;
     margin-bottom: 15px;

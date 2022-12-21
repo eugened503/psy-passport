@@ -59,17 +59,11 @@ export default {
   overflow: hidden;
   height: 100%;
   width: 100%;
-  //background: red;
 }
 .swiper-container {
   width: 100%;
   height: 100%;
 }
-// .swiper-slide {
-//   text-align: center;
-//   font-size: 18px;
-//   background: #fff;
-// }
 .swiper-container {
   overflow: visible;
 }
@@ -89,13 +83,13 @@ export default {
     object-fit: cover;
   }
 }
-.swiper-slide-prev {
-  opacity: 0.25;
-}
+// .swiper-slide-prev {
+//   opacity: 0.25;
+// }
 
-.swiper-slide-next + .swiper-slide + .swiper-slide {
-  opacity: 0.25;
-}
+// .swiper-slide-next + .swiper-slide + .swiper-slide {
+//   opacity: 0.25;
+// }
 
 // /* if 1 slide */
 // @media (max-width: 480px) {

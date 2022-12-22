@@ -6,6 +6,7 @@ import User from "@/views/User.vue";
 import PageError from "@/views/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";
 import LearyTest from "@/views/LearyTest.vue";
+import ShmishekTest from "@/views/ShmishekTest.vue";
 import store from "@/store/index";
 //console.log(store.getters["user/isLoggedIn"]);
 
@@ -67,6 +68,17 @@ const routes = [
     beforeEnter: () => {
       return store.dispatch("results/getResults");
     },
+  },
+  {
+    path: "/shmishek",
+    name: "shmishek",
+    component: ShmishekTest,
+    meta: {
+      requiresAuth: true,
+    },
+    // beforeEnter: () => {
+    //   return store.dispatch("results/getResults");
+    // },
   },
   {
     path: "/:any(.*)",

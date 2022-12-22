@@ -59,6 +59,14 @@
                 >Тест Лири</router-link
               >
             </li>
+            <li>
+              <router-link
+                class="dropdown-item"
+                :class="{ userLink: styleLink }"
+                :to="{ name: 'shmishek' }"
+                >Тест Шмишека и Леонгарда</router-link
+              >
+            </li>
           </ul>
         </li>
         <li v-if="isLoggedIn">

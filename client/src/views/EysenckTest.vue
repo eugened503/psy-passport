@@ -15,6 +15,7 @@
           :isDisabled="isDisabled"
           :questions="questions"
           :questionIndex="questionIndex"
+          name="Айзенка"
         />
       </div>
       <div

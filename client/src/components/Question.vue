@@ -4,7 +4,7 @@
       <div class="border">
         <div class="question bg-white p-3 border-bottom">
           <div class="d-flex flex-row flex-wrap justify-content-between mcq">
-            <h4>Тест Айзенка</h4>
+            <h4>Тест {{ name }}</h4>
             <span>({{ index + 1 }} из {{ questions.length }})</span>
           </div>
         </div>
@@ -64,6 +64,10 @@
 export default {
   name: "QuestionBlock",
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     index: {
       type: Number,
       required: true,

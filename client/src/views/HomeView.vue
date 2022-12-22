@@ -3,6 +3,11 @@
     <div class="background-image"></div>
     <LeadSlider />
     <Hero />
+    <div style="height: 200px; background-color: #2196f3; font-size: 36px">
+      Scroll Up and Down this page to see the parallax scrolling effect. This
+      div is just here to enable scrolling. Tip: Try to remove the
+      background-attachment property to remove the scrolling effect.
+    </div>
   </div>
 </template>
 
@@ -29,6 +34,7 @@ export default {
     background-image: url(../assets/images/altai.jpg);
     background-size: cover;
     background-color: #2196f3;
+    background-attachment: fixed;
     z-index: -1;
   }
   .background-image:after {

@@ -18,26 +18,33 @@
           name="Шмишека и Леонгарда"
         />
       </div>
-      <span>Демонстративность: {{ pointsDemo }}</span> <br />
-      <span>Застревание: {{ pointsJam }}</span> <br />
-      <span>Педантичност: {{ pointsPed }}</span> <br />
-      <span>Неуравновешенность: {{ pointsInsta }}</span> <br />
-      <span>Гипертимность: {{ pointsHyper }}</span> <br />
-      <span>Дистимичность: {{ pointsDysthy }}</span> <br />
-      <span>Тревожность: {{ pointsAnxiety }}</span> <br />
-      <span>Циклотимичность: {{ pointsCyclo }}</span> <br />
-      <span>Аффективность: {{ pointsAffect }}</span> <br />
-      <span>Эмотивность: {{ pointsEmo }}</span> <br />
+      <div class="d-flex">
+        <div>
+          <span>Демонстративность: {{ pointsDemo }}</span> <br />
+          <span>Застревание: {{ pointsJam }}</span> <br />
+          <span>Педантичность: {{ pointsPed }}</span> <br />
+          <span>Неуравновешенность: {{ pointsInsta }}</span> <br />
+          <span>Гипертимность: {{ pointsHyper }}</span> <br />
+          <span>Дистимичность: {{ pointsDysthy }}</span> <br />
+          <span>Тревожность: {{ pointsAnxiety }}</span> <br />
+          <span>Циклотимичность: {{ pointsCyclo }}</span> <br />
+          <span>Аффективность: {{ pointsAffect }}</span> <br />
+          <span>Эмотивность: {{ pointsEmo }}</span> <br />
+        </div>
+        <HCShmishek :options="options" :arr="[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" />
+      </div>
     </div>
   </section>
 </template>
 <script>
 import questions from "@/data/shmishek/questions.json";
+import HCShmishek from "@/components/HCShmishek.vue";
 import Question from "@/components/Question.vue";
 export default {
   name: "ShmishekPage",
   components: {
     Question,
+    HCShmishek,
   },
   data() {
     return {
@@ -105,6 +112,24 @@ export default {
     },
     pointsEmo() {
       return this.points(this.emo).length;
+    },
+    options() {
+      return [
+        {
+          data: [
+            this.pointsDemo,
+            this.pointsJam,
+            this.pointsPed,
+            this.pointsInsta,
+            this.pointsHyper,
+            this.pointsDysthy,
+            this.pointsAnxiety,
+            this.pointsCyclo,
+            this.pointsAffect,
+            this.pointsEmo,
+          ],
+        },
+      ];
     },
   },
   methods: {

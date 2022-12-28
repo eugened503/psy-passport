@@ -52,6 +52,7 @@ export default {
             resolve(resp);
           })
           .catch((err) => {
+            console.log(err);
             //console.log(err.response.data.validation.body.message);
             //console.log(err.response.status);
             if (err.response.status === 400) {
@@ -121,7 +122,7 @@ export default {
           .catch((err) => {
             commit("error", err.response.data.message);
             console.log("error", err.response.data.message);
-            //localStorage.removeItem("token");
+            localStorage.removeItem("token");
             reject(err.response.data.message);
           });
       });

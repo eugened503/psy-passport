@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router";
+//import * as res from "./results";
 
 export default {
   namespaced: true,
@@ -151,7 +152,7 @@ export default {
 
     logout(state) {
       //state.status = "";
-      state.token = "";
+      state.token = null;
     },
 
     user_success(state, user) {

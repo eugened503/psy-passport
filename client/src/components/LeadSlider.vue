@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getImgUrl(pic) {
-      return require("@/assets/images/slider/" + pic);
+      //return require("@/assets/images/slider/" + pic);
     },
   },
 };

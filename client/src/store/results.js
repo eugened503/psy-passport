@@ -1,10 +1,11 @@
 import axios from "axios";
+import * as user from "./user";
 
 export default {
   namespaced: true,
   state: {
-    token: localStorage.getItem("token") || "",
-    results: [],
+    //token: user.default.state.token,
+    results: null,
     error: null,
     resultsStatus: false,
   },
@@ -17,7 +18,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getters.getToken}`,
+          Authorization: `Bearer ${user.default.state.token}`,
         },
       })
         .then((resp) => {
@@ -26,6 +27,7 @@ export default {
           commit("send_results", [results]);
         })
         .catch((err) => {
+          console.log('state.token', user.default.state.token)
           if (err.response.status === 400) {
             commit("error", err.response.data.validation.body.message);
             console.log(err.response.data.validation.body.message);
@@ -36,12 +38,13 @@ export default {
     },
 
     getResults({ commit, getters }) {
+      console.log("state.token", user.default.state.token);
       return axios({
         url: "http://localhost:3000/results",
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getters.getToken}`,
+          Authorization: `Bearer ${user.default.state.token}`,
         },
       })
         .then((resp) => {
@@ -61,7 +64,7 @@ export default {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${getters.getToken}`,
+          Authorization: `Bearer ${user.default.state.token}`,
         },
       })
         .then(() => {
@@ -84,7 +87,7 @@ export default {
 
   getters: {
     getStateResults: (state) => state.results,
-    getToken: (state) => state.token,
+    //getToken: (state) => state.token,
     getError: (state) => state.error,
   },
 };

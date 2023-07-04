@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs"); // импортируем bcrypt
+const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const { NODE_ENV } = process.env;
 const UnauthorizedError = require('../errors/unauthorized-err');

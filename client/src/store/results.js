@@ -4,8 +4,8 @@ export default {
   namespaced: true,
   state: {
     token: localStorage.getItem("token") || "",
-    results: {},
-    error: "",
+    results: [],
+    error: null,
     resultsStatus: false,
   },
 
@@ -83,7 +83,7 @@ export default {
   },
 
   getters: {
-    getResults: (state) => state.results,
+    getStateResults: (state) => state.results,
     getToken: (state) => state.token,
     getError: (state) => state.error,
   },

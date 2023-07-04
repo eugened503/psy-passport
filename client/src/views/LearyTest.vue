@@ -243,9 +243,9 @@ export default {
         },
       };
     },
-    ...mapGetters("results", { getResults: "getResults" }),
+    ...mapGetters("results", { getStateResults: "getStateResults" }),
     getItem() {
-      return this.getResults?.find((item) => item.name === "leary");
+      return this.getStateResults?.find((item) => item.name === "leary");
     },
     getLearyRes() {
       return this.getItem?.records;

@@ -304,10 +304,10 @@ export default {
         },
       };
     },
-    ...mapGetters("results", { getResults: "getResults" }),
+    ...mapGetters("results", { getStateResults: "getStateResults" }),
     // ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
     getItem() {
-      return this.getResults?.find((item) => item.name === "eysenck");
+      return this.getStateResults?.find((item) => item.name === "eysenck");
     },
     getEysenckRes() {
       return this.getItem?.records;

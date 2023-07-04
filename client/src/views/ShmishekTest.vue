@@ -37,6 +37,7 @@
   </section>
 </template>
 <script>
+import { mapActions } from "vuex";
 import questions from "@/data/shmishek/questions.json";
 import HCShmishek from "@/components/HCShmishek.vue";
 import Question from "@/components/Question.vue";
@@ -170,6 +171,10 @@ export default {
         arr[i - 1] = false;
       });
     },
+
+    //...mapActions({ sendResults: "results/sendResults" }),
+    ...mapActions({ loadResults: "results/getResults" }),
+    //...mapActions({ deleteResults: "results/deleteResults" }),
   },
   created() {
     this.questions.forEach((question) => {
@@ -193,6 +198,8 @@ export default {
     this.keys(this.cycloTrue, [], this.cyclo);
     this.keys(this.affectTrue, [], this.affect);
     this.keys(this.emoTrue, this.emoFalse, this.emo);
+
+    this.loadResults();
   },
 };
 </script>

@@ -54,9 +54,9 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
-    beforeEnter: () => {
-      return store.dispatch("results/getResults");
-    },
+    // beforeEnter: () => {
+    //   return store.dispatch("results/getResults");
+    // },
   },
   {
     path: "/leary",
@@ -65,9 +65,9 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
-    beforeEnter: () => {
-      return store.dispatch("results/getResults");
-    },
+    // beforeEnter: () => {
+    //   return store.dispatch("results/getResults");
+    // },
   },
   {
     path: "/shmishek",
@@ -93,20 +93,40 @@ const router = createRouter({
   linkExactActiveClass: "active",
 });
 
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (
+//       store.getters["user/isLoggedIn"] &&
+//       store.getters["user/getError"].length === 0 &&
+//       store.getters["results/getError"].length === 0
+//     ) {
+//       next();
+//       return;
+//     }
+//     next("/login");
+//   } else {
+//     next();
+//   }
+// });
+
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (
-      store.getters["user/isLoggedIn"] &&
-      store.getters["user/getError"].length === 0 &&
-      store.getters["results/getError"].length === 0
-    ) {
-      next();
-      return;
-    }
-    next("/login");
-  } else {
-    next();
+  const token = store.getters["user/isLoggedIn"];
+  if (to.path === "/login" && token) {
+    next("/");
+    return;
   }
+
+  if (to.path === "/register" && token) {
+    next("/");
+    return;
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
+    next("/login");
+    return;
+  }
+
+  next();
 });
 
 export default router;

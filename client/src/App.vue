@@ -9,41 +9,51 @@
   </main>
 </template>
 <script>
-//import { mapGetters } from "vuex";
+//import { mapActions } from "vuex";
 //import Spinner from "@/components/Spinner.vue";
-//import axios from "axios";
+import axios from "axios";
 import Header from "@/components/Header.vue";
 
 export default {
   components: { Header },
   name: "App",
-  // created() {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  //   }
-  //   axios.interceptors.response.use(undefined, function (err) {
-  //     return new Promise(function () {
-  //       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-  //         this.logout();
-  //       }
-  //       throw err;
-  //     });
-  //   });
-  // },
-
-  computed: {
-    //...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
-    //...mapGetters("user", { isStatus: "authStatus" }),
+  created() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      //console.log("1");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+    axios.interceptors.response.use(undefined, function (err) {
+      //console.log("2");
+      return new Promise(function () {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          //console.log("3");
+          this.logout();
+        }
+        //console.log("4", err);
+        throw err;
+      });
+    });
   },
 
-  // methods: {
-  //   logout() {
-  //     this.$store.dispatch("user/logout").then(() => {
-  //       this.$router.push({ name: "login" });
-  //     });
-  //   },
+  // computed: {
+  //   ...mapGetters("user", { getToken: "getToken" }),
   // },
+
+  // created() {
+  //   this.fetchUser();
+  // },
+
+  methods: {
+    // ...mapActions({
+    //   fetchUser: "user/profile",
+    // }),
+    logout() {
+      this.$store.dispatch("user/logout").then(() => {
+        this.$router.push({ name: "login" });
+      });
+    },
+  },
 };
 </script>
 

@@ -13,14 +13,14 @@
 
       <div class="row">
         <div class="col-lg-4">
-          <ProfileCard :name="getUser.name" />
+          <ProfileCard :name="getUser?.name" />
           <SocialCard />
         </div>
         <div class="col-lg-8">
           <UserInfo
-            :name="getUser.name"
-            :email="getUser.email"
-            :id="getUser._id"
+            :name="getUser?.name"
+            :email="getUser?.email"
+            :id="getUser?._id"
           />
           <div class="row">
             <Card title="Пройденные тесты" />
@@ -49,9 +49,9 @@ export default {
     this.fetchUser();
   },
 
-  watch: {
-    $route: "fetchUser",
-  },
+  // watch: {
+  //   $route: "fetchUser",
+  // },
 
   methods: {
     ...mapActions({

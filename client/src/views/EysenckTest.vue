@@ -307,7 +307,7 @@ export default {
     ...mapGetters("results", { getResults: "getResults" }),
     // ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
     getItem() {
-      return this.getResults?.filter((item) => item.name === "eysenck")[0];
+      return this.getResults?.find((item) => item.name === "eysenck");
     },
     getEysenckRes() {
       return this.getItem?.records;
@@ -379,7 +379,7 @@ export default {
     //     .catch((err) => console.log(err));
     // },
     ...mapActions({ sendResults: "results/sendResults" }),
-    //...mapActions({ loadResults: "results/getResults" }),
+    ...mapActions({ loadResults: "results/getResults" }),
     ...mapActions({ deleteResults: "results/deleteResults" }),
     deleteData() {
       let id = this.getItem._id;
@@ -408,6 +408,8 @@ export default {
     );
     this.keys(this.lieIndexTrue, this.lieIndexFalse, this.lie);
     this.keys(this.neuroIndexTrue, [], this.neuro);
+
+    this.loadResults();
   },
 };
 </script>

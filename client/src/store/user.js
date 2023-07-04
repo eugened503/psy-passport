@@ -1,12 +1,12 @@
 import axios from "axios";
-//import router from "@/router";
+import router from "@/router";
 
 export default {
   namespaced: true,
   state: {
     //status: "",
-    token: localStorage.getItem("token") || "",
-    user: {},
+    token: localStorage.getItem("token") || null,
+    user: null,
     error: "",
   },
 
@@ -101,6 +101,7 @@ export default {
     },
 
     profile({ commit, getters }) {
+      //console.log("profile");
       return new Promise((resolve, reject) => {
         //commit("request");
         axios({
@@ -114,10 +115,15 @@ export default {
           .then((resp) => {
             //const token = resp.data.token;
             const user = resp.data;
-            //localStorage.setItem("token", token);
-            //axios.defaults.headers.common["Authorization"] = token;
             commit("user_success", user);
             resolve(resp);
+            if (
+              router.isReady() &&
+              router.currentRoute.value.path === "/login"
+            ) {
+              //console.log("123");
+              router.push("/");
+            }
           })
           .catch((err) => {
             commit("error", err.response.data.message);
@@ -149,6 +155,7 @@ export default {
     },
 
     user_success(state, user) {
+      //console.log("user_success");
       //state.status = "success";
       state.user = user;
     },

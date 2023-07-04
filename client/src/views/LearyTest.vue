@@ -141,6 +141,7 @@ export default {
       question.status = false;
       question.id = i + 1;
     });
+    this.loadResults();
   },
   mounted() {
     this.shuffle(this.questions);
@@ -244,7 +245,7 @@ export default {
     },
     ...mapGetters("results", { getResults: "getResults" }),
     getItem() {
-      return this.getResults?.filter((item) => item.name === "leary")[0];
+      return this.getResults?.find((item) => item.name === "leary");
     },
     getLearyRes() {
       return this.getItem?.records;
@@ -360,6 +361,7 @@ export default {
     },
     ...mapActions({ sendResults: "results/sendResults" }),
     ...mapActions({ deleteResults: "results/deleteResults" }),
+    ...mapActions({ loadResults: "results/getResults" }),
     deleteData() {
       let id = this.getItem._id;
       this.deleteResults(id);

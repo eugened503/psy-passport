@@ -87,27 +87,11 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   linkActiveClass: "active",
   linkExactActiveClass: "active",
 });
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (
-//       store.getters["user/isLoggedIn"] &&
-//       store.getters["user/getError"].length === 0 &&
-//       store.getters["results/getError"].length === 0
-//     ) {
-//       next();
-//       return;
-//     }
-//     next("/login");
-//   } else {
-//     next();
-//   }
-// });
 
 router.beforeEach((to, from, next) => {
   const token = store.getters["user/isLoggedIn"];

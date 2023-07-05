@@ -69,7 +69,7 @@
     </div>
   </div>
 </template>
-<script>
+<!-- <script>
 export default {
   name: "CardBlock",
   props: {
@@ -80,6 +80,16 @@ export default {
     },
   },
 };
+</script> -->
+
+<script setup>
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
+    default: "",
+  },
+});
 </script>
 
 <style lang="scss" scoped>

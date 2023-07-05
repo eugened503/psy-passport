@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { watch, toRefs, ref, nextTick } from "vue";
+import { watch, toRefs, ref, nextTick, onUpdated, onMounted } from "vue";
 const props = defineProps({
   dataArr: Array,
 });
@@ -73,9 +73,13 @@ const chartOptions = ref({
 //   { deep: true }
 // );
 
-setTimeout(() => {
-  chartOptions.value.series[0].data = dataArr;
-}, 0);
+onMounted(() => {
+    chartOptions.value.series[0].data = dataArr;
+});
+
+// setTimeout(() => {
+//   chartOptions.value.series[0].data = dataArr;
+// }, 0);
 
 </script>
 <style lang="scss" scoped>

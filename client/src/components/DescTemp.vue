@@ -78,7 +78,7 @@ export default {
     },
 
     getImgUrl(pic) {
-      //return require("@/assets/images/" + pic);
+      return new URL("../assets/images/" + pic, import.meta.url)
     },
   },
   created() {

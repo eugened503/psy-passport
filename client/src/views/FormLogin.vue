@@ -74,6 +74,12 @@
                       class="fw-bold text-body"
                       ><u>Регистрация</u></router-link
                     >
+                    <br />
+                    <router-link
+                      :to="{ name: 'home' }"
+                      class="fw-bold text-body"
+                      ><u>На главную</u></router-link
+                    >
                   </p>
                 </form>
               </div>
@@ -126,10 +132,9 @@ export default {
         password: this.password,
       };
       //this.isLoader = true;
-      this.$store
-        .dispatch("user/login", data)
-        .then(() => this.$router.push({ name: "user" }))
-        .catch((err) => console.log(err));
+      this.$store.dispatch("user/login", data);
+      //.then(() => this.$router.push({ name: "user" }))
+      //.catch((err) => console.log(err));
       //.catch((err) => console.log(err.response.data.validation.body.message));
       //.catch((err) => console.log(err));
       // .catch((error) => {

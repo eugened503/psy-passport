@@ -3,15 +3,21 @@
     <div class="background-image"></div>
     <h1>Создай свой Пси Паспорт</h1>
     <h3>И поделись с друзьями</h3>
-    <router-link :to="{ name: 'eysenck' }" class="btn"
+    <router-link v-if="isLoggedIn" :to="{ name: 'eysenck' }" class="btn"
       >Пройти тест Айзенка</router-link
     >
+    <router-link v-else :to="{ name: 'login' }" class="btn">Войти</router-link>
   </section>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "HeroBlock",
+  computed: {
+    ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
+  },
 };
 </script>
 

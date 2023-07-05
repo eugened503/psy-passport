@@ -19,7 +19,7 @@
             >Главная</router-link
           >
         </li>
-        <li>
+        <li v-if="isLoggedIn">
           <router-link
             class="header__link"
             :class="{ userLink: styleLink }"
@@ -27,7 +27,7 @@
             >Мой&nbsp;паспорт</router-link
           >
         </li>
-        <li class="nav-item dropdown test-text">
+        <li v-if="isLoggedIn" class="nav-item dropdown test-text">
           <a
             class="header__link nav-link dropdown-toggle"
             :class="{ userLink: styleLink }"
@@ -68,6 +68,14 @@
               >
             </li>
           </ul>
+        </li>
+        <li v-if="!isLoggedIn">
+          <router-link
+            class="header__link"
+            :class="{ userLink: styleLink }"
+            :to="{ name: 'login' }"
+            >Войти</router-link
+          >
         </li>
         <li v-if="isLoggedIn">
           <a

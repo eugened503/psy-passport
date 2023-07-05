@@ -28,6 +28,7 @@ export default {
             //axios.defaults.headers.common["Authorization"] = token;
             //commit("register_success");
             resolve(resp);
+            router.push({ name: "login" });
           })
           .catch((err) => {
             commit("error", err.response.data.message);
@@ -51,6 +52,7 @@ export default {
             //axios.defaults.headers.common["Authorization"] = token;
             commit("login_success", token);
             resolve(resp);
+            router.push({ name: "home" });
           })
           .catch((err) => {
             console.log(err);
@@ -91,7 +93,7 @@ export default {
             commit("logout");
             localStorage.removeItem("token");
             resolve(resp);
-            //router.push({ name: "login" });
+            router.push({ name: "home" });
           })
           .catch((err) => {
             commit("error", err.response.data.message);
@@ -164,6 +166,10 @@ export default {
     error(state, error) {
       //state.status = "error";
       state.error = error;
+    },
+    clearError(state) {
+      //state.status = "error";
+      state.error = null;
     },
   },
 

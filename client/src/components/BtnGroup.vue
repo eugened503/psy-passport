@@ -7,23 +7,21 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "BtnGroupBlock",
-  props: {
-    lie: {
-      type: Boolean,
-      default: false,
-    },
+<script setup>
+const props = defineProps({
+  lie: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    beginAgain() {
-      this.$emit("reset");
-    },
-    save() {
-      this.$emit("sendResults");
-    },
-  },
+});
+
+const emit = defineEmits(["reset", "sendResults"]);
+
+const beginAgain = () => {
+  emit("reset");
+};
+const save = () => {
+  emit("sendResults");
 };
 </script>
 <style lang="scss" scoped>

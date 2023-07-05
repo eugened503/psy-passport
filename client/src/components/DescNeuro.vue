@@ -52,11 +52,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "DescNeuroBlock",
-};
-</script>
+<script setup></script>
 <style lang="scss" scoped>
 .about {
   //margin: 4em 0;

@@ -39,7 +39,7 @@
             {{ octantPoints.octantEighthPoints }}
           </div>
         </div>
-        <HCLeary :options="options" :arr="[0, 0, 0, 0, 0, 0, 0, 0]" />
+        <HCLeary :dataArr="options"/>
         <BtnGroup
           @reset="reset"
           @sendResults="sendResults(allResults)"
@@ -108,7 +108,8 @@
             {{ getLearyRes.octantPoints.octantEighthPoints }}
           </div>
         </div>
-        <HCLeary :options="[]" :arr="getLearyRes?.options[0].data" />
+        <!-- {{ getLearyRes }} -->
+        <HCLeary :dataArr="getLearyRes?.options" />
         <button @click="deleteData" class="btn mt-2">Удалить</button>
       </div>
     </div>
@@ -218,18 +219,14 @@ export default {
     },
     options() {
       return [
-        {
-          data: [
-            this.octantPoints.octantFirstPoints,
-            this.octantPoints.octantEighthPoints,
-            this.octantPoints.octantSeventhPoints,
-            this.octantPoints.octantSixthPoints,
-            this.octantPoints.octantFifthPoints,
-            this.octantPoints.octantFourthPoints,
-            this.octantPoints.octantThirdPoints,
-            this.octantPoints.octantSecondPoints,
-          ],
-        },
+        this.octantPoints.octantFirstPoints,
+        this.octantPoints.octantEighthPoints,
+        this.octantPoints.octantSeventhPoints,
+        this.octantPoints.octantSixthPoints,
+        this.octantPoints.octantFifthPoints,
+        this.octantPoints.octantFourthPoints,
+        this.octantPoints.octantThirdPoints,
+        this.octantPoints.octantSecondPoints,
       ];
     },
     allResults() {

@@ -4,7 +4,6 @@ import * as user from "./user";
 export default {
   namespaced: true,
   state: {
-    //token: user.default.state.token,
     results: null,
     error: null,
     resultsStatus: false,
@@ -38,7 +37,6 @@ export default {
     },
 
     getResults({ commit, getters }) {
-      console.log("state.token", user.default.state.token);
       return axios({
         url: "http://localhost:3000/results",
         method: "GET",
@@ -87,7 +85,6 @@ export default {
 
   getters: {
     getStateResults: (state) => state.results,
-    //getToken: (state) => state.token,
     getError: (state) => state.error,
   },
 };

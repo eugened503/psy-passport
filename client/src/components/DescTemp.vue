@@ -53,40 +53,24 @@
     </div>
   </div>
 </template>
-
-<script>
+<script setup>
 import descriptions from "@/data/eysenck/descriptions.json";
-export default {
-  name: "DescTempBlock",
-  props: {
-    activeName: {
-      type: String,
-      required: true,
-      default: "",
-    },
+const props = defineProps({
+  activeName: {
+    type: String,
+    required: true,
+    default: "",
   },
-  data() {
-    return {
-      descriptions,
-    };
-  },
-  methods: {
-    randomKey() {
-      return (
-        new Date().getTime() + Math.floor(Math.random() * 10000).toString()
-      );
-    },
-
-    getImgUrl(pic) {
-      return new URL("../assets/images/" + pic, import.meta.url)
-    },
-  },
-  created() {
-    this.descriptions.forEach((description) => {
-      description.id = this.randomKey();
-    });
-  },
+});
+const randomKey = () => {
+  return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
 };
+const getImgUrl = (pic) => {
+  return new URL("../assets/images/" + pic, import.meta.url);
+};
+descriptions.forEach((description) => {
+  description.id = randomKey();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -60,57 +60,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "QuestionBlock",
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
-    text: {
-      type: String,
-      required: true,
-    },
-    responses: {
-      type: Array,
-      required: true,
-    },
-    answers: {
-      type: Array,
-      required: true,
-    },
-    questions: {
-      type: Array,
-      required: true,
-    },
-    isDisabled: {
-      type: Number,
-      required: true,
-    },
-    questionIndex: {
-      type: Number,
-      required: true,
-    },
-  },
+<script setup>
+const props = defineProps({
+  name: String,
+  index: Number,
+  text: String,
+  responses: Array,
+  answers: Array,
+  questions: Array,
+  isDisabled: Number,
+  questionIndex: Number,
+});
 
-  methods: {
-    next() {
-      this.$emit("next");
-    },
+const emit = defineEmits(["next", "prev", "addRes"]);
 
-    prev() {
-      this.$emit("prev");
-    },
+const next = () => {
+  emit("next");
+};
 
-    addRes(index, res) {
-      this.$emit("addRes", { index, res });
-    },
-  },
+const prev = () => {
+  emit("prev");
+};
+
+const addRes = (index, res) => {
+  emit("addRes", { index, res });
 };
 </script>
 

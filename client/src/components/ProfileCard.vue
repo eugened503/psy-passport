@@ -19,17 +19,10 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "ProfileCardBlock",
-  props: {
-    name: {
-      type: String,
-      required: true,
-      default: "",
-    },
-  },
-};
+<script setup>
+const props = defineProps({
+  name: String,
+});
 </script>
 
 <style lang="scss" scoped></style>

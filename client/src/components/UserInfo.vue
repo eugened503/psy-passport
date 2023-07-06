@@ -48,27 +48,13 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "UserInfoBlock",
-  props: {
-    name: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    email: {
-      type: String,
-      required: true,
-      default: "",
-    },
-    id: {
-      type: String,
-      required: true,
-      default: "",
-    },
-  },
-};
+
+<script setup>
+const props = defineProps({
+  name: String,
+  email: String,
+  id: String,
+});
 </script>
 
 <style lang="scss" scoped>

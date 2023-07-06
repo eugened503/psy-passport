@@ -8,11 +8,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "SpinnerBlock",
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .spinner {

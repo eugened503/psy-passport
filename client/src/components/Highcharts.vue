@@ -5,134 +5,69 @@
   </div>
 </template>
 
-<script>
-import Highcharts from "highcharts";
-import HighchartsMore from "highcharts/highcharts-more";
-HighchartsMore(Highcharts);
-export default {
-  name: "HighchartsBlock",
-  props: {
-    options: {
-      type: Array,
-      required: true,
-    },
-    arr: {
-      type: Array,
-      required: true,
-    },
+<script setup>
+import { toRefs, ref, onMounted } from "vue";
+
+const props = defineProps({
+  dataArr: Array,
+});
+
+const { dataArr } = toRefs(props);
+
+const chartOptions = ref({
+  chart: {
+    polar: true,
+    type: "line",
   },
-  data() {
-    return {
-      //counter: 2,
-      chartOptions: Highcharts.merge(this.options, {
-        chart: {
-          polar: true,
-          type: "line",
-          //backgroundColor: "#FCFFC5",
-        },
-        accessibility: { enabled: false },
 
-        //colors: ["#32700d"],
-        title: {
-          text: "",
-          //y: 0,
-          //x: -80,
-          //x: 0,
-        },
+  accessibility: { enabled: false },
 
-        subtitle: {
-          //text: "Н-нестабильность, Э-экстраверсия, С-стабильность, И-интроверсия",
-          //y: 0,
-          //y: -0.3,
-        },
-
-        pane: {
-          size: "100%",
-        },
-
-        xAxis: {
-          //visible: false,
-          labels: {
-            enabled: false,
-            X: 0,
-            y: 0,
-          },
-          categories: ["Н", "Э", "С", "И"],
-          tickmarkPlacement: "on",
-          lineWidth: 0,
-        },
-
-        yAxis: {
-          gridLineInterpolation: "polygon",
-          lineWidth: 0,
-          min: 0,
-        },
-
-        // tooltip: {
-        //   shared: true,
-        //   pointFormat:
-        //     '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>',
-        // },
-
-        legend: {
-          enabled: false,
-          align: "center",
-          verticalAlign: "middle",
-          layout: "vertical",
-        },
-
-        series: [
-          //   {
-          //     name: "Allocated",
-          //     data: this.optionsData,
-          //     pointPlacement: "on",
-          //   },
-          {
-            type: "area",
-            name: "Area",
-            data: this.arr,
-            pointPlacement: "on",
-            maxWidth: 100,
-          },
-        ],
-
-        // responsive: {
-        //   rules: [
-        //     {
-        //       condition: {
-        //         maxWidth: 500,
-        //       },
-        //       chartOptions: {
-        //         legend: {
-        //           align: "center",
-        //           verticalAlign: "bottom",
-        //           layout: "horizontal",
-        //         },
-        //         pane: {
-        //           size: "70%",
-        //         },
-        //       },
-        //     },
-        //   ],
-        // },
-      }),
-    };
+  title: {
+    text: "",
   },
-  watch: {
-    options: {
-      handler(newOpt) {
-        console.log(newOpt);
-        this.chartOptions.series = newOpt;
-      },
-      deep: true,
+
+  pane: {
+    size: "100%",
+  },
+
+  xAxis: {
+    labels: {
+      enabled: false,
+      X: 0,
+      y: 0,
     },
+    categories: ["Н", "Э", "С", "И"],
+    tickmarkPlacement: "on",
+    lineWidth: 0,
   },
-  //   computed: {
-  //     getOptionsData() {
-  //       return this.optionsData;
-  //     },
-  //   },
-};
+
+  yAxis: {
+    gridLineInterpolation: "polygon",
+    lineWidth: 0,
+    min: 0,
+  },
+
+  legend: {
+    enabled: false,
+    align: "center",
+    verticalAlign: "middle",
+    layout: "vertical",
+  },
+
+  series: [
+    {
+      type: "area",
+      name: "Area",
+      data: [],
+      pointPlacement: "on",
+      maxWidth: 100,
+    },
+  ],
+});
+
+onMounted(() => {
+  chartOptions.value.series[0].data = dataArr;
+});
 </script>
 <style lang="scss" scoped>
 .high-charts {

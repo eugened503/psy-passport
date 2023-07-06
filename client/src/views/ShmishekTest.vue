@@ -31,7 +31,7 @@
           <span>Аффективность: {{ pointsAffect }}</span> <br />
           <span>Эмотивность: {{ pointsEmo }}</span> <br />
         </div>
-        <HCShmishek :options="options" :arr="[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" />
+        <!-- <HCShmishek :dataArr="options" /> -->
       </div>
     </div>
   </section>

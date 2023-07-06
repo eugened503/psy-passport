@@ -21,12 +21,10 @@ export default {
         },
       })
         .then((resp) => {
-          console.log(resp);
           let results = resp.data.data;
           commit("send_results", [results]);
         })
         .catch((err) => {
-          console.log('state.token', user.default.state.token)
           if (err.response.status === 400) {
             commit("error", err.response.data.validation.body.message);
             console.log(err.response.data.validation.body.message);

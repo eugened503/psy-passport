@@ -27,17 +27,12 @@
   </table>
 </template>
 
-<script>
-export default {
-  name: "TableQuizBlock",
-  props: {
-    answers: {
-      type: Array,
-      required: true,
-    },
-  },
-};
+<script setup>
+const props = defineProps({
+  answers: Array,
+});
 </script>
+
 <style lang="scss" scoped>
 table {
   td {

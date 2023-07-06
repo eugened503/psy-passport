@@ -25,7 +25,7 @@
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
           <TableResults class="mt-4" :results="results" />
-          <Highcharts class="mt-4" :options="options" :arr="[0, 0, 12, 12]" />
+          <Highcharts class="mt-4" :dataArr="options" />
         </div>
         <div>
           <h3>Данные не сохранены</h3>
@@ -59,11 +59,7 @@
         <h2>Тест завершен</h2>
         <div class="results-head d-flex justify-content-between">
           <TableResults class="mt-4" :results="getEysenckRes?.test" />
-          <Highcharts
-            class="mt-4"
-            :options="[]"
-            :arr="getEysenckRes?.options[0].data"
-          />
+          <Highcharts class="mt-4" :dataArr="getEysenckRes?.options" />
         </div>
         <div>
           <div>
@@ -173,14 +169,10 @@ export default {
 
     options() {
       return [
-        {
-          data: [
-            this.scaleInstab,
-            this.scaleExtra,
-            this.scaleStab,
-            this.scaleIntro,
-          ],
-        },
+        this.scaleInstab,
+        this.scaleExtra,
+        this.scaleStab,
+        this.scaleIntro,
       ];
     },
 

@@ -36,7 +36,7 @@
         <TableQuiz :answers="answers" />
         <BtnGroup
           @reset="reset"
-          @sendResults="sendResults(allResults)"
+          @sendResults="sendResults"
           class="mt-4"
         />
       </div>
@@ -75,7 +75,7 @@
     </div>
   </section>
 </template>
-<script>
+<script setup>
 import questions from "@/data/eysenck/questions.json";
 import Highcharts from "@/components/Highcharts.vue";
 import TableQuiz from "@/components/TableQuiz.vue";
@@ -86,324 +86,239 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
 import TableResults from "@/components/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { mapGetters, mapActions } from "vuex";
-export default {
-  name: "QuizBlock",
-  components: {
-    Highcharts,
-    TableQuiz,
-    DescTemp,
-    DescEI,
-    DescNeuro,
-    ProgressBar,
-    Question,
-    TableResults,
-    BtnGroup,
-  },
-  data() {
-    return {
-      extroIntroIndexTrue: [
-        1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
-      ],
-      extroIntroIndexFalse: [5, 15, 20, 29, 32, 34, 37, 41, 51],
-      neuroIndexTrue: [
-        2, 4, 7, 9, 11, 14, 16, 19, 21, 23, 26, 28, 31, 33, 35, 38, 40, 43, 45,
-        47, 50, 52, 55, 57,
-      ],
-      lieIndexTrue: [6, 24, 36],
-      lieIndexFalse: [12, 18, 30, 42, 48, 54],
-      extroIntro: [],
-      neuro: [],
-      lie: [],
-      questionIndex: 0,
-      answers: [],
-      questions,
-      averageValue: 12,
-    };
-  },
-  computed: {
-    pointsExtroIntro() {
-      return this.points(this.extroIntro).length;
+import { ref, computed, onBeforeMount } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const extroIntroIndexTrue = ref([
+  1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
+]);
+const extroIntroIndexFalse = ref([5, 15, 20, 29, 32, 34, 37, 41, 51]);
+const neuroIndexTrue = ref([
+  2, 4, 7, 9, 11, 14, 16, 19, 21, 23, 26, 28, 31, 33, 35, 38, 40, 43, 45, 47,
+  50, 52, 55, 57,
+]);
+const lieIndexTrue = ref([6, 24, 36]);
+const lieIndexFalse = ref([12, 18, 30, 42, 48, 54]);
+const extroIntro = ref([]);
+const neuro = ref([]);
+const lie = ref([]);
+const questionIndex = ref(0);
+const answers = ref([]);
+const averageValue = ref(12);
+
+const pointsExtroIntro = computed(() => points(extroIntro.value).length);
+const pointsNeuro = computed(() => points(neuro.value).length);
+const pointsLie = computed(() => points(lie.value).length);
+const isDisabled = computed(() => answers.value.length);
+const scaleInstab = computed(() => {
+  return pointsNeuro.value > averageValue.value
+    ? Math.abs(averageValue.value - pointsNeuro.value)
+    : 0;
+});
+const scaleStab = computed(() => {
+  if (pointsNeuro.value > 0 && pointsNeuro.value < averageValue.value)
+    return Math.abs(pointsNeuro.value - averageValue.value);
+  if (pointsNeuro.value >= averageValue.value) return 0;
+  return averageValue.value;
+});
+const scaleIntro = computed(() => {
+  if (pointsExtroIntro.value > 0 && pointsExtroIntro.value < averageValue.value)
+    return Math.abs(pointsExtroIntro.value - averageValue.value);
+  if (pointsExtroIntro.value >= averageValue.value) return 0;
+  return averageValue.value;
+});
+const scaleExtra = computed(() => {
+  return pointsExtroIntro.value > averageValue.value
+    ? Math.abs(averageValue.value - pointsExtroIntro.value)
+    : 0;
+});
+const options = computed(() => {
+  return [
+    scaleInstab.value,
+    scaleExtra.value,
+    scaleStab.value,
+    scaleIntro.value,
+  ];
+});
+const textExtroIntro = computed(() => {
+  if (pointsExtroIntro.value > 19) return "Яркий экстраверт";
+  if (pointsExtroIntro.value > 14 && pointsExtroIntro.value <= 19)
+    return "Экстраверт";
+  if (pointsExtroIntro.value > 12 && pointsExtroIntro.value <= 14)
+    return "Склонность к экстраверсии";
+  if (pointsExtroIntro.value === 12) return "среднее значение";
+  if (pointsExtroIntro.value >= 9 && pointsExtroIntro.value < 12)
+    return "Склонность к интроверсии";
+  if (pointsExtroIntro.value >= 5 && pointsExtroIntro.value < 9)
+    return "Интроверт";
+  // if (pointsExtroIntro.value < 5 && pointsExtroIntro.value > 0)
+  //   return "глубокий интроверт";
+  return "Глубокий интроверт";
+});
+const textNeuro = computed(() => {
+  if (pointsNeuro.value > 19) return "Очень высокий уровень";
+  if (pointsNeuro.value > 13 && pointsNeuro.value <= 19)
+    return "Высокий уровень";
+  if (pointsNeuro.value >= 9 && pointsNeuro.value <= 13)
+    return "Среднее значение";
+  // if (pointsNeuro.value < 9 && pointsNeuro.value > 0)
+  //   return "низкий уровень нейротизма";
+  return "Низкий уровень";
+});
+const textLie = computed(() => {
+  if (pointsLie.value > 4) return "Неискренность в ответах";
+  if (pointsLie.value === 4) return "Критический показатель";
+  // if (pointsLie.value < 4 && pointsLie.value > 0) return "норма";
+  return "Норма";
+});
+const temperament = computed(() => {
+  // if (
+  //   scalePhlegmatic(pointsExtroIntro) &&
+  //   scalePhlegmatic(pointsNeuro)
+  // )
+  //   return "флегматик";
+
+  if (
+    scalePhlegmatic(pointsExtroIntro.value) &&
+    pointsNeuro.value > averageValue.value
+  )
+    return "Меланхолик"; // "меланхолик"
+
+  if (
+    pointsExtroIntro.value > averageValue.value &&
+    pointsNeuro.value > averageValue.value
+  )
+    return "Холерик"; // "холерик"
+
+  if (
+    pointsExtroIntro.value > averageValue.value &&
+    scalePhlegmatic(pointsNeuro.value)
+  )
+    return "Сангвиник"; // "сангвиник"
+
+  if (
+    pointsExtroIntro.value === averageValue.value &&
+    pointsNeuro.value === averageValue.value
+  )
+    return "Пограничный тип: все 4 типа темперамента"; // "пограничный тип: все 4 типа темперамента"
+
+  if (
+    pointsExtroIntro.value === averageValue.value &&
+    pointsNeuro.value > averageValue.value
+  )
+    return "Пограничный тип: меланхолик-холерик"; // "пограничный тип: меланхолик-холерик"
+  if (
+    pointsExtroIntro.value > averageValue.value &&
+    pointsNeuro.value === averageValue.value
+  )
+    return "Пограничный тип: холерик-сангвиник"; // "пограничный тип: холерик-сангвиник"
+  if (
+    pointsExtroIntro.value === averageValue.value &&
+    scalePhlegmatic(pointsNeuro.value)
+  )
+    return "Пограничный тип: сангвиник-флегматик"; // "пограничный тип: сангвиник-флегматик"
+
+  if (
+    pointsNeuro.value === averageValue.value &&
+    scalePhlegmatic(pointsExtroIntro.value)
+  )
+    return "Пограничный тип: флегматик-меланхолик"; // "пограничный тип: флегматик-меланхолик"
+
+  return "Флегматик"; // "флегматик"
+});
+const results = computed(() => {
+  return [
+    {
+      scale: "Экстра - интро",
+      total: pointsExtroIntro.value,
+      desc: textExtroIntro.value,
     },
-
-    pointsNeuro() {
-      return this.points(this.neuro).length;
+    {
+      scale: "Нейротизм",
+      total: pointsNeuro.value,
+      desc: textNeuro.value,
     },
-
-    pointsLie() {
-      return this.points(this.lie).length;
+    {
+      scale: "Ложь",
+      total: pointsLie.value,
+      desc: textLie.value,
     },
-
-    isDisabled() {
-      return this.answers.length;
+  ];
+});
+const allResults = computed(() => {
+  return {
+    name: "eysenck",
+    records: {
+      test: results.value,
+      options: options.value,
+      temperament: temperament.value,
+      answers: answers.value,
     },
+  };
+});
+const getStateResults = computed(() => store.state.results.results);
+const getItem = computed(() =>
+  getStateResults.value?.find((item) => item.name === "eysenck")
+);
+const getEysenckRes = computed(() => getItem.value?.records);
 
-    scaleInstab() {
-      return this.pointsNeuro > this.averageValue
-        ? Math.abs(this.averageValue - this.pointsNeuro)
-        : 0;
-    },
-
-    scaleStab() {
-      if (this.pointsNeuro > 0 && this.pointsNeuro < this.averageValue)
-        return Math.abs(this.pointsNeuro - this.averageValue);
-      if (this.pointsNeuro >= this.averageValue) return 0;
-      return this.averageValue;
-    },
-
-    scaleIntro() {
-      if (
-        this.pointsExtroIntro > 0 &&
-        this.pointsExtroIntro < this.averageValue
-      )
-        return Math.abs(this.pointsExtroIntro - this.averageValue);
-      if (this.pointsExtroIntro >= this.averageValue) return 0;
-      return this.averageValue;
-    },
-
-    scaleExtra() {
-      return this.pointsExtroIntro > this.averageValue
-        ? Math.abs(this.averageValue - this.pointsExtroIntro)
-        : 0;
-    },
-
-    options() {
-      return [
-        this.scaleInstab,
-        this.scaleExtra,
-        this.scaleStab,
-        this.scaleIntro,
-      ];
-    },
-
-    textExtroIntro() {
-      if (this.pointsExtroIntro > 19) return "Яркий экстраверт";
-      if (this.pointsExtroIntro > 14 && this.pointsExtroIntro <= 19)
-        return "Экстраверт";
-      if (this.pointsExtroIntro > 12 && this.pointsExtroIntro <= 14)
-        return "Склонность к экстраверсии";
-      if (this.pointsExtroIntro === 12) return "среднее значение";
-      if (this.pointsExtroIntro >= 9 && this.pointsExtroIntro < 12)
-        return "Склонность к интроверсии";
-      if (this.pointsExtroIntro >= 5 && this.pointsExtroIntro < 9)
-        return "Интроверт";
-      // if (this.pointsExtroIntro < 5 && this.pointsExtroIntro > 0)
-      //   return "глубокий интроверт";
-      return "Глубокий интроверт";
-    },
-
-    textNeuro() {
-      if (this.pointsNeuro > 19) return "Очень высокий уровень";
-      if (this.pointsNeuro > 13 && this.pointsNeuro <= 19)
-        return "Высокий уровень";
-      if (this.pointsNeuro >= 9 && this.pointsNeuro <= 13)
-        return "Среднее значение";
-      // if (this.pointsNeuro < 9 && this.pointsNeuro > 0)
-      //   return "низкий уровень нейротизма";
-      return "Низкий уровень";
-    },
-
-    textLie() {
-      if (this.pointsLie > 4) return "Неискренность в ответах";
-      if (this.pointsLie === 4) return "Критический показатель";
-      // if (this.pointsLie < 4 && this.pointsLie > 0) return "норма";
-      return "Норма";
-    },
-
-    temperament() {
-      // if (
-      //   this.scalePhlegmatic(this.pointsExtroIntro) &&
-      //   this.scalePhlegmatic(this.pointsNeuro)
-      // )
-      //   return "флегматик";
-
-      if (
-        this.scalePhlegmatic(this.pointsExtroIntro) &&
-        this.pointsNeuro > this.averageValue
-      )
-        return "Меланхолик"; // "меланхолик"
-
-      if (
-        this.pointsExtroIntro > this.averageValue &&
-        this.pointsNeuro > this.averageValue
-      )
-        return "Холерик"; // "холерик"
-
-      if (
-        this.pointsExtroIntro > this.averageValue &&
-        this.scalePhlegmatic(this.pointsNeuro)
-      )
-        return "Сангвиник"; // "сангвиник"
-
-      if (
-        this.pointsExtroIntro === this.averageValue &&
-        this.pointsNeuro === this.averageValue
-      )
-        return "Пограничный тип: все 4 типа темперамента"; // "пограничный тип: все 4 типа темперамента"
-
-      if (
-        this.pointsExtroIntro === this.averageValue &&
-        this.pointsNeuro > this.averageValue
-      )
-        return "Пограничный тип: меланхолик-холерик"; // "пограничный тип: меланхолик-холерик"
-      if (
-        this.pointsExtroIntro > this.averageValue &&
-        this.pointsNeuro === this.averageValue
-      )
-        return "Пограничный тип: холерик-сангвиник"; // "пограничный тип: холерик-сангвиник"
-      if (
-        this.pointsExtroIntro === this.averageValue &&
-        this.scalePhlegmatic(this.pointsNeuro)
-      )
-        return "Пограничный тип: сангвиник-флегматик"; // "пограничный тип: сангвиник-флегматик"
-
-      if (
-        this.pointsNeuro === this.averageValue &&
-        this.scalePhlegmatic(this.pointsExtroIntro)
-      )
-        return "Пограничный тип: флегматик-меланхолик"; // "пограничный тип: флегматик-меланхолик"
-
-      return "Флегматик"; // "флегматик"
-    },
-
-    results() {
-      return [
-        {
-          scale: "Экстра - интро",
-          total: this.pointsExtroIntro,
-          desc: this.textExtroIntro,
-        },
-        {
-          scale: "Нейротизм",
-          total: this.pointsNeuro,
-          desc: this.textNeuro,
-        },
-        {
-          scale: "Ложь",
-          total: this.pointsLie,
-          desc: this.textLie,
-        },
-      ];
-    },
-    allResults() {
-      return {
-        name: "eysenck",
-        records: {
-          test: this.results,
-          options: this.options,
-          temperament: this.temperament,
-          answers: this.answers,
-        },
-      };
-    },
-    ...mapGetters("results", { getStateResults: "getStateResults" }),
-    // ...mapGetters("results", { getResultsStatus: "getResultsStatus" }),
-    getItem() {
-      return this.getStateResults?.find((item) => item.name === "eysenck");
-    },
-    getEysenckRes() {
-      return this.getItem?.records;
-    },
-  },
-
-  watch: {
-    //$route: "loadResults",
-    // getResultsStatus() {
-    //   this.loadResults();
-    // },
-  },
-
-  methods: {
-    scalePhlegmatic(points) {
-      if (points >= 0 && points < this.averageValue) return true;
-      return false;
-    },
-
-    randomKey() {
-      return (
-        new Date().getTime() + Math.floor(Math.random() * 10000).toString()
-      );
-    },
-
-    next() {
-      this.questionIndex++;
-    },
-
-    prev() {
-      this.questionIndex--;
-    },
-
-    reset() {
-      this.questionIndex = 0;
-    },
-
-    addRes({ index, res }) {
-      this.answers[index] = res;
-    },
-
-    points(arr) {
-      return arr.reduce((accumulator, current, index) => {
-        if (this.answers[index] === current) {
-          accumulator.push(index);
-        }
-        return accumulator;
-      }, []);
-    },
-
-    keys(arrInTrue, arrInFalse, arr) {
-      arrInTrue.forEach((i) => {
-        arr[i - 1] = true;
-      });
-      arrInFalse.forEach((i) => {
-        arr[i - 1] = false;
-      });
-    },
-    // sendResults() {
-    //   let results = {
-    //     test: this.results,
-    //     options: this.options,
-    //     temperament: this.temperament,
-    //     answers: this.answers,
-    //   };
-    //   this.$store
-    //     .dispatch("results/sendResults", results)
-    //     .then((res) => console.log(res))
-    //     .catch((err) => console.log(err));
-    // },
-    ...mapActions({ sendResults: "results/sendResults" }),
-    ...mapActions({ loadResults: "results/getResults" }),
-    ...mapActions({ deleteResults: "results/deleteResults" }),
-    deleteData() {
-      let id = this.getItem._id;
-      this.deleteResults(id);
-      this.questionIndex = 0;
-      this.answers = [];
-    },
-  },
-
-  created() {
-    this.questions.forEach((question) => {
-      question.responses = [
-        { text: "Да", response: true },
-        { text: "Нет", response: false },
-      ];
-      question.id = this.randomKey();
-      question.responses.forEach((res) => {
-        res.id = this.randomKey();
-      });
-    });
-
-    this.keys(
-      this.extroIntroIndexTrue,
-      this.extroIntroIndexFalse,
-      this.extroIntro
-    );
-    this.keys(this.lieIndexTrue, this.lieIndexFalse, this.lie);
-    this.keys(this.neuroIndexTrue, [], this.neuro);
-
-    this.loadResults();
-  },
+const scalePhlegmatic = (points) => {
+  if (points >= 0 && points < averageValue.value) return true;
+  return false;
 };
+const randomKey = () => {
+  return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
+};
+const next = () => questionIndex.value++;
+const prev = () => questionIndex.value--;
+const reset = () => questionIndex.value = 0;
+const addRes = ({ index, res }) => answers.value[index] = res;
+const points = (arr) => {
+  return arr.reduce((accumulator, current, index) => {
+    if (answers.value[index] === current) {
+      accumulator.push(index);
+    }
+    return accumulator;
+  }, []);
+};
+const keys = (arrInTrue, arrInFalse, arr) => {
+  arrInTrue.forEach((i) => {
+    arr[i - 1] = true;
+  });
+  arrInFalse.forEach((i) => {
+    arr[i - 1] = false;
+  });
+};
+
+const sendResults = () => store.dispatch("results/sendResults", allResults.value);
+const loadResults = () => store.dispatch("results/getResults");
+const deleteResults = (id) => store.dispatch("results/deleteResults", id);
+
+const deleteData = () => {
+  let id = getItem.value._id;
+  deleteResults(id);
+  questionIndex.value = 0;
+  answers.value = [];
+};
+
+questions.forEach((question) => {
+  question.responses = [
+    { text: "Да", response: true },
+    { text: "Нет", response: false },
+  ];
+  question.id = randomKey();
+  question.responses.forEach((res) => {
+    res.id = randomKey();
+  });
+});
+
+keys(extroIntroIndexTrue.value, extroIntroIndexFalse.value, extroIntro.value);
+keys(lieIndexTrue.value, lieIndexFalse.value, lie.value);
+keys(neuroIndexTrue.value, [], neuro.value);
+
+onBeforeMount(() => loadResults());
 </script>
 
 <style lang="scss" scoped>

@@ -7,6 +7,11 @@
 <script setup>
 import axios from "axios";
 import Header from "@/components/Header.vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const store = useStore();
+const router = useRouter();
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -22,10 +27,11 @@ axios.interceptors.response.use(undefined, function (err) {
 });
 
 const logout = () => {
-  this.$store.dispatch("user/logout").then(() => {
-    this.$router.push({ name: "login" });
+  store.dispatch("user/logout").then(() => {
+   router.push({ name: "login" });
   });
 };
+
 </script>
 
 <style lang="scss">

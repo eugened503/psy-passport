@@ -19,20 +19,12 @@
   </table>
 </template>
 
-<script>
-export default {
-  name: "TableResultsBlock",
-  props: {
-    results: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {};
-  },
-};
+<script setup>
+const props = defineProps({
+  results: Array,
+});
 </script>
+
 <style lang="scss" scoped>
 .table {
   width: 50%;

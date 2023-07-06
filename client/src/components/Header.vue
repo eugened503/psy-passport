@@ -91,28 +91,21 @@
   </header>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-export default {
-  name: "HeaderBlock",
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
-  computed: {
-    ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
-    styleLink() {
-      return this.$route.name != "home";
-    },
-  },
+const store = useStore();
+const route = useRoute();
+const isLoggedIn = computed(() => !!store.state.user.token);
+const styleLink = computed(() => route.name != "home");
 
-  methods: {
-    logout() {
-      this.$store.dispatch("user/logout").then(() => {
-        this.$router.push({ name: "login" });
-      });
-    },
-    // ...mapActions({
-    //   logout: "user/logout",
-    // }),
-  },
+
+const logout = () => {
+  this.$store.dispatch("user/logout").then(() => {
+    this.$router.push({ name: "login" });
+  });
 };
 </script>
 

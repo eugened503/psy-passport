@@ -18,37 +18,22 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ProgressBarBlock",
-  props: {
-    pointsLie: {
-      type: Number,
-      required: true,
-    },
-    textLie: {
-      type: String,
-      required: true,
-    },
-    lieIndexTrue: {
-      type: Number,
-      required: true,
-    },
-    lieIndexFalse: {
-      type: Number,
-      required: true,
-    },
-  },
-  computed: {
-    progressStyle() {
-      return {
-        width:
-          (this.pointsLie / (this.lieIndexTrue + this.lieIndexFalse)) * 100 +
-          "%",
-      };
-    },
-  },
-};
+<script setup>
+import { computed } from "vue";
+const props = defineProps({
+  pointsLie: Number,
+  textLie: String,
+  lieIndexTrue: Number,
+  lieIndexFalse: Number,
+});
+
+const progressStyle = computed(() => {
+  return {
+    width:
+      (props.pointsLie / (props.lieIndexTrue + props.lieIndexFalse)) * 100 +
+      "%",
+  };
+});
 </script>
 
 <style lang="scss" scoped>

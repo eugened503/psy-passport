@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <swiper
+    <Swiper
       class="swiper-container"
       :slides-per-view="3"
       :space-between="25"
@@ -12,38 +12,24 @@
       }"
       :speed="2000"
     >
-      <swiper-slide v-for="item in dataSlider" :key="item.id">
+      <SwiperSlide v-for="item in dataSlider" :key="item.id">
         <div class="inside-wrapper">
           <!-- Slide {{ item }} -->
           <img :src="getImgUrl(item.image)" alt="" />
         </div>
-      </swiper-slide>
-    </swiper>
+      </SwiperSlide>
+    </Swiper>
   </div>
 </template>
-
-<script>
+<script setup>
 import SwiperCore, { Navigation, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.min.css";
 SwiperCore.use(Navigation).use(Autoplay);
 import dataSlider from "@/data/slider";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
-  data() {
-    return {
-      dataSlider,
-    };
-  },
-  methods: {
-    getImgUrl(pic) {
-      return new URL("../assets/images/slider/" + pic, import.meta.url)
-    },
-  },
+const getImgUrl = (pic) => {
+  return new URL("../assets/images/slider/" + pic, import.meta.url);
 };
 </script>
 

@@ -10,15 +10,12 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  name: "HeroBlock",
-  computed: {
-    ...mapGetters("user", { isLoggedIn: "isLoggedIn" }),
-  },
-};
+const store = useStore();
+const isLoggedIn = computed(() => !!store.state.user.token);
 </script>
 
 <style lang="scss" scoped>

@@ -94,17 +94,17 @@
 <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const isLoggedIn = computed(() => !!store.state.user.token);
 const styleLink = computed(() => route.name != "home");
 
-
 const logout = () => {
-  this.$store.dispatch("user/logout").then(() => {
-    this.$router.push({ name: "login" });
+  store.dispatch("user/logout").then(() => {
+   router.push({ name: "login" });
   });
 };
 </script>

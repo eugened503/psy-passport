@@ -7,16 +7,13 @@
             <div class="card" style="border-radius: 15px">
               <div class="card-body p-5">
                 <h2 class="text-uppercase text-center mb-4">Регистрация</h2>
-                <!-- <button class="close-button" @click="isOpen = !isOpen">
-                <img src="../assets/images/btn-close.svg" alt="button-image" />
-              </button> -->
-                <form @submit.prevent="onSubmit">
+                <form @submit.prevent="submitForm">
                   <div class="form-outline">
                     <input
                       type="text"
                       id="form3Example1cg"
                       class="form-control form-control-lg"
-                      v-model="name"
+                      v-model="form.name"
                       :class="{ error: v$.name.$errors.length }"
                     />
                     <label class="form-label" for="form3Example1cg">Имя</label>
@@ -35,7 +32,7 @@
                       type="email"
                       id="form3Example3cg"
                       class="form-control form-control-lg"
-                      v-model="email"
+                      v-model="form.email"
                       :class="{ error: v$.email.$errors.length }"
                     />
                     <label class="form-label" for="form3Example3cg"
@@ -54,9 +51,10 @@
                   <div class="form-outline">
                     <input
                       type="password"
+                      autocomplete="on"
                       id="form3Example4cg"
                       class="form-control form-control-lg"
-                      v-model="password"
+                      v-model="form.password"
                       :class="{ error: v$.password.$errors.length }"
                     />
                     <label class="form-label" for="form3Example4cg"
@@ -107,69 +105,12 @@
     </div>
   </section>
 </template>
+<script setup>
+import useFormContent from "@/composables/useFormContent";
+import { onMounted } from "vue";
 
-<script>
-import { mapGetters } from "vuex";
-import useVuelidate from "@vuelidate/core";
-import { required, email, minLength, maxLength } from "@vuelidate/validators";
-export default {
-  name: "FormRegisterBlock",
-  data() {
-    return {
-      isOpen: true,
-      name: "",
-      email: "",
-      password: "",
-    };
-  },
-  setup() {
-    return { v$: useVuelidate() };
-  },
-  validations() {
-    return {
-      name: {
-        required,
-        min: minLength(2),
-        max: maxLength(30),
-        $autoDirty: true,
-      },
-      password: {
-        required,
-        min: minLength(8),
-        $autoDirty: true,
-      },
-      email: {
-        required,
-        email,
-        $autoDirty: true,
-      },
-    };
-  },
+const { form, getError, submitForm, clearError, v$ } =
+  useFormContent("user/register");
 
-  computed: {
-    ...mapGetters("user", { getError: "getError" }),
-  },
-
-  methods: {
-    register() {
-      let data = {
-        name: this.name,
-        email: this.email,
-        password: this.password,
-      };
-      //this.name = this.desc = this.link = this.price = "";
-      this.$store.dispatch("user/register", data);
-      //.then(() => this.$router.push({ name: "login" }))
-      //.catch((err) => console.log(err));
-      //.catch((err) => console.log(err));
-    },
-    onSubmit() {
-      if (!this.v$.$dirty) {
-        this.v$.$validate();
-      } else {
-        this.register();
-      }
-    },
-  },
-};
+onMounted(() => clearError());
 </script>

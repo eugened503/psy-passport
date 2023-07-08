@@ -7,16 +7,13 @@
             <div class="card" style="border-radius: 15px">
               <div class="card-body p-5">
                 <h2 class="text-uppercase text-center mb-4">Войти</h2>
-                <!-- <button class="close-button" @click="isOpen = !isOpen">
-                <img src="../assets/images/btn-close.svg" alt="button-image" />
-              </button> -->
-                <form @submit.prevent="onSubmit">
+                <form @submit.prevent="submitForm">
                   <div class="form-outline">
                     <input
                       type="email"
                       id="form3Example3cg"
                       class="form-control form-control-lg"
-                      v-model="email"
+                      v-model="form.email"
                       :class="{ error: v$.email.$errors.length }"
                       autocomplete="chrome-off"
                     />
@@ -38,7 +35,7 @@
                       type="password"
                       id="form3Example4cg"
                       class="form-control form-control-lg"
-                      v-model="password"
+                      v-model="form.password"
                       :class="{ error: v$.password.$errors.length }"
                       autocomplete="chrome-off"
                     />
@@ -91,66 +88,14 @@
   </section>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-import useVuelidate from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
-export default {
-  name: "FormRegisterBlock",
-  data() {
-    return {
-      isOpen: true,
-      email: "",
-      password: "",
-    };
-  },
-  setup() {
-    return { v$: useVuelidate() };
-  },
-  validations() {
-    return {
-      password: {
-        required,
-        min: minLength(8),
-        $autoDirty: true,
-      },
-      email: {
-        required,
-        email,
-        $autoDirty: true,
-      },
-    };
-  },
-  computed: {
-    ...mapGetters("user", { getError: "getError" }),
-  },
+<script setup>
+import useFormContent from "@/composables/useFormContent";
+import { onMounted } from "vue";
 
-  methods: {
-    login() {
-      let data = {
-        email: this.email,
-        password: this.password,
-      };
-      //this.isLoader = true;
-      this.$store.dispatch("user/login", data);
-      //.then(() => this.$router.push({ name: "user" }))
-      //.catch((err) => console.log(err));
-      //.catch((err) => console.log(err.response.data.validation.body.message));
-      //.catch((err) => console.log(err));
-      // .catch((error) => {
-      //   throw error;
-      // });
-    },
+const { form, getError, submitForm, clearError, v$ } =
+  useFormContent("user/login");
 
-    onSubmit() {
-      if (!this.v$.$dirty) {
-        this.v$.$validate();
-      } else {
-        this.login();
-      }
-    },
-  },
-};
+onMounted(() => clearError());
 </script>
 
 <style lang="scss">

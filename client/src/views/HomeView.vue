@@ -11,13 +11,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Hero from "../components/Hero.vue";
 import LeadSlider from "../components/LeadSlider.vue";
-export default {
-  components: { Hero, LeadSlider },
-  name: "HomeView",
-};
 </script>
 
 <style lang="scss" scoped>

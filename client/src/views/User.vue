@@ -1,12 +1,4 @@
 <template>
-  <!-- <div class="p-5">
-    <div class="mt-5 mx-auto">
-      {{ getUser }}
-      <router-link class="d-inline p-2 mt-2" :to="{ name: 'eysenck' }">
-        пройти тест Айзенка
-      </router-link>
-    </div>
-  </div> -->
   <section class="profile" style="background-color: #eee">
     <div class="container py-5">
       <UserRow />
@@ -31,41 +23,25 @@
     </div>
   </section>
 </template>
-<script>
-import { mapGetters, mapActions } from "vuex";
+
+<script setup>
 import Card from "@/components/Card.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import SocialCard from "@/components/SocialCard.vue";
 import UserRow from "@/components/UserRow.vue";
-export default {
-  name: "UserBlock",
-  components: { Card, UserInfo, ProfileCard, SocialCard, UserRow },
-  computed: {
-    ...mapGetters("user", { getUser: "getUser" }),
-  },
+import { computed, onBeforeMount } from "vue";
+import { useStore } from "vuex";
 
-  created() {
-    this.fetchUser();
-  },
+const store = useStore();
 
-  // watch: {
-  //   $route: "fetchUser",
-  // },
+const getUser = computed(() => store.state.user.user);
+const fetchUser = () => store.dispatch("user/profile");
 
-  methods: {
-    ...mapActions({
-      fetchUser: "user/profile",
-    }),
-  },
-};
+onBeforeMount(() => fetchUser());
 </script>
 
 <style lang="scss" scoped>
-// .card img {
-//   height: 280px;
-//   object-fit: cover;
-// }
 .profile {
   @media (max-width: 600px) {
     padding-top: 158px;

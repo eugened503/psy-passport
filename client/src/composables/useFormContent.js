@@ -70,9 +70,6 @@ export default function useFormContent(action) {
   };
 
   const v$ = useVuelidate(rules, form);
-
-  console.log(rules.value);
-  console.log(v$.value);
-
+  
   return { form, getError, submitForm, clearError, v$ };
 }

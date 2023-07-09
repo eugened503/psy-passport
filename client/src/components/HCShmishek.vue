@@ -5,10 +5,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, toRefs } from "vue";
 const props = defineProps({
   dataArr: Array,
 });
+
+const { dataArr } = toRefs(props);
 
 const chartOptions = ref({
   chart: {

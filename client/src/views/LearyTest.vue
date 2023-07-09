@@ -39,7 +39,7 @@
             {{ octantPoints.octantEighthPoints }}
           </div>
         </div>
-        <HCLeary :dataArr="options"/>
+        <HCLeary :dataArr="options" />
         <BtnGroup
           @reset="reset"
           @sendResults="sendResults(allResults)"
@@ -58,7 +58,6 @@
             @click="selectItem(question)"
             :class="{ active: question.status }"
           >
-            <!-- {{ question.id }} -->
             {{ index + 1 }}.
             {{ question.text }}
           </li>
@@ -108,262 +107,260 @@
             {{ getLearyRes.octantPoints.octantEighthPoints }}
           </div>
         </div>
-        <!-- {{ getLearyRes }} -->
         <HCLeary :dataArr="getLearyRes?.options" />
         <button @click="deleteData" class="btn mt-2">Удалить</button>
       </div>
     </div>
   </section>
 </template>
-<script>
-import questions from "@/data/leary/questions.json";
+
+<script setup>
+import learyQuestions from "@/data/leary/questions.json";
 import HCLeary from "@/components/HCLeary.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { mapGetters, mapActions } from "vuex";
-export default {
-  name: "QuizBlock",
-  components: {
-    HCLeary,
-    BtnGroup,
-  },
-  data() {
-    return {
-      questions,
-      keysAll: [],
-      subarray: [],
-      subarrayClone: [],
-      octantAll: {},
-      responses: [],
-      isActive: false,
-    };
-  },
-  created() {
-    this.questions.forEach((question, i) => {
-      question.status = false;
-      question.id = i + 1;
-    });
-    this.loadResults();
-  },
-  mounted() {
-    this.shuffle(this.questions);
-    this.questions.forEach((question, i) => {
-      this.keysAll.push(i + 1);
-    });
-    this.subarray = this.splitSubArrays(this.keysAll, 16);
-    this.subarray.map((arr) => {
-      this.subarrayClone.push(this.splitSubArrays(arr, 4));
-    });
-    this.octantAll = this.getKeys(this.subarrayClone);
-  },
-  computed: {
-    responsesID() {
-      return this.questions.filter((x) => x.status === true);
-    },
-    octantPoints() {
-      return {
-        octantFirstPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantFirst
-        ),
-        octantSecondPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantSecond
-        ),
-        octantThirdPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantThird
-        ),
-        octantFourthPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantFourth
-        ),
-        octantFifthPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantFifth
-        ),
-        octantSixthPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantSixth
-        ),
-        octantSeventhPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantSeventh
-        ),
-        octantEighthPoints: this.getCommonElements(
-          this.responsesID,
-          this.octantAll.octantEighth
-        ),
-      };
-    },
-    benevolence() {
-      return Math.round(
-        this.octantPoints.octantSeventhPoints -
-          this.octantPoints.octantThirdPoints +
-          0.7 *
-            (this.octantPoints.octantEighthPoints -
-              this.octantPoints.octantSecondPoints -
-              this.octantPoints.octantFourthPoints +
-              this.octantPoints.octantSixthPoints)
-      );
-    },
-    domination() {
-      return Math.round(
-        this.octantPoints.octantFirstPoints -
-          this.octantPoints.octantFifthPoints +
-          0.7 *
-            (this.octantPoints.octantEighthPoints +
-              this.octantPoints.octantSecondPoints -
-              this.octantPoints.octantFourthPoints -
-              this.octantPoints.octantSixthPoints)
-      );
-    },
-    options() {
-      return [
-        this.octantPoints.octantFirstPoints,
-        this.octantPoints.octantEighthPoints,
-        this.octantPoints.octantSeventhPoints,
-        this.octantPoints.octantSixthPoints,
-        this.octantPoints.octantFifthPoints,
-        this.octantPoints.octantFourthPoints,
-        this.octantPoints.octantThirdPoints,
-        this.octantPoints.octantSecondPoints,
-      ];
-    },
-    allResults() {
-      return {
-        name: "leary",
-        records: {
-          octantPoints: this.octantPoints,
-          domination: this.domination,
-          benevolence: this.benevolence,
-          options: this.options,
-        },
-      };
-    },
-    ...mapGetters("results", { getStateResults: "getStateResults" }),
-    getItem() {
-      return this.getStateResults?.find((item) => item.name === "leary");
-    },
-    getLearyRes() {
-      return this.getItem?.records;
-    },
-  },
-  methods: {
-    randomKey() {
-      return (
-        new Date().getTime() + Math.floor(Math.random() * 10000).toString()
-      );
-    },
-    shuffle(array) {
-      let currentIndex = array.length;
-      let randomIndex;
+import { ref, computed, onBeforeMount, onMounted } from "vue";
+import { useStore } from "vuex";
 
-      while (currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+const store = useStore();
 
-        [array[currentIndex], array[randomIndex]] = [
-          array[randomIndex],
-          array[currentIndex],
-        ];
+const keysAll = ref([]);
+const subarray = ref([]);
+const subarrayClone = ref([]);
+const octantAll = ref([]);
+const isActive = ref(false);
+const questions = ref(learyQuestions);
+
+questions.value.forEach((question, i) => {
+  question.status = false;
+  question.id = i + 1;
+});
+
+onBeforeMount(() => loadResults());
+
+onMounted(() => {
+  shuffle(questions.value);
+  questions.value.forEach((question, i) => {
+    keysAll.value.push(i + 1);
+  });
+  subarray.value = splitSubArrays(keysAll.value, 16);
+  subarray.value.map((arr) => {
+    subarrayClone.value.push(splitSubArrays(arr, 4));
+  });
+  octantAll.value = getKeys(subarrayClone.value);
+});
+
+const responsesID = computed(() =>
+  questions.value.filter((x) => x.status === true)
+);
+const octantPoints = computed(() => {
+  return {
+    octantFirstPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantFirst
+    ),
+    octantSecondPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantSecond
+    ),
+    octantThirdPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantThird
+    ),
+    octantFourthPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantFourth
+    ),
+    octantFifthPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantFifth
+    ),
+    octantSixthPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantSixth
+    ),
+    octantSeventhPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantSeventh
+    ),
+    octantEighthPoints: getCommonElements(
+      responsesID.value,
+      octantAll.value.octantEighth
+    ),
+  };
+});
+
+const benevolence = computed(() => {
+  return Math.round(
+    octantPoints.value.octantSeventhPoints -
+      octantPoints.value.octantThirdPoints +
+      0.7 *
+        (octantPoints.value.octantEighthPoints -
+          octantPoints.value.octantSecondPoints -
+          octantPoints.value.octantFourthPoints +
+          octantPoints.value.octantSixthPoints)
+  );
+});
+
+const domination = computed(() => {
+  return Math.round(
+    octantPoints.value.octantFirstPoints -
+      octantPoints.value.octantFifthPoints +
+      0.7 *
+        (octantPoints.value.octantEighthPoints +
+          octantPoints.value.octantSecondPoints -
+          octantPoints.value.octantFourthPoints -
+          octantPoints.value.octantSixthPoints)
+  );
+});
+
+const options = computed(() => {
+  return [
+    octantPoints.value.octantFirstPoints,
+    octantPoints.value.octantEighthPoints,
+    octantPoints.value.octantSeventhPoints,
+    octantPoints.value.octantSixthPoints,
+    octantPoints.value.octantFifthPoints,
+    octantPoints.value.octantFourthPoints,
+    octantPoints.value.octantThirdPoints,
+    octantPoints.value.octantSecondPoints,
+  ];
+});
+
+const allResults = computed(() => {
+  return {
+    name: "leary",
+    records: {
+      octantPoints: octantPoints.value,
+      domination: domination.value,
+      benevolence: benevolence.value,
+      options: options.value,
+    },
+  };
+});
+
+const getStateResults = computed(() => store.state.results.results);
+const getItem = computed(() =>
+  getStateResults.value?.find((item) => item.name === "leary")
+);
+const getLearyRes = computed(() => getItem.value?.records);
+
+const shuffle = (array) => {
+  let currentIndex = array.length;
+  let randomIndex;
+
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+};
+
+const splitSubArrays = (array, size) => {
+  const subarray = [];
+  for (let i = 0; i < Math.ceil(array.length / size); i++) {
+    subarray[i] = array.slice(i * size, i * size + size);
+  }
+
+  return subarray;
+};
+
+const getKeys = (array) => {
+  const evenArr = [];
+  const oddArr = [];
+
+  //evenArr
+  const octantFirst = [];
+  const octantSecond = [];
+  const octantThird = [];
+  const octantFourth = [];
+
+  //oddArr
+  const octantFifth = [];
+  const octantSixth = [];
+  const octantSeventh = [];
+  const octantEighth = [];
+  for (let i = 0; i < array.length; i++) {
+    if (i % 2 === 0) {
+      evenArr.push(array[i]);
+    } else {
+      oddArr.push(array[i]);
+    }
+  }
+
+  for (let i = 0; i < evenArr.length; i++) {
+    for (let j = 0; j < evenArr[i].length; j++) {
+      if (j === 0) {
+        octantFirst.push(...evenArr[i][j]);
+      } else if (j === 1) {
+        octantSecond.push(...evenArr[i][j]);
+      } else if (j === 2) {
+        octantThird.push(...evenArr[i][j]);
+      } else {
+        octantFourth.push(...evenArr[i][j]);
       }
-
-      return array;
-    },
-    splitSubArrays(array, size) {
-      const subarray = [];
-      for (let i = 0; i < Math.ceil(array.length / size); i++) {
-        subarray[i] = array.slice(i * size, i * size + size);
+    }
+  }
+  for (let i = 0; i < oddArr.length; i++) {
+    for (let j = 0; j < oddArr[i].length; j++) {
+      if (j === 0) {
+        octantFifth.push(...oddArr[i][j]);
+      } else if (j === 1) {
+        octantSixth.push(...oddArr[i][j]);
+      } else if (j === 2) {
+        octantSeventh.push(...oddArr[i][j]);
+      } else {
+        octantEighth.push(...oddArr[i][j]);
       }
+    }
+  }
 
-      return subarray;
-    },
-    getKeys(array) {
-      const evenArr = [];
-      const oddArr = [];
+  return {
+    octantFirst,
+    octantSecond,
+    octantThird,
+    octantFourth,
+    octantFifth,
+    octantSixth,
+    octantSeventh,
+    octantEighth,
+  };
+};
 
-      //evenArr
-      const octantFirst = [];
-      const octantSecond = [];
-      const octantThird = [];
-      const octantFourth = [];
+const selectItem = ({ status, id }) => {
+  status = !status;
+  questions.value.filter((x) => x.id === id).map((x) => (x.status = status));
+};
 
-      //oddArr
-      const octantFifth = [];
-      const octantSixth = [];
-      const octantSeventh = [];
-      const octantEighth = [];
-      for (let i = 0; i < array.length; i++) {
-        if (i % 2 === 0) {
-          evenArr.push(array[i]);
-        } else {
-          oddArr.push(array[i]);
-        }
-      }
+const getCommonElements = (array1, array2) => {
+  const array = [];
 
-      for (let i = 0; i < evenArr.length; i++) {
-        for (let j = 0; j < evenArr[i].length; j++) {
-          if (j === 0) {
-            octantFirst.push(...evenArr[i][j]);
-          } else if (j === 1) {
-            octantSecond.push(...evenArr[i][j]);
-          } else if (j === 2) {
-            octantThird.push(...evenArr[i][j]);
-          } else {
-            octantFourth.push(...evenArr[i][j]);
-          }
-        }
-      }
-      for (let i = 0; i < oddArr.length; i++) {
-        for (let j = 0; j < oddArr[i].length; j++) {
-          if (j === 0) {
-            octantFifth.push(...oddArr[i][j]);
-          } else if (j === 1) {
-            octantSixth.push(...oddArr[i][j]);
-          } else if (j === 2) {
-            octantSeventh.push(...oddArr[i][j]);
-          } else {
-            octantEighth.push(...oddArr[i][j]);
-          }
-        }
-      }
+  for (let i = 0; i < array1.length; i += 1) {
+    if (array2.includes(array1[i].id)) {
+      array.push(array1[i].id);
+    }
+  }
 
-      return {
-        octantFirst,
-        octantSecond,
-        octantThird,
-        octantFourth,
-        octantFifth,
-        octantSixth,
-        octantSeventh,
-        octantEighth,
-      };
-    },
-    selectItem({ status, id }) {
-      status = !status;
-      this.questions.filter((x) => x.id === id).map((x) => (x.status = status));
-    },
-    getCommonElements(array1, array2) {
-      const array = [];
+  return array.length;
+};
 
-      for (let i = 0; i < array1.length; i += 1) {
-        if (array2.includes(array1[i].id)) {
-          array.push(array1[i].id);
-        }
-      }
-      return array.length;
-    },
-    reset() {
-      this.isActive = false;
-    },
-    ...mapActions({ sendResults: "results/sendResults" }),
-    ...mapActions({ deleteResults: "results/deleteResults" }),
-    ...mapActions({ loadResults: "results/getResults" }),
-    deleteData() {
-      let id = this.getItem._id;
-      this.deleteResults(id);
-    },
-  },
+const reset = () => {
+  isActive.value = false;
+};
+
+const sendResults = () =>
+  store.dispatch("results/sendResults", allResults.value);
+const loadResults = () => store.dispatch("results/getResults");
+const deleteResults = (id) => store.dispatch("results/deleteResults", id);
+
+const deleteData = () => {
+  let id = getItem.value._id;
+  deleteResults(id);
 };
 </script>
 

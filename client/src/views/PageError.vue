@@ -6,8 +6,4 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "PageErrorBlock",
-};
-</script>
+<script setup></script>

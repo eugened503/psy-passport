@@ -43,7 +43,7 @@
         </div>
 
         <TableQuiz :answers="answers" />
-        <BtnGroup @reset="reset" @sendResults="sendResults" class="mt-4" />
+        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" class="mt-4" />
       </div>
     </div>
     <div v-else class="container py-5">
@@ -90,10 +90,9 @@ import HCShmishek from "@/components/HCShmishek.vue";
 import TableQuiz from "@/components/TableQuiz.vue";
 import Question from "@/components/Question.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { ref, computed, onBeforeMount, onMounted } from "vue";
-import { useStore } from "vuex";
-
-const store = useStore();
+import { ref, computed } from "vue";
+import { useStoreResults } from "@/stores/storeResults";
+const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
 
 const questionIndex = ref(0);
 const answers = ref([]);
@@ -124,6 +123,8 @@ const cyclo = ref([]);
 const affect = ref([]);
 const emo = ref([]);
 
+const getItem = computed(() => getTest("shmishek"));
+const getShmishekRes = computed(() => getTestRecords("shmishek"));
 const isDisabled = computed(() => answers.value.length);
 const pointsDemo = computed(() => points(demo.value).length);
 const pointsJam = computed(() => points(jam.value).length);
@@ -149,7 +150,6 @@ const options = computed(() => {
     pointsEmo.value,
   ];
 });
-
 const allResults = computed(() => {
   return {
     name: "shmishek",
@@ -169,12 +169,6 @@ const allResults = computed(() => {
     },
   };
 });
-
-const getStateResults = computed(() => store.state.results.results);
-const getItem = computed(() =>
-  getStateResults.value?.find((item) => item.name === "shmishek")
-);
-const getShmishekRes = computed(() => getItem.value?.records);
 
 const randomKey = () => {
   return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
@@ -202,7 +196,6 @@ const points = (arr) => {
     return accumulator;
   }, []);
 };
-
 const keys = (arrInTrue, arrInFalse, arr) => {
   arrInTrue.forEach((i) => {
     arr[i - 1] = true;
@@ -211,12 +204,6 @@ const keys = (arrInTrue, arrInFalse, arr) => {
     arr[i - 1] = false;
   });
 };
-
-const sendResults = () =>
-  store.dispatch("results/sendResults", allResults.value);
-const loadResults = () => store.dispatch("results/getResults");
-const deleteResults = (id) => store.dispatch("results/deleteResults", id);
-
 const deleteData = () => {
   let id = getItem.value._id;
   deleteResults(id);
@@ -246,7 +233,6 @@ keys(cycloTrue.value, [], cyclo.value);
 keys(affectTrue.value, [], affect.value);
 keys(emoTrue.value, emoFalse.value, emo.value);
 
-onBeforeMount(() => loadResults());
 </script>
 
 <style lang="scss" scoped>

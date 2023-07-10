@@ -3,7 +3,7 @@
     <div class="background-image"></div>
     <h1>Создай свой Пси Паспорт</h1>
     <h3>И поделись с друзьями</h3>
-    <router-link v-if="isLoggedIn" :to="{ name: 'eysenck' }" class="btn"
+    <router-link v-if="getToken" :to="{ name: 'eysenck' }" class="btn"
       >Пройти тест Айзенка</router-link
     >
     <router-link v-else :to="{ name: 'login' }" class="btn">Войти</router-link>
@@ -11,11 +11,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStoreUser } from "@/stores/storeUser";
 
-const store = useStore();
-const isLoggedIn = computed(() => !!store.state.user.token);
+const { getToken } = useStoreUser();
 </script>
 
 <style lang="scss" scoped>

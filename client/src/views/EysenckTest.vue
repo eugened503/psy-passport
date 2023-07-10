@@ -36,7 +36,7 @@
         <TableQuiz :answers="answers" />
         <BtnGroup
           @reset="reset"
-          @sendResults="sendResults"
+          @sendResults="sendResults(allResults)"
           class="mt-4"
         />
       </div>
@@ -86,10 +86,9 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
 import TableResults from "@/components/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { ref, computed, onBeforeMount } from "vue";
-import { useStore } from "vuex";
-
-const store = useStore();
+import { ref, computed } from "vue";
+import { useStoreResults } from "@/stores/storeResults";
+const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
 
 const extroIntroIndexTrue = ref([
   1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
@@ -107,6 +106,9 @@ const lie = ref([]);
 const questionIndex = ref(0);
 const answers = ref([]);
 const averageValue = ref(12);
+
+const getItem = computed(() => getTest("eysenck"));
+const getEysenckRes = computed(() => getTestRecords("eysenck"));
 
 const pointsExtroIntro = computed(() => points(extroIntro.value).length);
 const pointsNeuro = computed(() => points(neuro.value).length);
@@ -258,12 +260,6 @@ const allResults = computed(() => {
     },
   };
 });
-const getStateResults = computed(() => store.state.results.results);
-const getItem = computed(() =>
-  getStateResults.value?.find((item) => item.name === "eysenck")
-);
-const getEysenckRes = computed(() => getItem.value?.records);
-
 const scalePhlegmatic = (points) => {
   if (points >= 0 && points < averageValue.value) return true;
   return false;
@@ -291,11 +287,6 @@ const keys = (arrInTrue, arrInFalse, arr) => {
     arr[i - 1] = false;
   });
 };
-
-const sendResults = () => store.dispatch("results/sendResults", allResults.value);
-const loadResults = () => store.dispatch("results/getResults");
-const deleteResults = (id) => store.dispatch("results/deleteResults", id);
-
 const deleteData = () => {
   let id = getItem.value._id;
   deleteResults(id);
@@ -317,8 +308,6 @@ questions.forEach((question) => {
 keys(extroIntroIndexTrue.value, extroIntroIndexFalse.value, extroIntro.value);
 keys(lieIndexTrue.value, lieIndexFalse.value, lie.value);
 keys(neuroIndexTrue.value, [], neuro.value);
-
-onBeforeMount(() => loadResults());
 </script>
 
 <style lang="scss" scoped>

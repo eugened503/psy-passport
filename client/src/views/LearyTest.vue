@@ -118,10 +118,9 @@
 import learyQuestions from "@/data/leary/questions.json";
 import HCLeary from "@/components/HCLeary.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { ref, computed, onBeforeMount, onMounted } from "vue";
-import { useStore } from "vuex";
-
-const store = useStore();
+import { ref, computed, onMounted } from "vue";
+import { useStoreResults } from "@/stores/storeResults";
+const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
 
 const keysAll = ref([]);
 const subarray = ref([]);
@@ -135,8 +134,6 @@ questions.value.forEach((question, i) => {
   question.id = i + 1;
 });
 
-onBeforeMount(() => loadResults());
-
 onMounted(() => {
   shuffle(questions.value);
   questions.value.forEach((question, i) => {
@@ -148,6 +145,9 @@ onMounted(() => {
   });
   octantAll.value = getKeys(subarrayClone.value);
 });
+
+const getItem = computed(() => getTest("leary"));
+const getLearyRes = computed(() => getTestRecords("leary"));
 
 const responsesID = computed(() =>
   questions.value.filter((x) => x.status === true)
@@ -237,12 +237,6 @@ const allResults = computed(() => {
     },
   };
 });
-
-const getStateResults = computed(() => store.state.results.results);
-const getItem = computed(() =>
-  getStateResults.value?.find((item) => item.name === "leary")
-);
-const getLearyRes = computed(() => getItem.value?.records);
 
 const shuffle = (array) => {
   let currentIndex = array.length;
@@ -352,11 +346,6 @@ const getCommonElements = (array1, array2) => {
 const reset = () => {
   isActive.value = false;
 };
-
-const sendResults = () =>
-  store.dispatch("results/sendResults", allResults.value);
-const loadResults = () => store.dispatch("results/getResults");
-const deleteResults = (id) => store.dispatch("results/deleteResults", id);
 
 const deleteData = () => {
   let id = getItem.value._id;

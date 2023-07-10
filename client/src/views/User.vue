@@ -30,15 +30,14 @@ import UserInfo from "@/components/UserInfo.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import SocialCard from "@/components/SocialCard.vue";
 import UserRow from "@/components/UserRow.vue";
-import { computed, onBeforeMount } from "vue";
-import { useStore } from "vuex";
+import { onBeforeMount } from "vue";
+import { useStoreUser } from "@/stores/storeUser";
+import { storeToRefs } from "pinia";
 
-const store = useStore();
+const { profile } = useStoreUser();
+const { getUser } = storeToRefs(useStoreUser());
 
-const getUser = computed(() => store.state.user.user);
-const fetchUser = () => store.dispatch("user/profile");
-
-onBeforeMount(() => fetchUser());
+onBeforeMount(() => profile());
 </script>
 
 <style lang="scss" scoped>

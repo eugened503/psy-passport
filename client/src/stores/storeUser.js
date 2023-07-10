@@ -47,7 +47,7 @@ export const useStoreUser = defineStore("storeUser", {
         this.error = null;
         router.push({ name: "home" });
       } catch (error) {
-        console.log("error", error)
+        console.log("error", error);
         if (error.response.status === 400) {
           this.error = "Пользователь с таким email не найден";
         } else {
@@ -107,13 +107,14 @@ export const useStoreUser = defineStore("storeUser", {
     getLoaded: (state) => {
       return state.loaded;
     },
-
     getToken: (state) => {
       return state.token;
     },
-
     getError: (state) => {
       return state.error;
+    },
+    getUser: (state) => {
+      return state.user;
     },
   },
 });

@@ -23,6 +23,7 @@
     "highcharts": "^11.1.0",
     "highcharts-vue": "^1.4.3",
     "normalize.css": "^8.0.1",
+    "pinia": "^2.1.4",
     "swiper": "^8.4.5",
     "vue": "^3.2.47",
     "vue-router": "^4.0.3",

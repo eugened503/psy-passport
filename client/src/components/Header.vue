@@ -82,7 +82,7 @@
             class="header__link"
             :class="{ userLink: styleLink }"
             href="#"
-            @click="logout"
+            @click="exit"
             >Выход</a
           >
         </li>
@@ -93,19 +93,18 @@
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useStoreUser } from "@/stores/storeUser";
 
-const store = useStore();
+const { logout } = useStoreUser();
+const { getToken } = storeToRefs(useStoreUser());
 const route = useRoute();
-const router = useRouter();
-const isLoggedIn = computed(() => !!store.state.user.token);
+const isLoggedIn = computed(() => getToken.value);
 const styleLink = computed(() => route.name != "home");
 
-const logout = () => {
-  store.dispatch("user/logout").then(() => {
-   router.push({ name: "login" });
-  });
+const exit = () => {
+  logout();
 };
 </script>
 

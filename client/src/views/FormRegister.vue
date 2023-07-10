@@ -109,8 +109,8 @@
 import useFormContent from "@/composables/useFormContent";
 import { onMounted } from "vue";
 
-const { form, getError, submitForm, clearError, v$ } =
-  useFormContent("user/register");
+const { form, getError, getLoaded, submitForm, clearError, v$ } =
+  useFormContent("register");
 
 onMounted(() => clearError());
 </script>

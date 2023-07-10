@@ -89,11 +89,10 @@
 </template>
 
 <script setup>
-import useFormContent from "@/composables/useFormContent";
 import { onMounted } from "vue";
-
-const { form, getError, submitForm, clearError, v$ } =
-  useFormContent("user/login");
+import useFormContent from "@/composables/useFormContent";
+const { form, getError, getLoaded, submitForm, clearError, v$ } =
+  useFormContent("login");
 
 onMounted(() => clearError());
 </script>

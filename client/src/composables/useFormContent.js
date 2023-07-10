@@ -1,6 +1,6 @@
 import { computed, reactive } from "vue";
+import { useStoreUser } from "../stores/storeUser";
 import useVuelidate from "@vuelidate/core";
-import { useStore } from "vuex";
 import {
   required,
   minLength,
@@ -8,11 +8,10 @@ import {
   helpers,
   email,
 } from "@vuelidate/validators";
-
+import { storeToRefs } from "pinia";
 export default function useFormContent(action) {
-  const store = useStore();
-  const getError = computed(() => store.state.user.error);
-  const clearError = () => store.commit("user/clear_error");
+  const { clearError, register, login } = useStoreUser();
+  const { getLoaded, getError } = storeToRefs(useStoreUser());
 
   const form = reactive({
     email: "",
@@ -49,8 +48,8 @@ export default function useFormContent(action) {
       },
     };
 
-    if (action === "user/login") {
-        delete localRules.name;
+    if (action === "login") {
+      delete localRules.name;
     }
 
     return localRules;
@@ -59,17 +58,15 @@ export default function useFormContent(action) {
   const submitForm = async () => {
     const isFormCorrect = await v$.value.$validate();
     if (!isFormCorrect) return;
-    if (action === "user/login") {
-      console.log("user/login");
+    if (action === "login") {
       const { email, password } = form;
-      console.log(email, password);
-      store.dispatch(action, { email, password });
+      login({ email, password });
     } else {
-      store.dispatch(action, form);
+      register(form);
     }
   };
 
   const v$ = useVuelidate(rules, form);
-  
-  return { form, getError, submitForm, clearError, v$ };
+
+  return { form, getError, getLoaded, submitForm, clearError, v$ };
 }

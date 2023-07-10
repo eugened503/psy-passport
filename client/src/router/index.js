@@ -8,9 +8,10 @@ import PageError from "@/views/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";
 import LearyTest from "@/views/LearyTest.vue";
 import ShmishekTest from "@/views/ShmishekTest.vue";
+import Tests from "@/views/Tests.vue";
 
 const routes = [
-  {
+  {  
     path: "/",
     name: "home",
     component: HomeView,
@@ -34,28 +35,29 @@ const routes = [
     },
   },
   {
-    path: "/eysenck",
-    name: "eysenck",
-    component: EysenckTest,
+    path: "/tests",
+    name: "tests",
+    component: Tests,
     meta: {
       requiresAuth: true,
     },
-  },
-  {
-    path: "/leary",
-    name: "leary",
-    component: LearyTest,
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: "/shmishek",
-    name: "shmishek",
-    component: ShmishekTest,
-    meta: {
-      requiresAuth: true,
-    },
+    children: [
+      {
+        path: "eysenck",
+        name: "eysenck",
+        component: EysenckTest,
+      },
+      {
+        path: "leary",
+        name: "leary",
+        component: LearyTest,
+      },
+      {
+        path: "shmishek",
+        name: "shmishek",
+        component: ShmishekTest,
+      },
+    ],
   },
   {
     path: "/:any(.*)",

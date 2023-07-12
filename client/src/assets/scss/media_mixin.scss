@@ -1,0 +1,35 @@
+@mixin _1919 {
+    @media (max-width: $desktop){
+        @content;
+    }
+}
+
+@mixin _1439 {
+    @media (max-width: $laptop-big){
+        @content;
+    }
+}
+
+@mixin _1219 {
+    @media (max-width: $laptop){
+        @content;
+    }
+}
+
+@mixin _1023 {
+    @media (max-width: $laptop-small){
+        @content;
+    }
+}
+
+@mixin _767 {
+    @media (max-width: $tablet){
+        @content;
+    }
+}
+
+@mixin _424{
+    @media (max-width: $mobile){
+        @content;
+    }
+}

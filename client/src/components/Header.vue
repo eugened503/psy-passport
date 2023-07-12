@@ -1,93 +1,59 @@
 <template>
   <header class="header">
-    <div class="container d-flex justify-content-between">
-      <h2>
+    <router-link
+      class="header__link"
+      :class="{ userLink: styleLink }"
+      :to="{ name: 'home' }"
+    >
+      <img
+        class="header__logo desktop"
+        src="../assets/images/logo.png"
+        alt="logo"
+      />
+      <img
+        class="header__logo mobile"
+        src="../assets/images/logo-mobile.png"
+        alt="logo"
+      />
+    </router-link>
+    <nav>
+      <li>
         <router-link
           class="header__link"
           :class="{ userLink: styleLink }"
           :to="{ name: 'home' }"
+          >Главная</router-link
         >
-          <img class="header__logo" src="../assets/images/logo.png" alt="" />
-        </router-link>
-      </h2>
-      <nav>
-        <li>
-          <router-link
-            class="header__link"
-            :class="{ userLink: styleLink }"
-            :to="{ name: 'home' }"
-            >Главная</router-link
-          >
-        </li>
-        <li v-if="isLoggedIn">
-          <router-link
-            class="header__link"
-            :class="{ userLink: styleLink }"
-            :to="{ name: 'user' }"
-            >Мой&nbsp;паспорт</router-link
-          >
-        </li>
-        <li v-if="isLoggedIn" class="nav-item dropdown test-text">
-          <a
-            class="header__link nav-link dropdown-toggle"
-            :class="{ userLink: styleLink }"
-            href="#"
-            id="navbarDarkDropdownMenuLink"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Тесты
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-dark"
-            aria-labelledby="navbarDarkDropdownMenuLink"
-          >
-            <li>
-              <router-link
-                class="dropdown-item"
-                :class="{ userLink: styleLink }"
-                :to="{ name: 'eysenck' }"
-                >Тест&nbsp;Айзенка</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                class="dropdown-item"
-                :class="{ userLink: styleLink }"
-                :to="{ name: 'leary' }"
-                >Тест Лири</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                class="dropdown-item"
-                :class="{ userLink: styleLink }"
-                :to="{ name: 'shmishek' }"
-                >Тест Шмишека и Леонгарда</router-link
-              >
-            </li>
-          </ul>
-        </li>
-        <li v-if="!isLoggedIn">
-          <router-link
-            class="header__link"
-            :class="{ userLink: styleLink }"
-            :to="{ name: 'login' }"
-            >Войти</router-link
-          >
-        </li>
-        <li v-if="isLoggedIn">
-          <a
-            class="header__link"
-            :class="{ userLink: styleLink }"
-            href="#"
-            @click="exit"
-            >Выход</a
-          >
-        </li>
-      </nav>
-    </div>
+      </li>
+      <li v-if="isLoggedIn">
+        <router-link
+          class="header__link"
+          :class="{ userLink: styleLink }"
+          :to="{ name: 'user' }"
+          >Мой&nbsp;паспорт</router-link
+        >
+      </li>
+      <li v-if="isLoggedIn">
+        <DropdownMenu></DropdownMenu>
+      </li>
+      <li v-if="!isLoggedIn">
+        <router-link
+          class="header__link"
+          :class="{ userLink: styleLink }"
+          :to="{ name: 'login' }"
+          >Войти</router-link
+        >
+      </li>
+      <li v-if="isLoggedIn">
+        <a
+          class="header__link"
+          :class="{ userLink: styleLink }"
+          href="#"
+          @click="exit"
+          >Выход</a
+        >
+      </li>
+    </nav>
   </header>
 </template>
 
@@ -96,6 +62,7 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useStoreUser } from "@/stores/storeUser";
+import DropdownMenu from "@/components/DropdownMenu.vue";
 
 const { logout } = useStoreUser();
 const { getToken } = storeToRefs(useStoreUser());
@@ -110,110 +77,61 @@ const exit = () => {
 
 <style lang="scss" scoped>
 .header {
-  position: absolute;
+  position: fixed;
+  z-index: 1;
   top: 0;
-  z-index: 2;
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  color: #fff;
-  //padding: 35px 100px 0;
-  padding: 35px 0 0;
-
-  @media (max-width: 1000px) {
-    //padding: 20px 50px;
-    padding: 20px 0 0;
+  height: 80px;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 0 -15px;
+  background-color: $clr-white;
+  box-shadow: 0px 2px 2px rgba(118, 117, 144, 0.12);
+  @include _424 {
+    margin: 0 -10px;
+    padding: 10px 10px;
   }
 
-  @media (max-width: 700px) {
-    flex-direction: column;
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    @include _424 {
+      gap: 10px;
+    }
   }
 
-  // @media (max-width: 375px) {
-  //   padding-left: 0;
-  //   padding-right: 0;
-  // }
-
-  .container {
-    @media (max-width: 992px) {
-      //flex-wrap: wrap;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      //padding: 20px 50px;
+  a {
+    display: flex;
+    @include link-item;
+    color: $clr-manatee;
+    transition: color 0.2s ease-in-out;
+    &:hover {
+      color: $clr-slate-grey;
     }
   }
 
   &__logo {
-    width: 234px;
-  }
-
-  &__link {
-    color: #fff;
-    font-size: 19px;
-    text-decoration: none;
-
-    &.userLink {
-      color: $clr-black;
-
-      &:hover {
-        color: #0a58ca;
+    height: 100%;
+    object-fit: cover;
+    @include _767 {
+      display: none;
+    }
+    &.desktop {
+      @include _767 {
+        display: none;
       }
     }
 
-    @media (max-width: 700px) {
-      font-size: 16px;
+    &.mobile {
+      display: none;
+      @include _767 {
+        display: block;
+        width: 50px;
+        object-fit: contain;
+      }
     }
   }
-
-  h2 {
-    font-family: "Roboto", sans-serif;
-    @media (max-width: 700px) {
-      margin-bottom: 15px;
-    }
-  }
-  nav {
-    display: flex;
-    @media (max-width: 500px) {
-      //width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      column-gap: 20px;
-      //padding: 10px;
-      //flex-direction: column;
-      //justify-content: center;
-      //align-items: center;
-      //text-align: center;
-    }
-  }
-  nav li {
-    margin: 0 15px;
-    @media (max-width: 500px) {
-      margin: 0 0 5px;
-    }
-  }
-  nav li:first-child {
-    margin-left: 0;
-  }
-  nav li:last-child {
-    margin-right: 0;
-  }
-  .dropdown-item.active {
-    background: transparent;
-  }
-
-  .test-text li {
-    margin: 0;
-  }
-
-  // .userLink {
-  //   color: $clr-black;
-
-  //   &:hover {
-  //     color: #0a58ca;
-  //   }
-  // }
 }
 </style>

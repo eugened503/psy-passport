@@ -1,8 +1,6 @@
 <template>
-  <main class="main">
-    <Header />
-    <router-view />
-  </main>
+  <Header></Header>
+  <!-- <router-view /> -->
 </template>
 <script setup>
 import axios from "axios";
@@ -24,15 +22,3 @@ axios.interceptors.response.use(undefined, function (err) {
   });
 });
 </script>
-
-<style lang="scss">
-#app {
-  min-width: 320px;
-  margin: 0 auto;
-}
-
-.main {
-  min-height: 100vh;
-  position: relative;
-}
-</style>

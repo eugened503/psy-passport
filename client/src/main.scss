@@ -12,7 +12,13 @@
 
 #app {
   min-width: 320px;
+  min-height: 100vh;
+  padding: 0 15px;
   position: relative;
+  background-color: $clr-smoky-whitey;
+  @include _424 {
+    padding: 0 10px;
+  }
 }
 
 h1 {
@@ -68,4 +74,10 @@ li {
 
 a {
   text-decoration: none;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

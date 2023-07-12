@@ -2,7 +2,6 @@
   <section class="profile" style="background-color: #eee">
     <div class="container py-5">
       <UserRow />
-
       <div class="row">
         <div class="col-lg-4">
           <ProfileCard :name="getUser?.name" />

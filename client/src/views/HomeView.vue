@@ -2,12 +2,12 @@
   <div class="home">
     <div class="background-image"></div>
     <LeadSlider />
-    <Hero />
+    <!-- <Hero />
     <div style="height: 200px; background-color: #2196f3; font-size: 36px">
       Scroll Up and Down this page to see the parallax scrolling effect. This
       div is just here to enable scrolling. Tip: Try to remove the
       background-attachment property to remove the scrolling effect.
-    </div>
+    </div> -->
   </div>
 </template>
 

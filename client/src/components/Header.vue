@@ -85,11 +85,9 @@ const exit = () => {
   height: 80px;
   width: 100%;
   padding: 10px 15px;
-  margin: 0 -15px;
   background-color: $clr-white;
   box-shadow: 0px 2px 2px rgba(118, 117, 144, 0.12);
   @include _424 {
-    margin: 0 -10px;
     padding: 10px 10px;
   }
 

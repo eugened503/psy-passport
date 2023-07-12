@@ -1,6 +1,8 @@
 <template>
-  <Header></Header>
-  <!-- <router-view /> -->
+  <div>
+    <Header></Header>
+    <router-view />
+  </div>
 </template>
 <script setup>
 import axios from "axios";
@@ -8,8 +10,8 @@ import Header from "@/components/Header.vue";
 import { useStoreUser } from "@/stores/storeUser";
 
 const { logout } = useStoreUser();
-
 const token = localStorage.getItem("token");
+
 if (token) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }

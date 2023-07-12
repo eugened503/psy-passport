@@ -115,12 +115,12 @@ const addRes = (index, res) => {
   }
 
   .btn-success {
-    color: $color-white !important;
+    color: $clr-white !important;
     background-color: #146c43 !important;
     border: none;
     outline: none;
     &:first-child:hover {
-      color: $color-white !important;
+      color: $clr-white !important;
       background-color: #146c43 !important;
     }
   }

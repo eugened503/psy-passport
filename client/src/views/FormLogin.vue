@@ -124,7 +124,7 @@ onMounted(() => clearError());
 }
 
 .card {
-  background: $color-white;
+  background: $clr-white;
 }
 
 .gradient-custom-3 {

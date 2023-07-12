@@ -155,7 +155,7 @@ const exit = () => {
     text-decoration: none;
 
     &.userLink {
-      color: $color-black;
+      color: $clr-black;
 
       &:hover {
         color: #0a58ca;
@@ -209,7 +209,7 @@ const exit = () => {
   }
 
   // .userLink {
-  //   color: $color-black;
+  //   color: $clr-black;
 
   //   &:hover {
   //     color: #0a58ca;

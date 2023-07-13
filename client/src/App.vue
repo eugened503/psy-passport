@@ -37,6 +37,11 @@ axios.interceptors.response.use(undefined, function (err) {
 
   &__body {
     flex: 1;
+    padding: 80px 0 0;
+
+    :deep(.home) {
+      padding: 40px 0 0;
+    }
   }
 
   &__footer {

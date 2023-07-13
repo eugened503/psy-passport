@@ -12,8 +12,6 @@ import LeadSlider from "../components/LeadSlider.vue";
 
 <style lang="scss" scoped>
 .home {
-  padding: 120px 0 0;
-
   &.banner-mt {
     margin: 40px 0 0;
   }

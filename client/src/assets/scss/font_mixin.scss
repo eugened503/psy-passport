@@ -6,3 +6,29 @@
     font-size: 14px;
   }
 }
+
+@mixin banner-title {
+  font-size: 60px;
+    line-height: normal;
+    margin: 30px 0 0;
+
+    span {
+      font-weight: bold;
+      color: $clr-aqua;
+    }
+
+    @include _767 {
+      font-size: 48px;
+    }
+}
+
+@mixin banner-subtitle {
+  font-size: 28px;
+  line-height: normal;
+  margin: 15px 0 0;
+  color: $clr-black;
+
+  @include _767 {
+    font-size: 24px;
+  }
+}

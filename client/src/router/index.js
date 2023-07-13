@@ -8,7 +8,7 @@ import PageError from "@/views/PageError.vue";
 import EysenckTest from "@/views/EysenckTest.vue";
 import LearyTest from "@/views/LearyTest.vue";
 import ShmishekTest from "@/views/ShmishekTest.vue";
-import Tests from "@/views/Tests.vue";
+import TestsLayout from "@/layouts/TestsLayout.vue";
 
 const routes = [
   {  
@@ -37,7 +37,7 @@ const routes = [
   {
     path: "/tests",
     name: "tests",
-    component: Tests,
+    component: TestsLayout,
     meta: {
       requiresAuth: true,
     },

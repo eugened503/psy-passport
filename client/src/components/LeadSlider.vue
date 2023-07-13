@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <section class="container">
     <Swiper
       class="slider"
       :breakpoints="breakpoints"
@@ -24,7 +24,7 @@
         </router-link>
       </SwiperSlide>
     </Swiper>
-  </div>
+  </section>
 </template>
 <script setup>
 import SwiperCore, { Navigation, Autoplay } from "swiper";

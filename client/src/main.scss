@@ -75,3 +75,17 @@ a {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.active:not(.link-line) {
+  position: relative;
+  font-weight: 700;
+  &::after {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: $clr-aqua;
+    content: "";
+    bottom: -4px;
+    left: 0;
+  }
+}

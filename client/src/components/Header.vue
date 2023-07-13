@@ -1,10 +1,6 @@
 <template>
   <header class="header">
-    <router-link
-      class="header__link"
-      :class="{ userLink: styleLink }"
-      :to="{ name: 'home' }"
-    >
+    <router-link class="header__link link-line" :to="{ name: 'home' }">
       <img
         class="header__logo desktop"
         src="../assets/images/logo.png"
@@ -16,20 +12,14 @@
         alt="logo"
       />
     </router-link>
-    <nav>
+    <nav class="header__nav-link">
       <li>
-        <router-link
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          :to="{ name: 'home' }"
+        <router-link class="header__link" :to="{ name: 'home' }"
           >Главная</router-link
         >
       </li>
       <li v-if="isLoggedIn">
-        <router-link
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          :to="{ name: 'user' }"
+        <router-link class="header__link" :to="{ name: 'user' }"
           >Мой&nbsp;паспорт</router-link
         >
       </li>
@@ -37,21 +27,15 @@
         <DropdownMenu></DropdownMenu>
       </li>
       <li v-if="!isLoggedIn">
-        <router-link
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          :to="{ name: 'login' }"
+        <router-link v-if="path" class="header__link" :to="{ name: 'login' }"
           >Войти</router-link
+        >
+        <router-link v-else class="header__link" :to="{ name: 'register' }"
+          >Регистрация</router-link
         >
       </li>
       <li v-if="isLoggedIn">
-        <a
-          class="header__link"
-          :class="{ userLink: styleLink }"
-          href="#"
-          @click="exit"
-          >Выход</a
-        >
+        <a class="header__link" href="#" @click="exit">Выход</a>
       </li>
     </nav>
   </header>
@@ -67,8 +51,9 @@ import DropdownMenu from "@/components/DropdownMenu.vue";
 const { logout } = useStoreUser();
 const { getToken } = storeToRefs(useStoreUser());
 const route = useRoute();
+
 const isLoggedIn = computed(() => getToken.value);
-const styleLink = computed(() => route.name != "home");
+const path = computed(() => route.name != "login");
 
 const exit = () => {
   logout();
@@ -91,7 +76,7 @@ const exit = () => {
     padding: 10px 10px;
   }
 
-  nav {
+  &__nav-link {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -100,7 +85,7 @@ const exit = () => {
     }
   }
 
-  a {
+  &__link {
     display: flex;
     @include link-item;
     color: $clr-manatee;

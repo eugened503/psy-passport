@@ -35,7 +35,7 @@
         >
       </li>
       <li v-if="isLoggedIn">
-        <a class="header__link" href="#" @click="exit">Выход</a>
+        <button class="header__link" @click="exit">Выход</button>
       </li>
     </nav>
   </header>
@@ -53,7 +53,7 @@ const { getToken } = storeToRefs(useStoreUser());
 const route = useRoute();
 
 const isLoggedIn = computed(() => getToken.value);
-const path = computed(() => route.name != "login");
+const path = computed(() => route.name !== "login");
 
 const exit = () => {
   logout();

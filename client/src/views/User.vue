@@ -1,22 +1,17 @@
 <template>
-  <section class="profile" style="background-color: #eee">
-    <div class="container py-5">
-      <UserRow />
-      <div class="row">
-        <div class="col-lg-4">
-          <ProfileCard :name="getUser?.name" />
-          <SocialCard />
-        </div>
-        <div class="col-lg-8">
-          <UserInfo
-            :name="getUser?.name"
-            :email="getUser?.email"
-            :id="getUser?._id"
-          />
-          <div class="row">
-            <Card title="Пройденные тесты" />
-            <Card title="Непройденные тесты" />
-          </div>
+  <section class="user">
+    <Breadcrumb />
+    <div class="user__container">
+      <ProfileCard :name="getUser?.name" />
+      <div class="user__right-block">
+        <UserInfo
+          :name="getUser?.name"
+          :email="getUser?.email"
+          :id="getUser?._id"
+        />
+        <div class="user__cards">
+          <Card title="Пройденные тесты" />
+          <Card title="Непройденные тесты" />
         </div>
       </div>
     </div>
@@ -27,8 +22,7 @@
 import Card from "@/components/Card.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
-import SocialCard from "@/components/SocialCard.vue";
-import UserRow from "@/components/UserRow.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import { onBeforeMount } from "vue";
 import { useStoreUser } from "@/stores/storeUser";
 import { storeToRefs } from "pinia";
@@ -40,15 +34,34 @@ onBeforeMount(() => profile());
 </script>
 
 <style lang="scss" scoped>
-.profile {
-  @media (max-width: 600px) {
-    padding-top: 158px;
-  }
-}
+.user {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 10px;
 
-.col-lg-8 hr {
-  width: 100%;
-  border: none;
-  opacity: 1;
+  &__container {
+    display: flex;
+    gap: 24px;
+    @include _424 {
+      flex-direction: column;
+    }
+  }
+
+  &__right-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 0 0 auto;
+    width: calc(67% - 24px);
+    @include _424 {
+      width: 100%;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    gap: 24px;
+  }
 }
 </style>

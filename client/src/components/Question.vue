@@ -1,61 +1,57 @@
 <template>
-  <div v-if="index === questionIndex" class="questions">
-    <div class="container-item col-md-10 col-lg-10">
-      <div class="border">
-        <div class="question bg-white p-3 border-bottom">
-          <div class="d-flex flex-row flex-wrap justify-content-between mcq">
-            <h4>Тест {{ name }}</h4>
-            <span>({{ index + 1 }} из {{ questions.length }})</span>
-          </div>
-        </div>
-        <div class="question bg-white p-3 border-bottom">
-          <div class="d-flex flex-row align-items-center question-title">
-            <!-- <h3 class="text-danger">Q.</h3> -->
-            <h5 class="mt-1 ml-2">
-              {{ text }}
-            </h5>
-          </div>
-          <div class="ans ml-2" v-for="item in responses" :key="item.id">
-            <button
-              style="width: 100px"
-              class="btn mt-2"
-              :class="{
-                'btn-success': answers[questionIndex] === item.response,
-              }"
-              @click="addRes(index, item.response)"
-            >
-              {{ item.text }}
-            </button>
-          </div>
-        </div>
-        <div class="button-wrapper d-flex flex-wrap p-3 bg-white">
+  <div v-if="index === questionIndex" class="question">
+    <div class="question__header">
+      <p class="question__title">{{ name }}</p>
+      <p class="question__num">({{ index + 1 }} из {{ questions.length }})</p>
+    </div>
+    <div class="question__body">
+      <p class="question__title">
+        <span>{{ index + 1 }}. </span>
+        {{ text }}
+      </p>
+      <div class="question__buttons">
+        <div
+          class="question__container-button"
+          v-for="item in responses"
+          :key="item.id"
+        >
           <button
-            class="btn btn-primary"
-            type="button"
-            v-if="questionIndex > 0"
-            @click="prev"
-          >
-            <i class="fa fa-angle-left mt-1 mr-1"></i>&nbsp;Предыдущий</button
-          ><button
-            v-show="questionIndex + 1 != questions.length"
-            :disabled="questionIndex >= isDisabled"
-            @click="next"
-            class="btn btn-primary"
-            type="button"
-          >
-            Следующий<i class="fa fa-angle-right mt-1 ms-1"></i>
-          </button>
-          <button
-            v-show="questionIndex + 1 === questions.length"
-            :disabled="questionIndex >= isDisabled"
-            @click="next"
-            class="btn btn-danger"
-            type="button"
-          >
-            Показать результаты<i class="fa fa-angle-right mt-1 ms-1"></i>
-          </button>
+            class="question__button button checkbox"
+            :class="{
+              'button-success': answers[questionIndex] === item.response,
+            }"
+            @click="addRes(index, item.response)"
+          ></button>
+          <span class="question__title">&nbsp;&nbsp;{{ item.text }}</span>
         </div>
       </div>
+    </div>
+    <div class="question__footer">
+      <button
+        class="question__button button"
+        type="button"
+        v-if="questionIndex > 0"
+        @click="prev"
+      >
+        Предыдущий</button
+      ><button
+        v-show="questionIndex + 1 != questions.length"
+        :disabled="questionIndex >= isDisabled"
+        @click="next"
+        class="question__button button"
+        type="button"
+      >
+        Следующий
+      </button>
+      <button
+        v-show="questionIndex + 1 === questions.length"
+        :disabled="questionIndex >= isDisabled"
+        @click="next"
+        class="question__button button"
+        type="button"
+      >
+        Показать результаты
+      </button>
     </div>
   </div>
 </template>
@@ -88,40 +84,81 @@ const addRes = (index, res) => {
 </script>
 
 <style lang="scss" scoped>
-.questions {
-  width: 100%;
-  .btn {
-    border: none;
-    outline: none;
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background-color: $clr-white;
+  border-radius: 8px;
+  border: 1px solid $clr-smog;
 
-    &:nth-child(2),
-    &:nth-child(3) {
-      margin-left: 10px;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 3px;
+  }
 
-      @media (max-width: 410px) {
-        margin: 10px 0 0;
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: $clr-mineshaft;
+    span {
+      font-weight: 600;
+    }
+  }
+
+  &__num {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 24px;
+    color: $clr-slate-grey;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__container-button {
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__button {
+    &.checkbox {
+      border-radius: 50%;
+      border: 1px solid $clr-manatee;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      background-color: $clr-white;
+
+      &.button-success {
+        color: $clr-white;
+        border: 10px solid $clr-aqua;
+        outline: none;
       }
     }
   }
 
-  .button-wrapper {
-    @media (max-width: 410px) {
-      flex-direction: column;
-    }
-  }
-
-  .container-item {
-    width: 100%;
-  }
-
-  .btn-success {
-    color: $clr-white !important;
-    background-color: #146c43 !important;
-    border: none;
-    outline: none;
-    &:first-child:hover {
-      color: $clr-white !important;
-      background-color: #146c43 !important;
+  &__footer {
+    button:not(:nth-child(1)) {
+      margin: 0 0 0 16px;
     }
   }
 }

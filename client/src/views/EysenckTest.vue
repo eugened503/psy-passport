@@ -1,6 +1,6 @@
 <template>
   <section class="eysenck">
-    <div v-if="!getEysenckRes" class="container py-5">
+    <div v-if="!getEysenckRes">
       <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
@@ -15,80 +15,72 @@
           :isDisabled="isDisabled"
           :questions="questions"
           :questionIndex="questionIndex"
-          name="Айзенка"
+          name="тест Айзенка"
         />
       </div>
       <div
-        class="mt-4"
+        class="eysenck__result"
         v-if="questionIndex === questions.length && pointsLie <= 4"
       >
-        <h2>Тест завершен</h2>
-        <div class="results-head d-flex justify-content-between">
-          <TableResults class="mt-4" :results="results" />
-          <Highcharts class="mt-4" :dataArr="options" />
-        </div>
-        <div>
-          <h3>Данные не сохранены</h3>
+        <p class="eysenck__result-title">
+          Тест завершен, но данные не сохранены
+        </p>
+        <div class="eysenck__result-head">
+          <TableResults :results="results" />
+          <Highcharts :dataArr="options" />
         </div>
         <DescTemp :activeName="temperament" />
         <DescNeuro />
         <DescEI />
         <TableQuiz :answers="answers" />
-        <BtnGroup
-          @reset="reset"
-          @sendResults="sendResults(allResults)"
-          class="mt-4"
-        />
+        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" />
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
-        <h3 class="text-danger">
+        <p class="eysenck__result-title text-danger">
           Высокий показатель по шкале лжи. Результаты теста рассматриваются как
           недостоверные.
-        </h3>
+        </p>
         <ProgressBar
           :pointsLie="pointsLie"
           :textLie="textLie"
           :lieIndexTrue="lieIndexTrue.length"
           :lieIndexFalse="lieIndexFalse.length"
         />
-        <BtnGroup @reset="reset" :lie="true" class="mt-4" />
+        <BtnGroup @reset="reset" :lie="true" />
       </div>
     </div>
-    <div v-else class="container py-5">
-      <div class="mt-4">
-        <h2>Тест завершен</h2>
-        <div class="results-head d-flex justify-content-between">
-          <TableResults class="mt-4" :results="getEysenckRes?.test" />
-          <Highcharts class="mt-4" :dataArr="getEysenckRes?.options" />
-        </div>
-        <div>
-          <div>
-            <h3>Данные сохранены</h3>
-          </div>
-        </div>
-        <DescTemp :activeName="getEysenckRes?.temperament" />
-        <DescNeuro />
-        <DescEI />
-        <TableQuiz :answers="getEysenckRes?.answers" />
-        <button @click="deleteData" class="btn mt-2">Удалить</button>
+    <div class="eysenck__result" v-else>
+      <p class="eysenck__result-title">Тест завершен</p>
+      <div class="eysenck__result-head">
+        <TableResults :results="getEysenckRes?.test" />
+        <Highcharts :dataArr="getEysenckRes?.options" />
       </div>
+      <p class="eysenck__result-title">Данные сохранены</p>
+      <DescTemp :activeName="getEysenckRes?.temperament" />
+      <DescNeuro />
+      <DescEI />
+      <TableQuiz :answers="getEysenckRes?.answers" />
+      <button @click="deleteData" class="eysenck__button button">
+        Удалить
+      </button>
     </div>
   </section>
 </template>
 <script setup>
 import questions from "@/data/eysenck/questions.json";
 import Highcharts from "@/components/Highcharts.vue";
-import TableQuiz from "@/components/TableQuiz.vue";
-import DescTemp from "@/components/DescTemp.vue";
-import DescEI from "@/components/DescEI.vue";
-import DescNeuro from "@/components/DescNeuro.vue";
+import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
+import DescTemp from "@/components/descComponents/DescTemp.vue";
+import DescEI from "@/components/descComponents/DescEI.vue";
+import DescNeuro from "@/components/descComponents/DescNeuro.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
-import TableResults from "@/components/TableResults.vue";
+import TableResults from "@/components/tableComponents/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
-const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
+const { sendResults, deleteResults, getTest, getTestRecords } =
+  useStoreResults();
 
 const extroIntroIndexTrue = ref([
   1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
@@ -269,8 +261,8 @@ const randomKey = () => {
 };
 const next = () => questionIndex.value++;
 const prev = () => questionIndex.value--;
-const reset = () => questionIndex.value = 0;
-const addRes = ({ index, res }) => answers.value[index] = res;
+const reset = () => (questionIndex.value = 0);
+const addRes = ({ index, res }) => (answers.value[index] = res);
 const points = (arr) => {
   return arr.reduce((accumulator, current, index) => {
     if (answers.value[index] === current) {
@@ -312,64 +304,35 @@ keys(neuroIndexTrue.value, [], neuro.value);
 
 <style lang="scss" scoped>
 .eysenck {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 10px;
 
-  @media (max-width: 600px) {
-    padding-top: 158px;
-  }
-
-  @media (max-width: 375px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  li {
-    list-style-type: none;
-  }
-  h4 {
-    min-height: 87px;
-    width: 80%;
+  &__result {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  h2 {
-    text-align: center;
-    // @media (max-width: 765px) {
-    //   text-align: center;
-    // }
-  }
-  .quiz-enter-active {
-    animation: iconIn 0.3s;
-  }
-  .quiz-leave-active {
-    animation: iconOut 0.3s;
+  &__result-title {
+    @include banner-subtitle;
+    margin: 0;
+    &.text-danger {
+      color: $clr-carrot;
+    }
   }
 
-  .progress {
-    flex: 1;
-    align-self: center;
-  }
-
-  .results-head {
-    @media (max-width: 1040px) {
+  &__result-head {
+    display: flex;
+    gap: 16px;
+    @include _1023 {
       flex-direction: column;
     }
   }
-}
 
-@keyframes quizIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes quizOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
+  &__button {
+    width: 100px;
   }
 }
 </style>

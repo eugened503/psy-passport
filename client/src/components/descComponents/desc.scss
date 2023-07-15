@@ -1,0 +1,31 @@
+.about {
+  position: relative;
+
+  &__title {
+    @include banner-subtitle;
+    margin: 0;
+
+    span {
+      color: $clr-aqua;
+    }
+    &.color {
+      color: $clr-aqua;
+    }
+  }
+
+  &__desc-title {
+    margin: 5px 0;
+    @include link-item;
+    @include _424 {
+      font-size: 16px;
+    }
+  }
+
+  &__desc-text {
+    @include link-item;
+    @include _424 {
+      font-size: 16px;
+    }
+    font-weight: normal;
+  }
+}

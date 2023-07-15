@@ -1,0 +1,38 @@
+table {
+    border-color: $clr-aqua;
+    width: 100%;
+    border-collapse: collapse;
+    color: $clr-saturated-blue;
+    vertical-align: top;
+    text-align: left;
+  
+    tbody,
+    td,
+    tfoot,
+    th,
+    thead,
+    tr {
+      border-color: inherit;
+      border-style: solid;
+      border-width: 0;
+      padding: 8px;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  
+    tr {
+      border-width: 1px 0;
+    }
+    th {
+      border-width: 0 1px;
+      font-weight: 700;
+    }
+  
+    td {
+      border-width: 0 1px;
+    }
+  
+    tbody {
+      vertical-align: inherit;
+    }
+  }

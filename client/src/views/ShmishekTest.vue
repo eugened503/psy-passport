@@ -87,7 +87,7 @@
 <script setup>
 import questions from "@/data/shmishek/questions.json";
 import HCShmishek from "@/components/HCShmishek.vue";
-import TableQuiz from "@/components/TableQuiz.vue";
+import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
 import Question from "@/components/Question.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import { ref, computed } from "vue";

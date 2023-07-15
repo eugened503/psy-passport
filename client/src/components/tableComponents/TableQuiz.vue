@@ -15,12 +15,12 @@
       <tr v-for="(answer, index) in answers" :key="index">
         <th scope="row">{{ index + 1 }}</th>
         <td v-if="answer">
-          <img src="../assets/images/mark.svg" alt="mark" />
+          <img src="@/assets/images/mark.svg" alt="mark" />
         </td>
         <td v-if="answer"></td>
         <td v-if="!answer"></td>
         <td v-if="!answer">
-          <img src="../assets/images/mark.svg" alt="mark" />
+          <img src="@/assets/images/mark.svg" alt="mark" />
         </td>
       </tr>
     </tbody>
@@ -34,14 +34,10 @@ const props = defineProps({
 </script>
 
 <style lang="scss" scoped>
-table {
-  td {
-    max-width: 240px;
+@import "./table.scss";
 
-    img {
-      width: 12px;
-      height: 12px;
-    }
-  }
+img {
+  width: 20px;
+  height: 20px;
 }
 </style>

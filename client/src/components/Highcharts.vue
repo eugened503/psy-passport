@@ -1,12 +1,12 @@
 <template>
   <div class="high-charts">
-    <div class="eysenck-circle" />
-    <highcharts class="hc" :options="chartOptions" />
+    <div class="eysenck-circle"></div>
+    <highcharts class="highcharts" :options="chartOptions" />
   </div>
 </template>
 
 <script setup>
-import { toRefs, ref, onMounted } from "vue";
+import { toRefs, ref, onMounted, reactive } from "vue";
 
 const props = defineProps({
   dataArr: Array,
@@ -58,7 +58,7 @@ const chartOptions = ref({
     {
       type: "area",
       name: "Area",
-      data: [],
+      data: [0, 0, 0, 0],
       pointPlacement: "on",
       maxWidth: 100,
     },
@@ -72,14 +72,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .high-charts {
   position: relative;
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-  width: 40%;
-  @media (max-width: 1040px) {
-    width: 100%;
-  }
-
   .eysenck-circle {
     position: absolute;
     width: 100%;
@@ -87,44 +79,17 @@ onMounted(() => {
     z-index: 1;
     background: url(../assets/images/eysenck-circle3.svg) no-repeat;
     background-position: center;
-    //background-size: contain;
+    background-size: contain;
   }
 }
-.highcharts-legend-item,
+</style>
+
+<style lang="scss">
+.highcharts-background {
+  fill: $clr-smoky-whitey;
+}
+
 .highcharts-credits {
   display: none;
-}
-
-.highcharts-axis-labels text {
-  opacity: 0;
-}
-
-.highcharts-plot-border {
-  //width: auto;
-}
-
-.highcharts-background,
-.highcharts-plot-background {
-  //width: 100%;
-}
-.highcharts-plot-background {
-  //margin: 0 auto;
-}
-
-.highcharts-background {
-  //width: auto;
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-}
-
-.highcharts-axis-labels text {
-  //transform: translate(5px, -40px);
-  //transform: translate(50px, -140px);
-  &:nth-child(1) {
-    //transform: rotate(45deg);
-    //position: relative;
-    //top: 10px;
-  }
 }
 </style>

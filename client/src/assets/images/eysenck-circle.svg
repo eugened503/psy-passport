@@ -14,5 +14,9 @@
   <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_3" y="37" x="222.77359" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">холерик</text>
   <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_4" y="274" x="22.52527" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">флегматик</text>
   <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_5" y="273.54546" x="223" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">сангвиник</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_6" y="10" x="113" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">нестабильность</text>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_7" y="310" x="113" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">стабильность</text>
+  <text transform="rotate(-90 2.4409828186035445,149.54386901855472) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_8" y="154.08931" x="-36" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">интроверсия</text>
+  <text transform="rotate(90 307.7030639648438,149.4545593261719) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="13" id="svg_9" y="154" x="267" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">экстраверсия</text>
  </g>
 </svg>

@@ -27,7 +27,11 @@
         </p>
         <div class="eysenck__result-head">
           <TableResults :results="results" />
-          <Highcharts :dataArr="options" />
+          <Highcharts :chartOptions="chartOptions" :dataArr="options">
+            <template v-slot:background>
+              <div class="eysenck__circle"></div>
+            </template>
+          </Highcharts>
         </div>
         <DescTemp :activeName="temperament" />
         <DescNeuro />
@@ -53,7 +57,11 @@
       <p class="eysenck__result-title">Тест завершен</p>
       <div class="eysenck__result-head">
         <TableResults :results="getEysenckRes?.test" />
-        <Highcharts :dataArr="getEysenckRes?.options" />
+        <Highcharts :chartOptions="chartOptions" :dataArr="getEysenckRes?.options">
+          <template v-slot:background>
+            <div class="eysenck__circle"></div>
+          </template>
+        </Highcharts>
       </div>
       <p class="eysenck__result-title">Данные сохранены</p>
       <DescTemp :activeName="getEysenckRes?.temperament" />
@@ -86,10 +94,44 @@ import TableResults from "@/components/tableComponents/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
+
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
 const showTable = ref(false);
+const chartOptions = ref({
+  chart: {
+    polar: true,
+  },
+
+  title: {
+    text: "",
+  },
+
+  xAxis: {
+    labels: {
+      enabled: false,
+      X: 0,
+      y: 0,
+    },
+    categories: ["Н", "Э", "С", "И"],
+    tickmarkPlacement: "on",
+    lineWidth: 0,
+  },
+
+  legend: {
+    enabled: false,
+  },
+
+  series: [
+    {
+      type: "area",
+      data: [0, 0, 0, 0],
+      pointPlacement: "on",
+      maxWidth: 100,
+    },
+  ],
+});
 const extroIntroIndexTrue = ref([
   1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
 ]);
@@ -109,7 +151,6 @@ const averageValue = ref(12);
 
 const getItem = computed(() => getTest("eysenck"));
 const getEysenckRes = computed(() => getTestRecords("eysenck"));
-
 const pointsExtroIntro = computed(() => points(extroIntro.value).length);
 const pointsNeuro = computed(() => points(neuro.value).length);
 const pointsLie = computed(() => points(lie.value).length);
@@ -155,9 +196,7 @@ const textExtroIntro = computed(() => {
     return "Склонность к интроверсии";
   if (pointsExtroIntro.value >= 5 && pointsExtroIntro.value < 9)
     return "Интроверт";
-  // if (pointsExtroIntro.value < 5 && pointsExtroIntro.value > 0)
-  //   return "глубокий интроверт";
-  return "Глубокий интроверт";
+  return "Глубокий интроверт"; //pointsExtroIntro.value < 5 && pointsExtroIntro.value > 0
 });
 const textNeuro = computed(() => {
   if (pointsNeuro.value > 19) return "Очень высокий уровень";
@@ -165,70 +204,55 @@ const textNeuro = computed(() => {
     return "Высокий уровень";
   if (pointsNeuro.value >= 9 && pointsNeuro.value <= 13)
     return "Среднее значение";
-  // if (pointsNeuro.value < 9 && pointsNeuro.value > 0)
-  //   return "низкий уровень нейротизма";
-  return "Низкий уровень";
+  return "Низкий уровень"; //pointsNeuro.value < 9 && pointsNeuro.value > 0
 });
 const textLie = computed(() => {
   if (pointsLie.value > 4) return "Неискренность в ответах";
   if (pointsLie.value === 4) return "Критический показатель";
-  // if (pointsLie.value < 4 && pointsLie.value > 0) return "норма";
-  return "Норма";
+  return "Норма"; //pointsLie.value < 4 && pointsLie.value > 0
 });
 const temperament = computed(() => {
-  // if (
-  //   scalePhlegmatic(pointsExtroIntro) &&
-  //   scalePhlegmatic(pointsNeuro)
-  // )
-  //   return "флегматик";
-
   if (
     scalePhlegmatic(pointsExtroIntro.value) &&
     pointsNeuro.value > averageValue.value
   )
-    return "Меланхолик"; // "меланхолик"
-
+    return "Меланхолик";
   if (
     pointsExtroIntro.value > averageValue.value &&
     pointsNeuro.value > averageValue.value
   )
-    return "Холерик"; // "холерик"
-
+    return "Холерик";
   if (
     pointsExtroIntro.value > averageValue.value &&
     scalePhlegmatic(pointsNeuro.value)
   )
-    return "Сангвиник"; // "сангвиник"
-
+    return "Сангвиник";
   if (
     pointsExtroIntro.value === averageValue.value &&
     pointsNeuro.value === averageValue.value
   )
-    return "Пограничный тип: все 4 типа темперамента"; // "пограничный тип: все 4 типа темперамента"
-
+    return "Пограничный тип: все 4 типа темперамента";
   if (
     pointsExtroIntro.value === averageValue.value &&
     pointsNeuro.value > averageValue.value
   )
-    return "Пограничный тип: меланхолик-холерик"; // "пограничный тип: меланхолик-холерик"
+    return "Пограничный тип: меланхолик-холерик";
   if (
     pointsExtroIntro.value > averageValue.value &&
     pointsNeuro.value === averageValue.value
   )
-    return "Пограничный тип: холерик-сангвиник"; // "пограничный тип: холерик-сангвиник"
+    return "Пограничный тип: холерик-сангвиник";
   if (
     pointsExtroIntro.value === averageValue.value &&
     scalePhlegmatic(pointsNeuro.value)
   )
-    return "Пограничный тип: сангвиник-флегматик"; // "пограничный тип: сангвиник-флегматик"
-
+    return "Пограничный тип: сангвиник-флегматик";
   if (
     pointsNeuro.value === averageValue.value &&
     scalePhlegmatic(pointsExtroIntro.value)
   )
-    return "Пограничный тип: флегматик-меланхолик"; // "пограничный тип: флегматик-меланхолик"
-
-  return "Флегматик"; // "флегматик"
+    return "Пограничный тип: флегматик-меланхолик";
+  return "Флегматик"; // scalePhlegmatic(pointsExtroIntro) && scalePhlegmatic(pointsNeuro)
 });
 const results = computed(() => {
   return [
@@ -260,6 +284,7 @@ const allResults = computed(() => {
     },
   };
 });
+
 const scalePhlegmatic = (points) => {
   if (points >= 0 && points < averageValue.value) return true;
   return false;
@@ -355,6 +380,16 @@ keys(neuroIndexTrue.value, [], neuro.value);
     span {
       font-weight: 700;
     }
+  }
+
+  &__circle {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: url(../assets/images/eysenck-circle.svg) no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 }
 </style>

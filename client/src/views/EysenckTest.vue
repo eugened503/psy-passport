@@ -59,7 +59,14 @@
       <DescTemp :activeName="getEysenckRes?.temperament" />
       <DescNeuro />
       <DescEI />
-      <TableQuiz :answers="getEysenckRes?.answers" />
+      <button @click="showTable = !showTable" class="eysenck__link button">
+        Tаблица ответов
+        <span v-if="!showTable">↓</span>
+        <span v-else>↑</span>
+      </button>
+      <Transition name="fade">
+        <TableQuiz v-if="showTable" :answers="getEysenckRes?.answers" />
+      </Transition>
       <button @click="deleteData" class="eysenck__button button">
         Удалить
       </button>
@@ -82,6 +89,7 @@ import { useStoreResults } from "@/stores/storeResults";
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
+const showTable = ref(false);
 const extroIntroIndexTrue = ref([
   1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
 ]);
@@ -333,6 +341,20 @@ keys(neuroIndexTrue.value, [], neuro.value);
 
   &__button {
     width: 100px;
+  }
+
+  &__link {
+    display: flex;
+    gap: 5px;
+    border-bottom: 2px solid $clr-aqua;
+    width: 134px;
+    background-color: unset;
+    border-radius: unset;
+    padding: 0;
+    color: $clr-slate-grey;
+    span {
+      font-weight: 700;
+    }
   }
 }
 </style>

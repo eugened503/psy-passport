@@ -1,6 +1,7 @@
 <template>
-  <section class="shmishek">
-    <div v-if="!getShmishekRes" class="container py-5">
+  <section class="container">
+    <p class="title">Опросник Леонгарда, Шмишека</p>
+    <div v-if="!getShmishekRes">
       <div v-if="questionIndex < questions.length">
         <Question
           v-for="(question, index) in questions"
@@ -18,83 +19,97 @@
           name="Шмишека и Леонгарда"
         />
       </div>
-      <div class="mt-4" v-if="questionIndex === questions.length">
-        <h2>Тест завершен</h2>
-        <div class="results-head d-flex justify-content-between">
-          <HCShmishek class="mt-4" :dataArr="options" />
-        </div>
-        <div>
-          <h3>Данные не сохранены</h3>
-        </div>
-
-        <div class="d-flex">
-          <div>
-            <span>Демонстративность: {{ pointsDemo }}</span> <br />
-            <span>Застревание: {{ pointsJam }}</span> <br />
-            <span>Педантичность: {{ pointsPed }}</span> <br />
-            <span>Неуравновешенность: {{ pointsInsta }}</span> <br />
-            <span>Гипертимность: {{ pointsHyper }}</span> <br />
-            <span>Дистимичность: {{ pointsDysthy }}</span> <br />
-            <span>Тревожность: {{ pointsAnxiety }}</span> <br />
-            <span>Циклотимичность: {{ pointsCyclo }}</span> <br />
-            <span>Аффективность: {{ pointsAffect }}</span> <br />
-            <span>Эмотивность: {{ pointsEmo }}</span> <br />
-          </div>
-        </div>
-
-        <TableQuiz :answers="answers" />
-        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" class="mt-4" />
+      <div class="container-result" v-if="questionIndex === questions.length">
+        <Test
+          :result="false"
+          :results="results"
+          :chartOptions="chartOptions"
+          :dataArr="options"
+          :answers="answers"
+          :reset="reset"
+          :sendResults="sendResults"
+          :allResults="allResults"
+        >
+        </Test>
       </div>
     </div>
-    <div v-else class="container py-5">
-      <div class="mt-4">
-        <h2>Тест завершен</h2>
-        <div class="results-head d-flex justify-content-between">
-          <HCShmishek class="mt-4" :dataArr="getShmishekRes?.options" />
-        </div>
-        <div>
-          <div>
-            <h3>Данные сохранены</h3>
-          </div>
-        </div>
-        <div class="d-flex">
-          <div>
-            <span>Демонстративность: {{ getShmishekRes?.pointsDemo }}</span>
-            <br />
-            <span>Застревание: {{ getShmishekRes?.pointsJam }}</span> <br />
-            <span>Педантичность: {{ getShmishekRes?.pointsPed }}</span> <br />
-            <span>Неуравновешенность: {{ getShmishekRes?.pointsInsta }} </span>
-            <br />
-            <span>Гипертимность: {{ getShmishekRes?.pointsHyper }}</span> <br />
-            <span>Дистимичность: {{ getShmishekRes?.pointsDysthy }} </span>
-            <br />
-            <span>Тревожность: {{ getShmishekRes?.pointsAnxiety }} </span>
-            <br />
-            <span>Циклотимичность: {{ getShmishekRes?.pointsCyclo }} </span>
-            <br />
-            <span>Аффективность: {{ getShmishekRes?.pointsAffect }} </span>
-            <br />
-            <span>Эмотивность: {{ getShmishekRes?.pointsEmo }} </span> <br />
-          </div>
-          <TableQuiz :answers="getShmishekRes?.answers" />
-          <button @click="deleteData" class="btn mt-2">Удалить</button>
-        </div>
-      </div>
+    <div class="container-result" v-else>
+      <Test
+        :result="false"
+        :results="getShmishekRes?.test"
+        :chartOptions="chartOptions"
+        :dataArr="getShmishekRes?.options"
+        :answers="getShmishekRes?.answers"
+        :deleteData="deleteData"
+      >
+      </Test>
     </div>
   </section>
 </template>
 
 <script setup>
 import questions from "@/data/shmishek/questions.json";
-import HCShmishek from "@/components/HCShmishek.vue";
-import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
 import Question from "@/components/Question.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
+import Test from "@/components/Test.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
-import randomKey from "@/utils/randomKey"
+import randomKey from "@/utils/randomKey";
 
-const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
+const { sendResults, deleteResults, getTest, getTestRecords } =
+  useStoreResults();
+
+const chartOptions = ref({
+  chart: {
+    polar: true,
+  },
+
+  accessibility: { enabled: false },
+
+  title: {
+    text: "",
+  },
+
+  pane: {
+    size: "100%",
+  },
+
+  xAxis: {
+    categories: [
+      "Демонстративность",
+      "Застревание",
+      "Педантичность",
+      "Неуравновешенность",
+      "Гипертимность",
+      "Дистимичность",
+      "Тревожность",
+      "Циклотимичность",
+      "Аффективность",
+      "Эмотивность",
+    ],
+    tickmarkPlacement: "on",
+    lineWidth: 0,
+  },
+
+  yAxis: {
+    gridLineInterpolation: "polygon",
+    lineWidth: 0,
+    min: 0,
+  },
+
+  legend: {
+    enabled: false,
+  },
+
+  series: [
+    {
+      type: "area",
+      data: [],
+      pointPlacement: "on",
+      maxWidth: 100,
+    },
+  ],
+});
 
 const questionIndex = ref(0);
 const answers = ref([]);
@@ -152,20 +167,55 @@ const options = computed(() => {
     pointsEmo.value,
   ];
 });
+const results = computed(() => {
+  return [
+    {
+      scale: "Демонстративность",
+      total: pointsDemo.value,
+    },
+    {
+      scale: "Застревание",
+      total: pointsJam.value,
+    },
+    {
+      scale: "Педантичность",
+      total: pointsPed.value,
+    },
+    {
+      scale: "Неуравновешенность",
+      total: pointsInsta.value,
+    },
+    {
+      scale: "Гипертимность",
+      total: pointsHyper.value,
+    },
+    {
+      scale: "Дистимичность",
+      total: pointsDysthy.value,
+    },
+    {
+      scale: "Тревожность",
+      total: pointsAnxiety.value,
+    },
+    {
+      scale: "Циклотимичность",
+      total: pointsCyclo.value,
+    },
+    {
+      scale: "Аффективность",
+      total: pointsAffect.value,
+    },
+    {
+      scale: "Эмотивность",
+      total: pointsEmo.value,
+    },
+  ];
+});
 const allResults = computed(() => {
   return {
     name: "shmishek",
     records: {
-      pointsDemo: pointsDemo.value,
-      pointsJam: pointsJam.value,
-      pointsPed: pointsPed.value,
-      pointsInsta: pointsInsta.value,
-      pointsHyper: pointsHyper.value,
-      pointsDysthy: pointsDysthy.value,
-      pointsAnxiety: pointsAnxiety.value,
-      pointsCyclo: pointsCyclo.value,
-      pointsAffect: pointsAffect.value,
-      pointsEmo: pointsEmo.value,
+      test: results.value,
       options: options.value,
       answers: answers.value,
     },
@@ -231,10 +281,4 @@ keys(anxietyTrue.value, anxietyFalse.value, anxiety.value);
 keys(cycloTrue.value, [], cyclo.value);
 keys(affectTrue.value, [], affect.value);
 keys(emoTrue.value, emoFalse.value, emo.value);
-
 </script>
-
-<style lang="scss" scoped>
-.shmishek {
-}
-</style>

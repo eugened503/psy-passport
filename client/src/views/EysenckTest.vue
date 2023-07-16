@@ -1,5 +1,6 @@
 <template>
-  <section class="eysenck">
+  <section class="eysenck container">
+    <p class="title">Тест Айзенка</p>
     <div v-if="!getEysenckRes">
       <div v-if="questionIndex < questions.length">
         <Question
@@ -19,28 +20,31 @@
         />
       </div>
       <div
-        class="eysenck__result"
+        class="container-result"
         v-if="questionIndex === questions.length && pointsLie <= 4"
       >
-        <p class="eysenck__result-title">
-          Тест завершен, но данные не сохранены
-        </p>
-        <div class="eysenck__result-head">
-          <TableResults :results="results" />
-          <Highcharts :chartOptions="chartOptions" :dataArr="options">
-            <template v-slot:background>
-              <div class="eysenck__circle"></div>
-            </template>
-          </Highcharts>
-        </div>
-        <DescTemp :activeName="temperament" />
-        <DescNeuro />
-        <DescEI />
-        <TableQuiz :answers="answers" />
-        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" />
+        <Test
+          :result="true"
+          :results="results"
+          :chartOptions="chartOptions"
+          :dataArr="options"
+          :answers="answers"
+          :reset="reset"
+          :sendResults="sendResults"
+          :allResults="allResults"
+        >
+          <template v-slot:test-background>
+            <div class="eysenck__circle"></div>
+          </template>
+          <template v-slot:body>
+            <DescTemp :activeName="temperament" />
+            <DescNeuro />
+            <DescEI />
+          </template>
+        </Test>
       </div>
       <div v-if="questionIndex === questions.length && pointsLie > 4">
-        <p class="eysenck__result-title text-danger">
+        <p class="subtitle text-danger">
           Высокий показатель по шкале лжи. Результаты теста рассматриваются как
           недостоверные.
         </p>
@@ -53,48 +57,36 @@
         <BtnGroup @reset="reset" :lie="true" />
       </div>
     </div>
-    <div class="eysenck__result" v-else>
-      <p class="eysenck__result-title">Тест завершен</p>
-      <div class="eysenck__result-head">
-        <TableResults :results="getEysenckRes?.test" />
-        <Highcharts
-          :chartOptions="chartOptions"
-          :dataArr="getEysenckRes?.options"
-        >
-          <template v-slot:background>
-            <div class="eysenck__circle"></div>
-          </template>
-        </Highcharts>
-      </div>
-      <p class="eysenck__result-title">Данные сохранены</p>
-      <DescTemp :activeName="getEysenckRes?.temperament" />
-      <DescNeuro />
-      <DescEI />
-      <button @click="showTable = !showTable" class="button-link button">
-        Tаблица ответов
-        <span v-if="!showTable">↓</span>
-        <span v-else>↑</span>
-      </button>
-      <Transition name="fade">
-        <TableQuiz v-if="showTable" :answers="getEysenckRes?.answers" />
-      </Transition>
-      <button @click="deleteData" class="eysenck__button button">
-        Удалить
-      </button>
+    <div class="container-result" v-else>
+      <Test
+        :result="true"
+        :results="getEysenckRes?.test"
+        :chartOptions="chartOptions"
+        :dataArr="getEysenckRes?.options"
+        :answers="getEysenckRes?.answers"
+        :deleteData="deleteData"
+      >
+        <template v-slot:test-background>
+          <div class="eysenck__circle"></div>
+        </template>
+        <template v-slot:body>
+          <DescTemp :activeName="getEysenckRes?.temperament" />
+          <DescNeuro />
+          <DescEI />
+        </template>
+      </Test>
     </div>
   </section>
 </template>
 <script setup>
 import questions from "@/data/eysenck/questions.json";
-import Highcharts from "@/components/Highcharts.vue";
-import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
 import DescTemp from "@/components/descComponents/DescTemp.vue";
 import DescEI from "@/components/descComponents/DescEI.vue";
 import DescNeuro from "@/components/descComponents/DescNeuro.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
-import TableResults from "@/components/tableComponents/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
+import Test from "@/components/Test.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import randomKey from "@/utils/randomKey";
@@ -102,7 +94,6 @@ import randomKey from "@/utils/randomKey";
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
-const showTable = ref(false);
 const chartOptions = ref({
   chart: {
     polar: true,
@@ -342,37 +333,6 @@ keys(neuroIndexTrue.value, [], neuro.value);
 
 <style lang="scss" scoped>
 .eysenck {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 24px 10px;
-
-  &__result {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  &__result-title {
-    @include banner-subtitle;
-    margin: 0;
-    &.text-danger {
-      color: $clr-carrot;
-    }
-  }
-
-  &__result-head {
-    display: flex;
-    gap: 16px;
-    @include _1023 {
-      flex-direction: column;
-    }
-  }
-
-  &__button {
-    width: 100px;
-  }
-
   &__circle {
     position: absolute;
     width: 100%;

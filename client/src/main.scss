@@ -27,18 +27,44 @@ h2 {
   line-height: 28px;
   font-weight: 400;
 }
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 10px;
+
+  &-result {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &-button {
+    width: 100px;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: $clr-mineshaft;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: $clr-mineshaft;
+}
 
 button {
   background: none;
   border: none;
   cursor: pointer;
-  width: 100%;
 }
 
 .button {
   display: inline-block;
   vertical-align: middle;
-  width: auto;
   color: $clr-white;
   background-color: $clr-aqua;
   border-color: $clr-aqua;

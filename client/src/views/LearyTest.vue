@@ -1,24 +1,26 @@
 <template>
-  <section class="leary">
-    <p class="leary__title">Тест межличностных отношений Лири</p>
+  <section class="leary container">
+    <p class="title">Тест межличностных отношений Лири</p>
     <div v-if="!getLearyRes">
-      <div class="leary__result" v-if="isActive">
-        <div class="leary__container">
-          <TableResults :result="false" :results="results" />
-          <Highcharts
-            class="highcharts"
-            :chartOptions="chartOptions"
-            :dataArr="options"
-          >
-            <template v-slot:background>
-              <div class="leary__circle"></div>
-            </template>
-          </Highcharts>
-        </div>
-        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" />
+      <div class="container-result" v-if="isActive">
+        <Test
+          v-if="isActive"
+          :result="false"
+          :results="results"
+          :chartOptions="chartOptions"
+          :dataArr="options"
+          :answers="answers"
+          :reset="reset"
+          :sendResults="sendResults"
+          :allResults="allResults"
+        >
+          <template v-slot:test-background>
+            <div class="leary__circle"></div>
+          </template>
+        </Test>
       </div>
-      <div class="leary__result" v-else>
-        <p class="leary__subtitle">
+      <div class="container-result" v-else>
+        <p class="subtitle">
           Отметьте (кликните) те суждения, которые соответствуют вашему
           представлению о себе:
         </p>
@@ -33,50 +35,37 @@
             {{ question.text }}
           </li>
         </ul>
-        <button class="leary__button button" @click="isActive = true">
-          Посмотреть результаты
+        <button class="container-button button" @click="isActive = true">
+          Результаты
         </button>
       </div>
     </div>
-    <div class="leary__result" v-else>
-      <div class="leary__container">
-        <TableResults :result="false" :results="getLearyRes?.test" />
-        <Highcharts
-          class="highcharts"
-          :chartOptions="chartOptions"
-          :dataArr="getLearyRes?.options"
-        >
-          <template v-slot:background>
-            <div class="leary__circle"></div>
-          </template>
-        </Highcharts>
-      </div>
-      <button @click="showTable = !showTable" class="button-link button">
-        Tаблица ответов
-        <span v-if="!showTable">↓</span>
-        <span v-else>↑</span>
-      </button>
-      <Transition name="fade">
-        <TableQuiz v-if="showTable" :answers="getLearyRes?.answers" />
-      </Transition>
-      <button @click="deleteData" class="leary__button button">Удалить</button>
+    <div class="container-result" v-else>
+      <Test
+        :result="false"
+        :results="getLearyRes?.test"
+        :chartOptions="chartOptions"
+        :dataArr="getLearyRes?.options"
+        :answers="getLearyRes?.answers"
+        :deleteData="deleteData"
+      >
+        <template v-slot:test-background>
+          <div class="leary__circle"></div>
+        </template>
+      </Test>
     </div>
   </section>
 </template>
 
 <script setup>
 import learyQuestions from "@/data/leary/questions.json";
-import Highcharts from "@/components/Highcharts.vue";
-import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
-import BtnGroup from "@/components/BtnGroup.vue";
-import TableResults from "@/components/tableComponents/TableResults.vue";
-import { ref, computed, onMounted, toRaw } from "vue";
+import Test from "@/components/Test.vue";
+import { ref, computed, onMounted } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
-const showTable = ref(false);
 const chartOptions = ref({
   chart: {
     polar: true,
@@ -91,6 +80,12 @@ const chartOptions = ref({
   xAxis: {
     tickmarkPlacement: "on",
     lineWidth: 0,
+  },
+
+  yAxis: {
+    gridLineInterpolation: "polygon",
+    lineWidth: 0,
+    min: 0,
   },
 
   legend: {
@@ -372,71 +367,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .leary {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 24px 10px;
-  @include _1023 {
-    flex-direction: column;
-  }
-
-  &__title {
-    font-size: 20px;
-    font-weight: 600;
-    color: $clr-mineshaft;
-  }
-
-  &__subtitle {
-    font-size: 18px;
-    font-weight: 600;
-    color: $clr-mineshaft;
-  }
-
-  &__result {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  &__container {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    @include _1023 {
-      flex-direction: column;
-    }
-    .highcharts {
-      width: 600px;
-      @include _1023 {
-        width: 100%;
-      }
-
-      :deep(.highcharts-background) {
-        fill: transparent;
-      }
-
-      :deep(
-          .highcharts-axis-labels,
-          .highcharts-xaxis-labels,
-          .highcharts-radial-axis-labels
-        ) {
-        text {
-          display: none;
-        }
-      }
-
-      :deep(
-          .highcharts-grid,
-          .highcharts-xaxis-grid,
-          .highcharts-radial-axis-grid
-        ) {
-        path {
-          display: none;
-        }
-      }
-    }
-  }
-
   &__list {
     display: flex;
     flex-wrap: wrap;
@@ -467,8 +397,7 @@ onMounted(() => {
       top: -4px;
     }
   }
-
-  &__button {
+  .container-button {
     width: 150px;
   }
 }

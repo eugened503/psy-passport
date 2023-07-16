@@ -92,6 +92,8 @@ import Question from "@/components/Question.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
+import randomKey from "@/utils/randomKey"
+
 const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
 
 const questionIndex = ref(0);
@@ -170,9 +172,6 @@ const allResults = computed(() => {
   };
 });
 
-const randomKey = () => {
-  return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
-};
 const next = () => {
   questionIndex.value++;
 };

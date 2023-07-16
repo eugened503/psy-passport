@@ -5,7 +5,7 @@
         <th>#</th>
         <th>Шкала</th>
         <th>Баллы</th>
-        <th>Результат</th>
+        <th v-if="result">Результат</th>
       </tr>
     </thead>
     <tbody>
@@ -13,7 +13,7 @@
         <th>{{ index + 1 }}</th>
         <td>{{ result.scale }}</td>
         <td>{{ result.total }}</td>
-        <td>{{ result.desc }}</td>
+        <td v-if="result && result.desc">{{ result.desc }}</td>
       </tr>
     </tbody>
   </table>
@@ -22,6 +22,10 @@
 <script setup>
 const props = defineProps({
   results: Array,
+  result: {
+    type: Boolean,
+    default: true,
+  },
 });
 </script>
 

@@ -36,13 +36,10 @@
 </template>
 <script setup>
 import descriptions from "@/data/eysenck/descriptions.json";
+import randomKey from "@/utils/randomKey"
 const props = defineProps({
   activeName: String,
 });
-
-const randomKey = () => {
-  return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
-};
 
 descriptions.forEach((description) => {
   description.id = randomKey();

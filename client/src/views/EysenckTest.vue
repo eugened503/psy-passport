@@ -57,7 +57,10 @@
       <p class="eysenck__result-title">Тест завершен</p>
       <div class="eysenck__result-head">
         <TableResults :results="getEysenckRes?.test" />
-        <Highcharts :chartOptions="chartOptions" :dataArr="getEysenckRes?.options">
+        <Highcharts
+          :chartOptions="chartOptions"
+          :dataArr="getEysenckRes?.options"
+        >
           <template v-slot:background>
             <div class="eysenck__circle"></div>
           </template>
@@ -67,7 +70,7 @@
       <DescTemp :activeName="getEysenckRes?.temperament" />
       <DescNeuro />
       <DescEI />
-      <button @click="showTable = !showTable" class="eysenck__link button">
+      <button @click="showTable = !showTable" class="button-link button">
         Tаблица ответов
         <span v-if="!showTable">↓</span>
         <span v-else>↑</span>
@@ -94,6 +97,7 @@ import TableResults from "@/components/tableComponents/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
+import randomKey from "@/utils/randomKey";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
@@ -102,6 +106,10 @@ const showTable = ref(false);
 const chartOptions = ref({
   chart: {
     polar: true,
+  },
+
+  accessibility: {
+    enabled: false,
   },
 
   title: {
@@ -289,9 +297,6 @@ const scalePhlegmatic = (points) => {
   if (points >= 0 && points < averageValue.value) return true;
   return false;
 };
-const randomKey = () => {
-  return new Date().getTime() + Math.floor(Math.random() * 10000).toString();
-};
 const next = () => questionIndex.value++;
 const prev = () => questionIndex.value--;
 const reset = () => (questionIndex.value = 0);
@@ -313,7 +318,7 @@ const keys = (arrInTrue, arrInFalse, arr) => {
   });
 };
 const deleteData = () => {
-  let id = getItem.value._id;
+  const id = getItem.value._id;
   deleteResults(id);
   questionIndex.value = 0;
   answers.value = [];
@@ -366,20 +371,6 @@ keys(neuroIndexTrue.value, [], neuro.value);
 
   &__button {
     width: 100px;
-  }
-
-  &__link {
-    display: flex;
-    gap: 5px;
-    border-bottom: 2px solid $clr-aqua;
-    width: 134px;
-    background-color: unset;
-    border-radius: unset;
-    padding: 0;
-    color: $clr-slate-grey;
-    span {
-      font-weight: 700;
-    }
   }
 
   &__circle {

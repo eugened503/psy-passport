@@ -400,5 +400,25 @@ onMounted(() => {
   .container-button {
     width: 150px;
   }
+
+  :deep(
+      .highcharts-axis-labels,
+      .highcharts-xaxis-labels,
+      .highcharts-radial-axis-labels
+    ) {
+    text {
+      display: none;
+    }
+  }
+
+  :deep(
+      .highcharts-grid,
+      .highcharts-xaxis-grid,
+      .highcharts-radial-axis-grid
+    ) {
+    path {
+      display: none;
+    }
+  }
 }
 </style>

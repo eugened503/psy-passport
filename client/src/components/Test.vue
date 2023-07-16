@@ -81,26 +81,6 @@ const props = defineProps({
       :deep(.highcharts-background) {
         fill: transparent;
       }
-
-      // :deep(
-      //     .highcharts-axis-labels,
-      //     .highcharts-xaxis-labels,
-      //     .highcharts-radial-axis-labels
-      //   ) {
-      //   text {
-      //     display: none;
-      //   }
-      // }
-
-      // :deep(
-      //     .highcharts-grid,
-      //     .highcharts-xaxis-grid,
-      //     .highcharts-radial-axis-grid
-      //   ) {
-      //   path {
-      //     display: none;
-      //   }
-      // }
     }
   }
 }

@@ -60,6 +60,20 @@ button {
   }
 }
 
+.button-link {
+  display: flex;
+  gap: 5px;
+  border-bottom: 2px solid $clr-aqua;
+  width: 134px;
+  background-color: unset;
+  border-radius: unset;
+  padding: 0;
+  color: $clr-slate-grey;
+  span {
+    font-weight: 700;
+  }
+}
+
 input {
   color: $clr-slate-grey;
   width: 100%;

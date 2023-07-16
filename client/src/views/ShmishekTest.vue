@@ -50,7 +50,6 @@
 <script setup>
 import questions from "@/data/shmishek/questions.json";
 import Question from "@/components/Question.vue";
-import BtnGroup from "@/components/BtnGroup.vue";
 import Test from "@/components/Test.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
@@ -61,7 +60,7 @@ const { sendResults, deleteResults, getTest, getTestRecords } =
 
 const chartOptions = ref({
   chart: {
-    polar: true,
+    type: "spline",
   },
 
   accessibility: { enabled: false },
@@ -92,9 +91,12 @@ const chartOptions = ref({
   },
 
   yAxis: {
-    gridLineInterpolation: "polygon",
-    lineWidth: 0,
-    min: 0,
+    title: {
+      text: "",
+    },
+    labels: {
+      format: "{value}",
+    },
   },
 
   legend: {

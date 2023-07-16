@@ -1,57 +1,28 @@
 <template>
   <section class="leary">
-    <div v-if="!getLearyRes" class="container py-5">
-      <div class="desc" v-show="isActive">
-        <div>
-          <h4>Тест межличностных отношений Лири</h4>
-          <div>Доминирование {{ domination }}</div>
-          <div>Дружелюбие {{ benevolence }}</div>
-          <br />
-          <div>
-            Авторитарный (властный-лидирующий)
-            {{ octantPoints.octantFirstPoints }}
-          </div>
-          <div>
-            Эгоистичный (независимый-доминирующий)
-            {{ octantPoints.octantSecondPoints }}
-          </div>
-          <div>
-            Агрессивный (прямолинейный-агрессивный)
-            {{ octantPoints.octantThirdPoints }}
-          </div>
-          <div>
-            Подозрительный (недоверчивый-скептический)
-            {{ octantPoints.octantFourthPoints }}
-          </div>
-          <div>
-            Подчиняемый (покорно-застенчивый)
-            {{ octantPoints.octantFifthPoints }}
-          </div>
-          <div>
-            Зависимый (зависимый-послушный) {{ octantPoints.octantSixthPoints }}
-          </div>
-          <div>
-            Дружелюбный (сотрудничающий-конвенциальный)
-            {{ octantPoints.octantSeventhPoints }}
-          </div>
-          <div>
-            Альтруистический (ответственно-великодушный)
-            {{ octantPoints.octantEighthPoints }}
-          </div>
+    <p class="leary__title">Тест межличностных отношений Лири</p>
+    <div v-if="!getLearyRes">
+      <div class="leary__result" v-if="isActive">
+        <div class="leary__container">
+          <TableResults :result="false" :results="results" />
+          <Highcharts
+            class="highcharts"
+            :chartOptions="chartOptions"
+            :dataArr="options"
+          >
+            <template v-slot:background>
+              <div class="leary__circle"></div>
+            </template>
+          </Highcharts>
         </div>
-        <HCLeary :dataArr="options" />
-        <BtnGroup
-          @reset="reset"
-          @sendResults="sendResults(allResults)"
-          class="mt-4"
-        />
+        <BtnGroup @reset="reset" @sendResults="sendResults(allResults)" />
       </div>
-      <div v-show="!isActive" class="mark">
-        <h4>
+      <div class="leary__result" v-else>
+        <p class="leary__subtitle">
           Отметьте (кликните) те суждения, которые соответствуют вашему
-          представлению о себе
-        </h4>
-        <ul>
+          представлению о себе:
+        </p>
+        <ul class="leary__list">
           <li
             v-for="(question, index) in questions"
             :key="question.id"
@@ -62,66 +33,79 @@
             {{ question.text }}
           </li>
         </ul>
-        <button class="btn mt-2" @click="isActive = true">
+        <button class="leary__button button" @click="isActive = true">
           Посмотреть результаты
         </button>
       </div>
     </div>
-    <div v-else>
-      <div class="desc">
-        <div>
-          <h4>Тест межличностных отношений Лири</h4>
-          <div>Доминирование {{ getLearyRes.domination }}</div>
-          <div>Дружелюбие {{ getLearyRes.benevolence }}</div>
-          <br />
-          <div>
-            Авторитарный (властный-лидирующий)
-            {{ getLearyRes.octantPoints.octantFirstPoints }}
-          </div>
-          <div>
-            Эгоистичный (независимый-доминирующий)
-            {{ getLearyRes.octantPoints.octantSecondPoints }}
-          </div>
-          <div>
-            Агрессивный (прямолинейный-агрессивный)
-            {{ getLearyRes.octantPoints.octantThirdPoints }}
-          </div>
-          <div>
-            Подозрительный (недоверчивый-скептический)
-            {{ getLearyRes.octantPoints.octantFourthPoints }}
-          </div>
-          <div>
-            Подчиняемый (покорно-застенчивый)
-            {{ getLearyRes.octantPoints.octantFifthPoints }}
-          </div>
-          <div>
-            Зависимый (зависимый-послушный)
-            {{ getLearyRes.octantPoints.octantSixthPoints }}
-          </div>
-          <div>
-            Дружелюбный (сотрудничающий-конвенциальный)
-            {{ getLearyRes.octantPoints.octantSeventhPoints }}
-          </div>
-          <div>
-            Альтруистический (ответственно-великодушный)
-            {{ getLearyRes.octantPoints.octantEighthPoints }}
-          </div>
-        </div>
-        <HCLeary :dataArr="getLearyRes?.options" />
-        <button @click="deleteData" class="btn mt-2">Удалить</button>
+    <div class="leary__result" v-else>
+      <div class="leary__container">
+        <TableResults :result="false" :results="getLearyRes?.test" />
+        <Highcharts
+          class="highcharts"
+          :chartOptions="chartOptions"
+          :dataArr="getLearyRes?.options"
+        >
+          <template v-slot:background>
+            <div class="leary__circle"></div>
+          </template>
+        </Highcharts>
       </div>
+      <button @click="showTable = !showTable" class="button-link button">
+        Tаблица ответов
+        <span v-if="!showTable">↓</span>
+        <span v-else>↑</span>
+      </button>
+      <Transition name="fade">
+        <TableQuiz v-if="showTable" :answers="getLearyRes?.answers" />
+      </Transition>
+      <button @click="deleteData" class="leary__button button">Удалить</button>
     </div>
   </section>
 </template>
 
 <script setup>
 import learyQuestions from "@/data/leary/questions.json";
-import HCLeary from "@/components/HCLeary.vue";
+import Highcharts from "@/components/Highcharts.vue";
+import TableQuiz from "@/components/tableComponents/TableQuiz.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
-import { ref, computed, onMounted } from "vue";
+import TableResults from "@/components/tableComponents/TableResults.vue";
+import { ref, computed, onMounted, toRaw } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
-const { sendResults, deleteResults, getTest, getTestRecords } = useStoreResults();
 
+const { sendResults, deleteResults, getTest, getTestRecords } =
+  useStoreResults();
+
+const showTable = ref(false);
+const chartOptions = ref({
+  chart: {
+    polar: true,
+  },
+
+  accessibility: { enabled: false },
+
+  title: {
+    text: "",
+  },
+
+  xAxis: {
+    tickmarkPlacement: "on",
+    lineWidth: 0,
+  },
+
+  legend: {
+    enabled: false,
+  },
+
+  series: [
+    {
+      type: "area",
+      data: [],
+      pointPlacement: "on",
+      maxWidth: 100,
+    },
+  ],
+});
 const keysAll = ref([]);
 const subarray = ref([]);
 const subarrayClone = ref([]);
@@ -129,26 +113,9 @@ const octantAll = ref([]);
 const isActive = ref(false);
 const questions = ref(learyQuestions);
 
-questions.value.forEach((question, i) => {
-  question.status = false;
-  question.id = i + 1;
-});
-
-onMounted(() => {
-  shuffle(questions.value);
-  questions.value.forEach((question, i) => {
-    keysAll.value.push(i + 1);
-  });
-  subarray.value = splitSubArrays(keysAll.value, 16);
-  subarray.value.map((arr) => {
-    subarrayClone.value.push(splitSubArrays(arr, 4));
-  });
-  octantAll.value = getKeys(subarrayClone.value);
-});
-
+const answers = computed(() => questions.value.map((x) => x.status));
 const getItem = computed(() => getTest("leary"));
 const getLearyRes = computed(() => getTestRecords("leary"));
-
 const responsesID = computed(() =>
   questions.value.filter((x) => x.status === true)
 );
@@ -188,7 +155,6 @@ const octantPoints = computed(() => {
     ),
   };
 });
-
 const benevolence = computed(() => {
   return Math.round(
     octantPoints.value.octantSeventhPoints -
@@ -200,7 +166,6 @@ const benevolence = computed(() => {
           octantPoints.value.octantSixthPoints)
   );
 });
-
 const domination = computed(() => {
   return Math.round(
     octantPoints.value.octantFirstPoints -
@@ -212,7 +177,6 @@ const domination = computed(() => {
           octantPoints.value.octantSixthPoints)
   );
 });
-
 const options = computed(() => {
   return [
     octantPoints.value.octantFirstPoints,
@@ -226,14 +190,57 @@ const options = computed(() => {
   ];
 });
 
+const results = computed(() => {
+  return [
+    {
+      scale: "Доминирование",
+      total: domination.value,
+    },
+    {
+      scale: "Дружелюбие",
+      total: benevolence.value,
+    },
+    {
+      scale: "Авторитарный (властный-лидирующий)",
+      total: octantPoints.value.octantFirstPoints,
+    },
+    {
+      scale: "Эгоистичный (независимый-доминирующий)",
+      total: octantPoints.value.octantSecondPoints,
+    },
+    {
+      scale: "Агрессивный (прямолинейный-агрессивный)",
+      total: octantPoints.value.octantThirdPoints,
+    },
+    {
+      scale: "Подозрительный (недоверчивый-скептический)",
+      total: octantPoints.value.octantFourthPoints,
+    },
+    {
+      scale: "Подчиняемый (покорно-застенчивый)",
+      total: octantPoints.value.octantFifthPoints,
+    },
+    {
+      scale: "Зависимый (зависимый-послушный)",
+      total: octantPoints.value.octantSixthPoints,
+    },
+    {
+      scale: "Дружелюбный (сотрудничающий-конвенциальный)",
+      total: octantPoints.value.octantSeventhPoints,
+    },
+    {
+      scale: "Альтруистический (ответственно-великодушный)",
+      total: octantPoints.value.octantEighthPoints,
+    },
+  ];
+});
 const allResults = computed(() => {
   return {
     name: "leary",
     records: {
-      octantPoints: octantPoints.value,
-      domination: domination.value,
-      benevolence: benevolence.value,
+      test: results.value,
       options: options.value,
+      answers: answers.value,
     },
   };
 });
@@ -254,7 +261,6 @@ const shuffle = (array) => {
 
   return array;
 };
-
 const splitSubArrays = (array, size) => {
   const subarray = [];
   for (let i = 0; i < Math.ceil(array.length / size); i++) {
@@ -263,7 +269,6 @@ const splitSubArrays = (array, size) => {
 
   return subarray;
 };
-
 const getKeys = (array) => {
   const evenArr = [];
   const oddArr = [];
@@ -325,12 +330,9 @@ const getKeys = (array) => {
     octantEighth,
   };
 };
-
 const selectItem = ({ status, id }) => {
-  status = !status;
-  questions.value.filter((x) => x.id === id).map((x) => (x.status = status));
+  questions.value.filter((x) => x.id === id).map((x) => (x.status = !status));
 };
-
 const getCommonElements = (array1, array2) => {
   const array = [];
 
@@ -342,60 +344,132 @@ const getCommonElements = (array1, array2) => {
 
   return array.length;
 };
-
 const reset = () => {
   isActive.value = false;
 };
-
 const deleteData = () => {
-  let id = getItem.value._id;
+  const id = getItem.value._id;
   deleteResults(id);
 };
+
+questions.value.forEach((question, i) => {
+  question.status = false;
+  question.id = i;
+});
+
+onMounted(() => {
+  shuffle(questions.value);
+  questions.value.forEach((question, i) => {
+    keysAll.value.push(i + 1);
+  });
+  subarray.value = splitSubArrays(keysAll.value, 16);
+  subarray.value.map((arr) => {
+    subarrayClone.value.push(splitSubArrays(arr, 4));
+  });
+  octantAll.value = getKeys(subarrayClone.value);
+});
 </script>
 
 <style lang="scss" scoped>
 .leary {
-  flex-direction: row;
-  align-items: flex-start;
-  //justify-content: space-between;
-  //gap: 10px;
-  gap: 10px;
-  .active {
-    color: blue;
-  }
-  div {
-    //flex: 1;
-  }
-  .desc {
-    flex: 1;
-    //width: 40%;
-    //display: flex;
-    //flex-direction: column;
-    .high-charts {
-      //width: 60%;
-    }
-  }
-  .mark {
-    padding: 0;
-    background-color: inherit;
-    //width: 60%;
-  }
-  ul {
-    padding: 0;
-    display: flex;
-    //justify-content: space-between;
-    //flex-direction: column;
-    //align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 10px;
+  @include _1023 {
+    flex-direction: column;
   }
 
-  ul li {
-    cursor: pointer;
-    transition: 0.4s color;
-    &:hover {
-      color: blueviolet;
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: $clr-mineshaft;
+  }
+
+  &__subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: $clr-mineshaft;
+  }
+
+  &__result {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    @include _1023 {
+      flex-direction: column;
     }
+    .highcharts {
+      width: 600px;
+      @include _1023 {
+        width: 100%;
+      }
+
+      :deep(.highcharts-background) {
+        fill: transparent;
+      }
+
+      :deep(
+          .highcharts-axis-labels,
+          .highcharts-xaxis-labels,
+          .highcharts-radial-axis-labels
+        ) {
+        text {
+          display: none;
+        }
+      }
+
+      :deep(
+          .highcharts-grid,
+          .highcharts-xaxis-grid,
+          .highcharts-radial-axis-grid
+        ) {
+        path {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    li {
+      cursor: pointer;
+    }
+    li.active {
+      color: $clr-aqua;
+      font-weight: normal;
+      &::after {
+        display: none;
+      }
+    }
+  }
+  &__circle {
+    position: absolute;
+    top: -31px;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: url(../assets/images/profile-leary.png) no-repeat;
+    filter: invert(5%);
+    background-position: center;
+    background-size: contain;
+    @include _1023 {
+      top: -4px;
+    }
+  }
+
+  &__button {
+    width: 150px;
   }
 }
 </style>

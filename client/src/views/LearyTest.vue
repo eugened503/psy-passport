@@ -195,42 +195,52 @@ const results = computed(() => {
     {
       scale: "Доминирование",
       total: domination.value,
+      desc: textPoint(domination.value),
     },
     {
       scale: "Дружелюбие",
       total: benevolence.value,
+      desc: textPoint(benevolence.value),
     },
     {
       scale: "Авторитарный (властный-лидирующий)",
       total: octantPoints.value.octantFirstPoints,
+      desc: textPoint(octantPoints.value.octantFirstPoints),
     },
     {
       scale: "Эгоистичный (независимый-доминирующий)",
       total: octantPoints.value.octantSecondPoints,
+      desc: textPoint(octantPoints.value.octantSecondPoints),
     },
     {
       scale: "Агрессивный (прямолинейный-агрессивный)",
       total: octantPoints.value.octantThirdPoints,
+      desc: textPoint(octantPoints.value.octantThirdPoints),
     },
     {
       scale: "Подозрительный (недоверчивый-скептический)",
       total: octantPoints.value.octantFourthPoints,
+      desc: textPoint(octantPoints.value.octantFourthPoints),
     },
     {
       scale: "Подчиняемый (покорно-застенчивый)",
       total: octantPoints.value.octantFifthPoints,
+      desc: textPoint(octantPoints.value.octantFifthPoints),
     },
     {
       scale: "Зависимый (зависимый-послушный)",
       total: octantPoints.value.octantSixthPoints,
+      desc: textPoint(octantPoints.value.octantSixthPoints),
     },
     {
       scale: "Дружелюбный (сотрудничающий-конвенциальный)",
       total: octantPoints.value.octantSeventhPoints,
+      desc: textPoint(octantPoints.value.octantSeventhPoints),
     },
     {
       scale: "Альтруистический (ответственно-великодушный)",
       total: octantPoints.value.octantEighthPoints,
+      desc: textPoint(octantPoints.value.octantEighthPoints),
     },
   ];
 });
@@ -244,6 +254,13 @@ const allResults = computed(() => {
     },
   };
 });
+
+const textPoint = (point) => {
+  if (point <= 4) return "Низкая";
+  if (point >= 5 && point <= 8) return "Умеренная (адаптивное поведение)";
+  if (point >= 9 && point <= 12) return "Высокая (экстремальное поведение)";
+  return "Экстремальная (до патологии)"; //point >= 13 && point <= 16
+};
 
 const shuffle = (array) => {
   let currentIndex = array.length;

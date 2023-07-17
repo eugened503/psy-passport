@@ -21,7 +21,6 @@
       </div>
       <div class="container-result" v-if="questionIndex === questions.length">
         <Test
-          :result="false"
           :results="results"
           :chartOptions="chartOptions"
           :dataArr="options"
@@ -38,7 +37,6 @@
     </div>
     <div class="container-result" v-else>
       <Test
-        :result="false"
         :results="getShmishekRes?.test"
         :chartOptions="chartOptions"
         :dataArr="getShmishekRes?.options"
@@ -152,16 +150,16 @@ const emo = ref([]);
 const getItem = computed(() => getTest("shmishek"));
 const getShmishekRes = computed(() => getTestRecords("shmishek"));
 const isDisabled = computed(() => answers.value.length);
-const pointsDemo = computed(() => points(demo.value).length);
-const pointsJam = computed(() => points(jam.value).length);
-const pointsPed = computed(() => points(ped.value).length);
-const pointsInsta = computed(() => points(insta.value).length);
-const pointsHyper = computed(() => points(hyper.value).length);
-const pointsDysthy = computed(() => points(dysthy.value).length);
-const pointsAnxiety = computed(() => points(anxiety.value).length);
-const pointsCyclo = computed(() => points(cyclo.value).length);
-const pointsAffect = computed(() => points(affect.value).length);
-const pointsEmo = computed(() => points(emo.value).length);
+const pointsDemo = computed(() => points(demo.value).length * 2);
+const pointsJam = computed(() => points(jam.value).length * 2);
+const pointsPed = computed(() => points(ped.value).length * 2);
+const pointsInsta = computed(() => points(insta.value).length * 3);
+const pointsHyper = computed(() => points(hyper.value).length * 3);
+const pointsDysthy = computed(() => points(dysthy.value).length * 3);
+const pointsAnxiety = computed(() => points(anxiety.value).length * 3);
+const pointsCyclo = computed(() => points(cyclo.value).length * 3);
+const pointsAffect = computed(() => points(affect.value).length * 6);
+const pointsEmo = computed(() => points(emo.value).length * 3);
 const options = computed(() => {
   return [
     pointsDemo.value,
@@ -181,42 +179,52 @@ const results = computed(() => {
     {
       scale: "Демонстративность",
       total: pointsDemo.value,
+      desc: textPoint(pointsDemo.value),
     },
     {
       scale: "Застревание",
       total: pointsJam.value,
+      desc: textPoint(pointsJam.value),
     },
     {
       scale: "Педантичность",
       total: pointsPed.value,
+      desc: textPoint(pointsPed.value),
     },
     {
       scale: "Неуравновешенность",
       total: pointsInsta.value,
+      desc: textPoint(pointsInsta.value),
     },
     {
       scale: "Гипертимность",
       total: pointsHyper.value,
+      desc: textPoint(pointsHyper.value),
     },
     {
       scale: "Дистимичность",
       total: pointsDysthy.value,
+      desc: textPoint(pointsDysthy.value),
     },
     {
       scale: "Тревожность",
       total: pointsAnxiety.value,
+      desc: textPoint(pointsAnxiety.value),
     },
     {
       scale: "Циклотимичность",
       total: pointsCyclo.value,
+      desc: textPoint(pointsCyclo.value),
     },
     {
       scale: "Аффективность",
       total: pointsAffect.value,
+      desc: textPoint(pointsAffect.value),
     },
     {
       scale: "Эмотивность",
       total: pointsEmo.value,
+      desc: textPoint(pointsEmo.value),
     },
   ];
 });
@@ -230,6 +238,13 @@ const allResults = computed(() => {
     },
   };
 });
+
+const textPoint = (point) => {
+  if (point <= 12) return "Cвойство не выражено";
+  if (point >= 13 && point <= 18)
+    return "Cредняя степень выраженности свойства (тенденция к тому или иному типу акцентуации личности)";
+  return "Признак акцентуации"; //point >= 19 && point <= 24
+};
 
 const { next, prev, reset, addRes, points, keys, deleteData } = useTestContent(
   questionIndex,

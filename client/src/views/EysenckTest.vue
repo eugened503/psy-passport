@@ -25,7 +25,7 @@
       >
         <Test
           :results="results"
-          :chartOptions="chartOptions"
+          :chartOptions="eysenckChartOptions"
           :dataArr="options"
           :answers="answers"
           :reset="reset"
@@ -59,7 +59,7 @@
     <div class="container-result" v-else>
       <Test
         :results="getEysenckRes?.test"
-        :chartOptions="chartOptions"
+        :chartOptions="eysenckChartOptions"
         :dataArr="getEysenckRes?.options"
         :answers="getEysenckRes?.answers"
         :deleteData="deleteData"
@@ -77,6 +77,7 @@
   </section>
 </template>
 <script setup>
+import { ref, computed } from "vue";
 import questions from "@/data/eysenck/questions.json";
 import DescTemp from "@/components/descComponents/DescTemp.vue";
 import DescEI from "@/components/descComponents/DescEI.vue";
@@ -85,50 +86,15 @@ import ProgressBar from "@/components/ProgressBar.vue";
 import Question from "@/components/Question.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 import Test from "@/components/Test.vue";
-import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import useTestContent from "@/composables/useTestContent";
+import useChartOptions from "@/composables/useChartOptions";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
-const chartOptions = ref({
-  chart: {
-    polar: true,
-  },
+const { eysenckChartOptions } = useChartOptions();
 
-  accessibility: {
-    enabled: false,
-  },
-
-  title: {
-    text: "",
-  },
-
-  xAxis: {
-    labels: {
-      enabled: false,
-      X: 0,
-      y: 0,
-    },
-    categories: ["Н", "Э", "С", "И"],
-    tickmarkPlacement: "on",
-    lineWidth: 0,
-  },
-
-  legend: {
-    enabled: false,
-  },
-
-  series: [
-    {
-      type: "area",
-      data: [0, 0, 0, 0],
-      pointPlacement: "on",
-      maxWidth: 100,
-    },
-  ],
-});
 const extroIntroIndexTrue = ref([
   1, 3, 8, 10, 13, 17, 22, 25, 27, 39, 44, 46, 49, 53, 56,
 ]);

@@ -22,7 +22,7 @@
       <div class="container-result" v-if="questionIndex === questions.length">
         <Test
           :results="results"
-          :chartOptions="chartOptions"
+          :chartOptions="shmishekChartOptions"
           :dataArr="options"
           :answers="answers"
           :reset="reset"
@@ -38,7 +38,7 @@
     <div class="container-result" v-else>
       <Test
         :results="getShmishekRes?.test"
-        :chartOptions="chartOptions"
+        :chartOptions="shmishekChartOptions"
         :dataArr="getShmishekRes?.options"
         :answers="getShmishekRes?.answers"
         :deleteData="deleteData"
@@ -59,65 +59,13 @@ import DescShmishek from "@/components/descComponents/DescShmishek.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import useTestContent from "@/composables/useTestContent";
+import useChartOptions from "@/composables/useChartOptions";
 import objectConstructor from "@/utils/objectConstructor";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
-const chartOptions = ref({
-  chart: {
-    type: "spline",
-  },
-
-  accessibility: { enabled: false },
-
-  title: {
-    text: "",
-  },
-
-  pane: {
-    size: "100%",
-  },
-
-  xAxis: {
-    categories: [
-      "Демонстративность",
-      "Застревание",
-      "Педантичность",
-      "Неуравновешенность",
-      "Гипертимность",
-      "Дистимичность",
-      "Тревожность",
-      "Циклотимичность",
-      "Аффективность",
-      "Эмотивность",
-    ],
-    tickmarkPlacement: "on",
-    lineWidth: 0,
-  },
-
-  yAxis: {
-    title: {
-      text: "",
-    },
-    labels: {
-      format: "{value}",
-    },
-  },
-
-  legend: {
-    enabled: false,
-  },
-
-  series: [
-    {
-      type: "area",
-      data: [],
-      pointPlacement: "on",
-      maxWidth: 100,
-    },
-  ],
-});
+const { shmishekChartOptions } = useChartOptions();
 
 const questionIndex = ref(0);
 const answers = ref([]);

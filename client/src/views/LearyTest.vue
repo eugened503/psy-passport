@@ -6,7 +6,7 @@
         <Test
           v-if="isActive"
           :results="results"
-          :chartOptions="chartOptions"
+          :chartOptions="learyChartOptions"
           :dataArr="options"
           :answers="answers"
           :reset="reset"
@@ -45,7 +45,7 @@
     <div class="container-result" v-else>
       <Test
         :results="getLearyRes?.test"
-        :chartOptions="chartOptions"
+        :chartOptions="learyChartOptions"
         :dataArr="getLearyRes?.options"
         :answers="getLearyRes?.answers"
         :deleteData="deleteData"
@@ -65,6 +65,7 @@
 import learyQuestions from "@/data/leary/questions.json";
 import Test from "@/components/Test.vue";
 import DescLeary from "@/components/descComponents/DescLeary.vue";
+import useChartOptions from "@/composables/useChartOptions";
 import { ref, computed, onMounted } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import objectConstructor from "@/utils/objectConstructor";
@@ -72,41 +73,8 @@ import objectConstructor from "@/utils/objectConstructor";
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
 
-const chartOptions = ref({
-  chart: {
-    polar: true,
-  },
+const { learyChartOptions } = useChartOptions();
 
-  accessibility: { enabled: false },
-
-  title: {
-    text: "",
-  },
-
-  xAxis: {
-    tickmarkPlacement: "on",
-    lineWidth: 0,
-  },
-
-  yAxis: {
-    gridLineInterpolation: "polygon",
-    lineWidth: 0,
-    min: 0,
-  },
-
-  legend: {
-    enabled: false,
-  },
-
-  series: [
-    {
-      type: "area",
-      data: [],
-      pointPlacement: "on",
-      maxWidth: 100,
-    },
-  ],
-});
 const keysAll = ref([]);
 const subarray = ref([]);
 const subarrayClone = ref([]);

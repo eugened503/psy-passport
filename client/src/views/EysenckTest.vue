@@ -24,7 +24,6 @@
         v-if="questionIndex === questions.length && pointsLie <= 4"
       >
         <Test
-          :result="true"
           :results="results"
           :chartOptions="chartOptions"
           :dataArr="options"
@@ -59,7 +58,6 @@
     </div>
     <div class="container-result" v-else>
       <Test
-        :result="true"
         :results="getEysenckRes?.test"
         :chartOptions="chartOptions"
         :dataArr="getEysenckRes?.options"

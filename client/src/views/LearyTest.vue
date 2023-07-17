@@ -5,7 +5,6 @@
       <div class="container-result" v-if="isActive">
         <Test
           v-if="isActive"
-          :result="false"
           :results="results"
           :chartOptions="chartOptions"
           :dataArr="options"
@@ -45,7 +44,6 @@
     </div>
     <div class="container-result" v-else>
       <Test
-        :result="false"
         :results="getLearyRes?.test"
         :chartOptions="chartOptions"
         :dataArr="getLearyRes?.options"

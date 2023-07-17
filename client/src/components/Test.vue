@@ -2,7 +2,7 @@
   <div class="test">
     <div class="test__result">
       <div class="test__container">
-        <TableResults :result="result" :results="results" />
+        <TableResults :results="results" />
         <Highcharts
           class="highcharts"
           :chartOptions="chartOptions"
@@ -41,7 +41,6 @@ import TableResults from "@/components/tableComponents/TableResults.vue";
 import BtnGroup from "@/components/BtnGroup.vue";
 
 const props = defineProps({
-  result: Boolean,
   results: Array,
   chartOptions: Object,
   dataArr: Array,

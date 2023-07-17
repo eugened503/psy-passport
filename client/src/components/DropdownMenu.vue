@@ -1,5 +1,5 @@
 <template>
-  <nav class="dropdown-menu">
+  <nav ref="root" class="dropdown-menu">
     <button
       class="dropdown-menu__button"
       :class="{ active: path }"
@@ -39,15 +39,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+
 const route = useRoute();
 
 const show = ref(false);
+const root = ref(null);
 
 const isOpen = () => (show.value = !show.value);
+const close = (e) => {
+  if (!root.value.contains(e.target)) {
+    show.value = false;
+  }
+};
 
 const path = computed(() => route.matched[0]?.name === "tests");
+
+onMounted(() => {
+  document.addEventListener("click", close);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", close);
+});
 </script>
 
 <style lang="scss" scoped>

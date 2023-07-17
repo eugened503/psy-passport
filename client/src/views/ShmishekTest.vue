@@ -59,6 +59,7 @@ import DescShmishek from "@/components/descComponents/DescShmishek.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import useTestContent from "@/composables/useTestContent";
+import objectConstructor from "@/utils/objectConstructor";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
@@ -174,60 +175,21 @@ const options = computed(() => {
     pointsEmo.value,
   ];
 });
-const results = computed(() => {
+const arr = computed(() => {
   return [
-    {
-      scale: "Демонстративность",
-      total: pointsDemo.value,
-      desc: textPoint(pointsDemo.value),
-    },
-    {
-      scale: "Застревание",
-      total: pointsJam.value,
-      desc: textPoint(pointsJam.value),
-    },
-    {
-      scale: "Педантичность",
-      total: pointsPed.value,
-      desc: textPoint(pointsPed.value),
-    },
-    {
-      scale: "Неуравновешенность",
-      total: pointsInsta.value,
-      desc: textPoint(pointsInsta.value),
-    },
-    {
-      scale: "Гипертимность",
-      total: pointsHyper.value,
-      desc: textPoint(pointsHyper.value),
-    },
-    {
-      scale: "Дистимичность",
-      total: pointsDysthy.value,
-      desc: textPoint(pointsDysthy.value),
-    },
-    {
-      scale: "Тревожность",
-      total: pointsAnxiety.value,
-      desc: textPoint(pointsAnxiety.value),
-    },
-    {
-      scale: "Циклотимичность",
-      total: pointsCyclo.value,
-      desc: textPoint(pointsCyclo.value),
-    },
-    {
-      scale: "Аффективность",
-      total: pointsAffect.value,
-      desc: textPoint(pointsAffect.value),
-    },
-    {
-      scale: "Эмотивность",
-      total: pointsEmo.value,
-      desc: textPoint(pointsEmo.value),
-    },
+    ["Демонстративность", pointsDemo.value],
+    ["Застревание", pointsJam.value],
+    ["Педантичность", pointsPed.value],
+    ["Неуравновешенность", pointsInsta.value],
+    ["Гипертимность", pointsHyper.value],
+    ["Дистимичность", pointsDysthy.value],
+    ["Тревожность", pointsAnxiety.value],
+    ["Циклотимичность", pointsCyclo.value],
+    ["Аффективность", pointsAffect.value],
+    ["Эмотивность", pointsEmo.value],
   ];
 });
+const results = computed(() => objectConstructor(arr.value, textPoint));
 const allResults = computed(() => {
   return {
     name: "shmishek",

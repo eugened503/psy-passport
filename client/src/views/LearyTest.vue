@@ -67,6 +67,7 @@ import Test from "@/components/Test.vue";
 import DescLeary from "@/components/descComponents/DescLeary.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
+import objectConstructor from "@/utils/objectConstructor";
 
 const { sendResults, deleteResults, getTest, getTestRecords } =
   useStoreResults();
@@ -190,60 +191,39 @@ const options = computed(() => {
   ];
 });
 
-const results = computed(() => {
+const arr = computed(() => {
   return [
-    {
-      scale: "Доминирование",
-      total: domination.value,
-      desc: textPoint(domination.value),
-    },
-    {
-      scale: "Дружелюбие",
-      total: benevolence.value,
-      desc: textPoint(benevolence.value),
-    },
-    {
-      scale: "Авторитарный (властный-лидирующий)",
-      total: octantPoints.value.octantFirstPoints,
-      desc: textPoint(octantPoints.value.octantFirstPoints),
-    },
-    {
-      scale: "Эгоистичный (независимый-доминирующий)",
-      total: octantPoints.value.octantSecondPoints,
-      desc: textPoint(octantPoints.value.octantSecondPoints),
-    },
-    {
-      scale: "Агрессивный (прямолинейный-агрессивный)",
-      total: octantPoints.value.octantThirdPoints,
-      desc: textPoint(octantPoints.value.octantThirdPoints),
-    },
-    {
-      scale: "Подозрительный (недоверчивый-скептический)",
-      total: octantPoints.value.octantFourthPoints,
-      desc: textPoint(octantPoints.value.octantFourthPoints),
-    },
-    {
-      scale: "Подчиняемый (покорно-застенчивый)",
-      total: octantPoints.value.octantFifthPoints,
-      desc: textPoint(octantPoints.value.octantFifthPoints),
-    },
-    {
-      scale: "Зависимый (зависимый-послушный)",
-      total: octantPoints.value.octantSixthPoints,
-      desc: textPoint(octantPoints.value.octantSixthPoints),
-    },
-    {
-      scale: "Дружелюбный (сотрудничающий-конвенциальный)",
-      total: octantPoints.value.octantSeventhPoints,
-      desc: textPoint(octantPoints.value.octantSeventhPoints),
-    },
-    {
-      scale: "Альтруистический (ответственно-великодушный)",
-      total: octantPoints.value.octantEighthPoints,
-      desc: textPoint(octantPoints.value.octantEighthPoints),
-    },
+    ["Доминирование", domination.value],
+    ["Дружелюбие", benevolence.value],
+    [
+      "Авторитарный (властный-лидирующий)",
+      octantPoints.value.octantFirstPoints,
+    ],
+    [
+      "Эгоистичный (независимый-доминирующий)",
+      octantPoints.value.octantSecondPoints,
+    ],
+    [
+      "Агрессивный (прямолинейный-агрессивный)",
+      octantPoints.value.octantThirdPoints,
+    ],
+    [
+      "Подозрительный (недоверчивый-скептический)",
+      octantPoints.value.octantFourthPoints,
+    ],
+    ["Подчиняемый (покорно-застенчивый)", octantPoints.value.octantFifthPoints],
+    ["Зависимый (зависимый-послушный)", octantPoints.value.octantSixthPoints],
+    [
+      "Дружелюбный (сотрудничающий-конвенциальный)",
+      octantPoints.value.octantSeventhPoints,
+    ],
+    [
+      "Альтруистический (ответственно-великодушный)",
+      octantPoints.value.octantEighthPoints,
+    ],
   ];
 });
+const results = computed(() => objectConstructor(arr.value, textPoint));
 const allResults = computed(() => {
   return {
     name: "leary",

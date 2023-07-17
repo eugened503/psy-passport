@@ -49,10 +49,7 @@ const props = defineProps({
   sendResults: Function,
   reset: Function,
   deleteData: Function,
-  allResults: {
-    type: Object,
-    default: null,
-  },
+  allResults: Object,
 });
 </script>
 

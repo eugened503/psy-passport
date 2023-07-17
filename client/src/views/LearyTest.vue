@@ -17,6 +17,9 @@
           <template v-slot:test-background>
             <div class="leary__circle"></div>
           </template>
+          <template v-slot:body>
+            <DescLeary />
+          </template>
         </Test>
       </div>
       <div class="container-result" v-else>
@@ -52,6 +55,9 @@
         <template v-slot:test-background>
           <div class="leary__circle"></div>
         </template>
+        <template v-slot:body>
+          <DescLeary />
+        </template>
       </Test>
     </div>
   </section>
@@ -60,6 +66,7 @@
 <script setup>
 import learyQuestions from "@/data/leary/questions.json";
 import Test from "@/components/Test.vue";
+import DescLeary from "@/components/descComponents/DescLeary.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 

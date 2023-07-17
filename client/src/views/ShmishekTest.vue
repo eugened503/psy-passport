@@ -30,6 +30,9 @@
           :sendResults="sendResults"
           :allResults="allResults"
         >
+          <template v-slot:body>
+            <DescShmishek />
+          </template>
         </Test>
       </div>
     </div>
@@ -42,6 +45,9 @@
         :answers="getShmishekRes?.answers"
         :deleteData="deleteData"
       >
+        <template v-slot:body>
+          <DescShmishek />
+        </template>
       </Test>
     </div>
   </section>
@@ -51,6 +57,7 @@
 import questions from "@/data/shmishek/questions.json";
 import Question from "@/components/Question.vue";
 import Test from "@/components/Test.vue";
+import DescShmishek from "@/components/descComponents/DescShmishek.vue";
 import { ref, computed } from "vue";
 import { useStoreResults } from "@/stores/storeResults";
 import useTestContent from "@/composables/useTestContent";

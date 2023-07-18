@@ -49,10 +49,29 @@ const props = defineProps({
   }
 
   &__image-prewrapper {
+    position: relative;
     width: 100%;
     height: 100%;
     max-width: 150px;
     max-height: 150px;
+   
+    cursor: pointer;
+    &::after {
+      position: absolute;
+      content: "";
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.2s ease-in-out;
+      background: url("../assets/images/pencil.png") no-repeat center;
+    }
+
+    &:hover {
+      &::after {
+        opacity: 1;
+      }
+    }
   }
 
   &__image-wrapper {

@@ -16,18 +16,6 @@
       <p class="user-info__key ellipsis">ID</p>
       <p class="user-info__value ellipsis">{{ id }}</p>
     </div>
-    <hr />
-
-    <div class="user-info__row">
-      <p class="user-info__key ellipsis">Mobile</p>
-      <p class="user-info__value ellipsis">(098) 765-432</p>
-    </div>
-    <hr />
-
-    <div class="user-info__row">
-      <p class="user-info__key ellipsis">Address</p>
-      <p class="user-info__value ellipsis">Bay Area, San Francisco, CA</p>
-    </div>
   </div>
 </template>
 
@@ -50,9 +38,6 @@ const props = defineProps({
     display: flex;
     p {
       font-size: 16px;
-      @include _424 {
-        font-size: 14px;
-      }
     }
   }
 

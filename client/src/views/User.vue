@@ -2,7 +2,11 @@
   <section class="user">
     <Breadcrumb />
     <div class="user__container">
-      <ProfileCard :name="getUser?.name" />
+      <ProfileCard
+        :name="getUser?.name"
+        :temperament="temperament"
+        :desc="test"
+      />
       <div class="user__right-block">
         <UserInfo
           :name="getUser?.name"
@@ -10,8 +14,8 @@
           :id="getUser?._id"
         />
         <div class="user__cards">
-          <Card title="Пройденные тесты" />
-          <Card title="Непройденные тесты" />
+          <Card title="Пройденные тесты" :namesTests="passed" />
+          <Card title="Непройденные тесты" :namesTests="missed" />
         </div>
       </div>
     </div>
@@ -19,18 +23,42 @@
 </template>
 
 <script setup>
+import { computed, onBeforeMount, ref } from "vue";
 import Card from "@/components/Card.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import ProfileCard from "@/components/ProfileCard.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import { onBeforeMount } from "vue";
+import allTests from "@/data/allTests.json"
 import { useStoreUser } from "@/stores/storeUser";
+import { useStoreResults } from "@/stores/storeResults";
 import { storeToRefs } from "pinia";
 
 const { profile } = useStoreUser();
 const { getUser } = storeToRefs(useStoreUser());
+const { getResults } = storeToRefs(useStoreResults());
+const { getTestRecords, loadResults } = useStoreResults();
 
-onBeforeMount(() => profile());
+const getEysenckRes = computed(() => getTestRecords("eysenck"));
+const test = computed(() => getEysenckRes.value?.test[0].desc);
+const temperament = computed(() => getEysenckRes.value?.temperament);
+const passed = computed(() =>
+  getResults.value?.map((item) => ({
+    id: item._id,
+    name: item.name,
+    title: item.title,
+  }))
+);
+const passedTitle = computed(() => passed.value?.map((item) => item.title));
+const missed = computed(() => {
+  return allTests.filter((item) => {
+    return !passedTitle.value?.includes(item.title);
+  });
+});
+
+onBeforeMount(() => {
+  profile();
+  loadResults();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -43,7 +71,7 @@ onBeforeMount(() => profile());
   &__container {
     display: flex;
     gap: 24px;
-    @include _424 {
+    @include _1023 {
       flex-direction: column;
     }
   }
@@ -54,7 +82,7 @@ onBeforeMount(() => profile());
     gap: 24px;
     flex: 0 0 auto;
     width: calc(67% - 24px);
-    @include _424 {
+    @include _1023 {
       width: 100%;
     }
   }

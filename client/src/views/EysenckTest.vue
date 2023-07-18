@@ -239,6 +239,7 @@ const results = computed(() => {
 const allResults = computed(() => {
   return {
     name: "eysenck",
+    title: "Tест Айзенка",
     records: {
       test: results.value,
       options: options.value,

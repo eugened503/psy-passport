@@ -11,14 +11,24 @@
     </div>
     <div class="profile-card__info">
       <p class="profile-card__name ellipsis">{{ name }}</p>
-      <p class="profile-card__text ellipsis">Full Stack Developer</p>
-      <p class="profile-card__text ellipsis">Bay Area, San Francisco, CA</p>
+      <p class="profile-card__text ellipsis">
+        Темперамент:
+        <span v-if="temperament">&nbsp;{{ temperament }}</span>
+        <span v-else>&nbsp;не определен</span>
+      </p>
+      <p class="profile-card__text ellipsis">
+        Психический склад:
+        <span v-if="desc">&nbsp;{{ desc }}</span>
+        <span v-else>&nbsp;не определен</span>
+      </p>
     </div>
   </div>
 </template>
 <script setup>
 const props = defineProps({
   name: String,
+  temperament: String,
+  desc: String,
 });
 </script>
 
@@ -34,7 +44,7 @@ const props = defineProps({
   padding: 24px;
   background-color: $clr-white;
   border-radius: 8px;
-  @include _424 {
+  @include _1023 {
     width: 100%;
   }
 
@@ -77,20 +87,20 @@ const props = defineProps({
     color: $clr-slate-grey;
     width: 100%;
     text-align: center;
-    @include _424 {
-      font-size: 18px;
-    }
   }
 
-  &__text {
+  p,
+  span {
     font-size: 16px;
     font-weight: 400;
     color: $clr-manatee;
     width: 100%;
     text-align: center;
-    @include _424 {
-      font-size: 14px;
-    }
+  }
+
+  span {
+    font-weight: 700;
+    color: $clr-aqua;
   }
 }
 </style>

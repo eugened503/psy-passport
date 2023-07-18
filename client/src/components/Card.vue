@@ -4,17 +4,22 @@
       {{ title }}
     </p>
     <div class="card__body">
-      <p class="card__test ellipsis">Тест Айзенка</p>
-      <hr />
-      <p class="card__test ellipsis">Тест Айзенка</p>
-      <hr />
-      <p class="card__test ellipsis">Тест Айзенка</p>
+      <router-link
+        :to="{ name: item.name }"
+        v-for="item in namesTests"
+        :key="item.id"
+        class="card__test ellipsis"
+      >
+        {{ item.title }}
+        <hr />
+      </router-link>
     </div>
   </div>
 </template>
 <script setup>
 const props = defineProps({
   title: String,
+  namesTests: Array,
 });
 </script>
 
@@ -37,6 +42,14 @@ const props = defineProps({
 
   &__body {
     margin: 16px 0 0;
+    a {
+      display: block;
+    }
+    a:nth-last-child(1) {
+      hr {
+        display: none;
+      }
+    }
   }
 
   &__test {

@@ -195,6 +195,7 @@ const results = computed(() => objectConstructor(arr.value, textPoint));
 const allResults = computed(() => {
   return {
     name: "leary",
+    title: "Тест межличностных отношений Лири",
     records: {
       test: results.value,
       options: options.value,

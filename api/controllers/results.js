@@ -20,8 +20,8 @@ const Forbidden = require('../errors/forbidden-err');
 // };
 
 module.exports.createResults = (req, res, next) => {
-  const { name, records, owner = req.user._id } = req.body;
-  result.create({ name, records, owner })
+  const { name, title, records, owner = req.user._id } = req.body;
+  result.create({ name, title, records, owner })
     .then((result) => res.status(200).send({ data: result }))
     .catch((err) => {
       if (err.name === 'ValidationError') {

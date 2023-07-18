@@ -1,7 +1,7 @@
 <template>
   <section class="banner">
     <h1>Создай свой <span>Psy Passport</span></h1>
-    <h2>И поделись с друзьями</h2>
+    <h2>И узнай себя</h2>
     <router-link v-if="getToken" :to="{ name: 'eysenck' }" class="banner__btn"
       >Пройти тест Айзенка</router-link
     >

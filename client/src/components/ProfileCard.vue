@@ -16,7 +16,11 @@
         />
       </div>
       <form class="profile-card__form" enctype="multipart/form-data">
-        <label class="profile-card__label" for="upload-photo"></label>
+        <label
+          class="profile-card__label"
+          data-title="Максимальный размер файла: 2Mb."
+          for="upload-photo"
+        ></label>
         <input
           class="profile-card__input"
           type="file"
@@ -43,10 +47,8 @@
   </div>
 </template>
 <script setup>
-//import { useStoreImage } from "@/stores/storeImage";
 import { useStoreUser } from "@/stores/storeUser";
-import { onBeforeMount, ref } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from "vue";
 const props = defineProps({
   name: String,
   temperament: String,
@@ -55,8 +57,8 @@ const props = defineProps({
 });
 
 const image = ref();
+
 const { upload } = useStoreUser();
-//const { getUser } = storeToRefs(useStoreUser());
 
 const fotoChange = (e) => {
   const file = e.target.files[0];
@@ -75,8 +77,6 @@ const create = (file) => {
 const uploadImage = () => {
   upload(image.value);
 };
-
-//onBeforeMount(() => getUser());
 </script>
 
 <style lang="scss" scoped>
@@ -139,6 +139,14 @@ const uploadImage = () => {
 
     &:hover {
       opacity: 1;
+      &::after {
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        color: $clr-slate-grey;
+        font-weight: 600;
+        content: attr(data-title);
+      }
     }
   }
 

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const result = require('../models/results');
 const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
@@ -18,7 +17,6 @@ module.exports.createResults = (req, res, next) => {
       }
     });
 };
-
 
 module.exports.getAllResults = (req, res, next) => {
   result.find({})

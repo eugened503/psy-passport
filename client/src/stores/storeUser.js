@@ -7,8 +7,6 @@ export const useStoreUser = defineStore("storeUser", {
   state: () => {
     return {
       user: null,
-      image: null,
-      userAvatar: null,
       token: localStorage.getItem("token") || null,
       loaded: false,
       error: null,
@@ -99,6 +97,25 @@ export const useStoreUser = defineStore("storeUser", {
       }
       this.loaded = false;
     },
+
+    async upload(avatar) {
+      this.loaded = true;
+      try {
+        const res = await axios({
+          method: "patch",
+          url: baseUrl + "/users/me/avatar",
+          data: { avatar },
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.user = res.data;
+      } catch (error) {
+        this.error = error.response.data.message;
+      }
+      this.loaded = false;
+    },
+
 
     clearError() {
       this.error = null;

@@ -4,6 +4,7 @@
     <div class="user__container">
       <ProfileCard
         :name="getUser?.name"
+        :avatar="getUser?.avatar"
         :temperament="temperament"
         :desc="test"
       />

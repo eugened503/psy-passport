@@ -3,14 +3,14 @@
     <div class="profile-card__image-prewrapper">
       <div class="profile-card__image-wrapper">
         <img
-          v-if="!getImage"
-          src="../assets/images/962178.jpg"
+          v-if="!avatar"
+          src="../assets/images/users.svg"
           alt="avatar"
           class="profile-card__image"
         />
         <img
           v-else
-          :src="getImage[getImage.length-1].image"
+          :src="'http://localhost:3000/public/' + avatar"
           alt="avatar"
           class="profile-card__image"
         />
@@ -43,18 +43,20 @@
   </div>
 </template>
 <script setup>
-import { useStoreImage } from "@/stores/storeImage";
+//import { useStoreImage } from "@/stores/storeImage";
+import { useStoreUser } from "@/stores/storeUser";
 import { onBeforeMount, ref } from "vue";
 import { storeToRefs } from "pinia";
 const props = defineProps({
   name: String,
   temperament: String,
   desc: String,
+  avatar: String,
 });
 
 const image = ref();
-const { upload, getUpload } = useStoreImage();
-const { getImage } = storeToRefs(useStoreImage());
+const { upload } = useStoreUser();
+//const { getUser } = storeToRefs(useStoreUser());
 
 const fotoChange = (e) => {
   const file = e.target.files[0];
@@ -74,7 +76,7 @@ const uploadImage = () => {
   upload(image.value);
 };
 
-onBeforeMount(() => getUpload());
+//onBeforeMount(() => getUser());
 </script>
 
 <style lang="scss" scoped>

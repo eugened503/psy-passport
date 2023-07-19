@@ -3,11 +3,29 @@
     <div class="profile-card__image-prewrapper">
       <div class="profile-card__image-wrapper">
         <img
+          v-if="!getImage"
           src="../assets/images/962178.jpg"
           alt="avatar"
           class="profile-card__image"
         />
+        <img
+          v-else
+          :src="getImage[getImage.length-1].image"
+          alt="avatar"
+          class="profile-card__image"
+        />
       </div>
+      <form class="profile-card__form" enctype="multipart/form-data">
+        <label class="profile-card__label" for="upload-photo"></label>
+        <input
+          class="profile-card__input"
+          type="file"
+          name="image"
+          id="upload-photo"
+          accept="image/*"
+          @change="fotoChange"
+        />
+      </form>
     </div>
     <div class="profile-card__info">
       <p class="profile-card__name ellipsis">{{ name }}</p>
@@ -25,11 +43,38 @@
   </div>
 </template>
 <script setup>
+import { useStoreImage } from "@/stores/storeImage";
+import { onBeforeMount, ref } from "vue";
+import { storeToRefs } from "pinia";
 const props = defineProps({
   name: String,
   temperament: String,
   desc: String,
 });
+
+const image = ref();
+const { upload, getUpload } = useStoreImage();
+const { getImage } = storeToRefs(useStoreImage());
+
+const fotoChange = (e) => {
+  const file = e.target.files[0];
+  create(file);
+};
+
+const create = (file) => {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    image.value = e.target.result;
+    uploadImage();
+  };
+  reader.readAsDataURL(file);
+};
+
+const uploadImage = () => {
+  upload(image.value);
+};
+
+onBeforeMount(() => getUpload());
 </script>
 
 <style lang="scss" scoped>
@@ -54,24 +99,6 @@ const props = defineProps({
     height: 100%;
     max-width: 150px;
     max-height: 150px;
-   
-    cursor: pointer;
-    &::after {
-      position: absolute;
-      content: "";
-      top: 0;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      transition: opacity 0.2s ease-in-out;
-      background: url("../assets/images/pencil.png") no-repeat center;
-    }
-
-    &:hover {
-      &::after {
-        opacity: 1;
-      }
-    }
   }
 
   &__image-wrapper {
@@ -89,6 +116,34 @@ const props = defineProps({
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  &__form {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__label {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.2s ease-in-out;
+    background: url("../assets/images/pencil.png") no-repeat center;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
   }
 
   &__info {

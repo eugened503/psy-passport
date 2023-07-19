@@ -4,21 +4,6 @@ const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
 const Forbidden = require('../errors/forbidden-err');
 
-// module.exports.createResults = (req, res, next) => {
-//   const { test, temperament, answers, options, owner = req.user._id } = req.body;
-//   result.create({ test, temperament, answers, options, owner })
-//     .then((result) => res.status(200).send({ data: result }))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         next(new ValidationError(err.message));
-//         return;
-//       }
-//       else {
-//         next(err);
-//       }
-//     });
-// };
-
 module.exports.createResults = (req, res, next) => {
   const { name, title, records, owner = req.user._id } = req.body;
   result.create({ name, title, records, owner })

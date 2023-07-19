@@ -43,28 +43,6 @@ module.exports.createUser = (req, res, next) => {
         })
         .send({ email: data.email, name: data.name });
     })
-    // .then((newUser) => {
-    //   if (newUser) {
-    //     throw new ConflictingRequest('Электронная почта уже существует');
-    //   }
-    //   bcrypt.hash(password, 10)
-    //     .then((hash) => User.create({ name, email, password: hash }))
-    //     .then((user) => res.status(200).send({
-    //       _id: user._id,
-    //       name: user.name,
-    //       email: user.email,
-    //     }))
-    //     .catch((err) => {
-    //       console.log(err);
-    //       if (err.name === 'ValidationError') {
-    //         next(new ValidationError(err.message));
-    //         return;
-    //       }
-    //       else {
-    //         next(err);
-    //       }
-    //     });
-    // })
     .catch(next);
 };
 

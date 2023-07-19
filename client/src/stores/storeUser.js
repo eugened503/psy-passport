@@ -7,6 +7,8 @@ export const useStoreUser = defineStore("storeUser", {
   state: () => {
     return {
       user: null,
+      image: null,
+      userAvatar: null,
       token: localStorage.getItem("token") || null,
       loaded: false,
       error: null,

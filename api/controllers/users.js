@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET, NODE_ENV } = process.env;
 const base64Img = require("base64-img");
 const fsExtra = require("fs-extra");
+const fs = require("fs");
 
 const User = require("../models/users");
 const NotFoundError = require("../errors/not-found-err");
@@ -116,11 +117,12 @@ module.exports.unlogin = (req, res, next) => {
 };
 
 module.exports.updateUserAvatar = (req, res, next) => {
-  const fileDir = "./public";
+  const { avatar, owner = req.user._id  } = req.body;
+  const fileDir = "./public/"+owner.slice(0, 12);
 
-  fsExtra.emptyDirSync(fileDir);
+  fs.mkdirSync(fileDir, { recursive: true }) //создаем папку юзера
 
-  const { avatar } = req.body;
+  fsExtra.emptyDirSync(fileDir); //очищаем папку юзера
 
   base64Img.img(avatar, fileDir, Date.now(), function (err, filepath) {
     const pathArr = filepath.split("\\");

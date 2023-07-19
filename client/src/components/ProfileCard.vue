@@ -10,7 +10,7 @@
         />
         <img
           v-else
-          :src="'http://localhost:3000/public/' + avatar"
+          :src="'http://localhost:3000/public/' + userId.slice(0, 12) + '/' + avatar"
           alt="avatar"
           class="profile-card__image"
         />
@@ -54,6 +54,7 @@ const props = defineProps({
   temperament: String,
   desc: String,
   avatar: String,
+  userId: String,
 });
 
 const image = ref();

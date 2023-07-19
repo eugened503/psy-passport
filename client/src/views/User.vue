@@ -7,6 +7,7 @@
         :avatar="getUser?.avatar"
         :temperament="temperament"
         :desc="test"
+        :userId="getUser?._id"
       />
       <div class="user__right-block">
         <UserInfo

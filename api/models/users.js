@@ -38,7 +38,6 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     .select("+password")
     .then((user) => {
       if (!user) {
-        // return Promise.reject(new Error("Неправильные почта или пароль"));
         return Promise.reject(
           NODE_ENV === "production"
             ? new Error("Неправильные почта или пароль")
@@ -57,26 +56,6 @@ userSchema.statics.findUserByCredentials = function (email, password) {
         return user;
       });
     });
-
-  // .then((user) => {
-  //   if (!user) {
-  //     return Promise.reject(
-  //       NODE_ENV === "production"
-  //         ? new Error("Неправильные почта или пароль")
-  //         : new NotFoundError("Нет пользователя с таким email")
-  //     );
-  //   }
-  //   return bcrypt.compare(password, user.password).then((matched) => {
-  //     if (!matched) {
-  //       return Promise.reject(
-  //         NODE_ENV === "production"
-  //           ? new Error("Неправильные почта или пароль")
-  //           : new UnauthorizedError("Неверный пароль")
-  //       );
-  //     }
-  //     return user;
-  //   });
-  // });
 };
 
 module.exports = mongoose.model("user", userSchema);

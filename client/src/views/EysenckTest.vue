@@ -16,7 +16,7 @@
           :isDisabled="isDisabled"
           :questions="questions"
           :questionIndex="questionIndex"
-          name="тест Айзенка"
+          name="Вопросы"
         />
       </div>
       <div

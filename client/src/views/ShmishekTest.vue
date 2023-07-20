@@ -16,7 +16,7 @@
           :isDisabled="isDisabled"
           :questions="questions"
           :questionIndex="questionIndex"
-          name="Шмишека и Леонгарда"
+          name="Вопросы"
         />
       </div>
       <div class="container-result" v-if="questionIndex === questions.length">

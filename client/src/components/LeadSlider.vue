@@ -35,7 +35,7 @@ import dataSlider from "@/data/slider";
 import { reactive } from "vue";
 
 const getImgUrl = (pic) => {
-  return new URL("../assets/images/slider/" + pic, import.meta.url);
+  return new URL("/slider/" + pic, import.meta.url);
 };
 
 const breakpoints = reactive({

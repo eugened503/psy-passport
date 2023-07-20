@@ -10,7 +10,7 @@
         />
         <img
           v-else
-          :src="'http://localhost:3000/public/' + userId.slice(0, 12) + '/' + avatar"
+          :src="baseUrl + '/public/' + userId.slice(0, 12) + '/' + avatar"
           alt="avatar"
           class="profile-card__image"
         />
@@ -48,6 +48,7 @@
 </template>
 <script setup>
 import { useStoreUser } from "@/stores/storeUser";
+import baseUrl from "@/utils/baseUrl"
 import { ref } from "vue";
 const props = defineProps({
   name: String,

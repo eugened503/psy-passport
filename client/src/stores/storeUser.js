@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-const baseUrl = "http://localhost:3000";
+import baseUrl from "@/utils/baseUrl"
 
 export const useStoreUser = defineStore("storeUser", {
   state: () => {

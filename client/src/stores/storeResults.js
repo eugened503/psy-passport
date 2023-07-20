@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-const baseUrl = "http://localhost:3000/results";
+import baseUrl from "@/utils/baseUrl"
 import { useStoreUser } from "@/stores/storeUser";
 
 export const useStoreResults = defineStore("storeResults", {
@@ -19,7 +19,7 @@ export const useStoreResults = defineStore("storeResults", {
       try {
         const res = await axios({
           method: "post",
-          url: baseUrl,
+          url: baseUrl + "/results",
           data: results,
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const useStoreResults = defineStore("storeResults", {
       try {
         const res = await axios({
           method: "get",
-          url: baseUrl,
+          url: baseUrl + "/results",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${getToken}`,
@@ -62,7 +62,7 @@ export const useStoreResults = defineStore("storeResults", {
       try {
         const res = await axios({
           method: "delete",
-          url: `${baseUrl}/${id}`,
+          url: `${baseUrl}/results/${id}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${getToken}`,

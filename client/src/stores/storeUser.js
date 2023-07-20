@@ -40,7 +40,6 @@ export const useStoreUser = defineStore("storeUser", {
           url: baseUrl + "/signin",
           data: details,
         });
-
         const token = res.data.token;
         localStorage.setItem("token", token);
         this.token = token;

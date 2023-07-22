@@ -14,6 +14,33 @@
 
 В репозитории представлены 2 части проекта: frontend-часть (папка client) и backend-часть (папка api). В техническом исполнении проект представляет собой fullstack-разработку на стеке MEVN (MongoDB, Expressjs, Vuejs и Nodejs).
 
+## Технологии frontend-части
++ vite + vue
++ pinia
++ vue-router
++ vuelidate
++ scss
++ axios
++ lodash
++ highcharts
++ swiper
+
+## Технологии backend-части
++ base64-img
++ bcryptjs
++ body-parser
++ celebrate
++ cors
++ cross-env
++ dotenv
++ express
++ fs-extra
++ helmet
++ jsonwebtoken
++ mongoose
++ validator
++ winston
+
 ## Локальный запуск проекта
 
 1. Клонируйте репозиторий

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import baseUrl from "@/utils/baseUrl"
+import router from "@/router";
+import baseUrl from "@/utils/baseUrl";
 import { useStoreUser } from "@/stores/storeUser";
 
 export const useStoreResults = defineStore("storeResults", {

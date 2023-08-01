@@ -46,7 +46,6 @@ export const useStoreUser = defineStore("storeUser", {
         this.clearError();
         router.push({ name: "home" });
       } catch (error) {
-        console.log("error", error);
         if (error.response.status === 400) {
           this.error = "Пользователь с таким email не найден";
         } else {

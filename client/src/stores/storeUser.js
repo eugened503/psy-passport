@@ -93,6 +93,9 @@ export const useStoreUser = defineStore("storeUser", {
         }
       } catch (error) {
         this.error = error.response.data.message;
+        this.token = null;
+        localStorage.removeItem("token");
+        router.push({ name: "login" });
       }
       this.loaded = false;
     },

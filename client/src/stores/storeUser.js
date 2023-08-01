@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-import baseUrl from "@/utils/baseUrl"
+import baseUrl from "@/utils/baseUrl";
 
 export const useStoreUser = defineStore("storeUser", {
   state: () => {
@@ -24,7 +24,7 @@ export const useStoreUser = defineStore("storeUser", {
         });
 
         this.user = res.data;
-        this.error = null;
+        this.clearError();
         router.push({ name: "login" });
       } catch (error) {
         this.error = error.response.data.message;
@@ -43,7 +43,7 @@ export const useStoreUser = defineStore("storeUser", {
         const token = res.data.token;
         localStorage.setItem("token", token);
         this.token = token;
-        this.error = null;
+        this.clearError();
         router.push({ name: "home" });
       } catch (error) {
         console.log("error", error);
@@ -67,8 +67,7 @@ export const useStoreUser = defineStore("storeUser", {
             Authorization: `Bearer ${this.token}`,
           },
         });
-        this.token = null;
-        localStorage.removeItem("token");
+        this.clearToken();
         router.push({ name: "login" });
       } catch (error) {
         this.error = error.response.data.message;
@@ -93,8 +92,7 @@ export const useStoreUser = defineStore("storeUser", {
         }
       } catch (error) {
         this.error = error.response.data.message;
-        this.token = null;
-        localStorage.removeItem("token");
+        this.clearToken();
         router.push({ name: "login" });
       }
       this.loaded = false;
@@ -118,9 +116,13 @@ export const useStoreUser = defineStore("storeUser", {
       this.loaded = false;
     },
 
-
     clearError() {
       this.error = null;
+    },
+
+    clearToken() {
+      localStorage.removeItem("token");
+      this.token = null;
     },
   },
 

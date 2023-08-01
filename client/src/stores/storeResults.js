@@ -39,7 +39,7 @@ export const useStoreResults = defineStore("storeResults", {
 
     async loadResults() {
       this.loaded = true;
-      const { getToken } = useStoreUser();
+      const { getToken, clearToken } = useStoreUser();
       try {
         const res = await axios({
           method: "get",
@@ -52,6 +52,8 @@ export const useStoreResults = defineStore("storeResults", {
         this.results = res.data;
       } catch (error) {
         this.error = error.response.data.message;
+        clearToken();
+        router.push({ name: "login" });
       }
       this.loaded = false;
     },

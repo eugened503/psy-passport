@@ -70,6 +70,8 @@ export const useStoreUser = defineStore("storeUser", {
         router.push({ name: "login" });
       } catch (error) {
         this.error = error.response.data.message;
+        this.clearToken();
+        router.push({ name: "login" });
       }
       this.loaded = false;
     },

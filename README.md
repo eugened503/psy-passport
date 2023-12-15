@@ -52,7 +52,3 @@
   `npm install`
 - Запустить версию на локальном сервере
   `npm run dev`
-
-## Ссылка на готовый проект
-
-[Проект находится здесь](https://psy-passport-client-deploy.vercel.app/)
